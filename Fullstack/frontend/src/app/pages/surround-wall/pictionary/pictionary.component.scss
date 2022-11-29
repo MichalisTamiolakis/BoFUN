@@ -1,0 +1,48 @@
+.myContainer {
+  height: 590px;
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+.description {
+  position: absolute;
+  //   font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  left: 20px;
+  top: 13px;
+  width: 35%;
+  color: black;
+}
+.bolder {
+  font-weight: 700;
+}
+
+.circle {
+  border-radius: 50%;
+  background: linear-gradient(180deg, #4128f9 0%, #482fff 100%);
+  z-index: -1;
+
+  position: absolute;
+  width: 344px;
+  height: 344px;
+  left: 1661px;
+  top: -138px;
+}
+
+.timer {
+  position: absolute;
+  left: 60px;
+  top: 185px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 75px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  letter-spacing: -0.02em;
+}

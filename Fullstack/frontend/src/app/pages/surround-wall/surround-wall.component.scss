@@ -1,0 +1,21 @@
+.myNavbar {
+  height: 65px;
+  width: 100%;
+//   background: rgba(255, 255, 255, 0.05);
+  padding: 5px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#current_date_time {
+//   font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: white;
+  flex-direction: column;
+}

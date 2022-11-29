@@ -1,0 +1,34 @@
+<div class="myContainer">
+    <div class="personal-settings">
+        <div class="user-icon">
+            <div class="icon" style="display: flex;height:60px;">
+                <span class="iconify user-avatar" style="color: rgba(255, 255, 255, 0.1);"
+                    data-icon="carbon:user-avatar-filled"></span>
+            </div>
+            <div class="edit-avatar">
+                <div style="font-family: 'Work Sans';
+                font-style: italic;
+                font-weight: 300;
+                font-size: 14px;
+                line-height: 16px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                letter-spacing: -0.02em;
+                ">Choose Avatar</div>
+
+                <div style="display: flex;width:15px;height:15px;margin-left: 5px;">
+                    <span class="iconify pen" data-icon="fa-solid:pen"></span>
+                </div>
+            </div>
+        </div>
+        <input style="width: 70%;
+        border-radius: 30px;
+        height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname...">
+    </div>
+    <div class="join-title">Join a team</div>
+    <div class="cards">
+        <app-team-card *ngFor="let team of game.teams" [team]="team"></app-team-card>
+    </div>
+
+</div>

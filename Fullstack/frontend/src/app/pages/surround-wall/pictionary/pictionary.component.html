@@ -1,0 +1,37 @@
+<div class="myContainer" >
+    <div class="description">
+        <div> <span class="bolder">{{team.name}}</span>, it’s time to play <span class="bolder">{{miniGame}}</span>!
+        </div>
+        <div style="margin-top: 7px;">Guess the topic based on the drawing. The clock is ticking...
+        </div>
+    </div>
+    <div class="circle">
+        <div class="timer">
+            0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}
+        </div>
+    </div>
+    <!-- <div class="center">
+        
+        <div
+            [ngClass]="{'outer-circle': true, 'loseTimer': round.started === true && minutes===0 && seconds===0, 'startGame': round.started === true }">
+
+        </div>
+        <div [ngClass]="{'circle': true, 'loseTimer': round.started === true && minutes===0 && seconds===0}">
+            <div class="timer">
+                0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}
+            </div>
+        </div>
+
+        <div *ngIf="round.started === true && minutes===0 && seconds===0 && round.victory===false"
+            [ngClass]="{'endGame': true, 'appear circleEnd': round.started === true && minutes===0 && seconds===0}">
+            <div style="position: relative;">
+                You' ve lost!
+            </div>
+            <div [ngClass]="{'endGameTitle': round.started === true && minutes===0 && seconds===0}">
+                Time' s up
+            </div>
+        </div>
+    </div> -->
+
+
+</div>

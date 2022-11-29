@@ -1,14 +1,31 @@
+import { JoinTeamComponent } from './pages/smartphone/join-team/join-team.component';
+import { SmartphoneComponent } from './pages/smartphone/smartphone.component';
+import { GameDisplayComponent } from './pages/surround-wall/game-display/game-display.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ItemShopComponent } from './pages/item-shop/item-shop.component';
+import { SurroundWallComponent } from './pages/surround-wall/surround-wall.component';
+import { PictionaryComponent } from './pages/surround-wall/pictionary/pictionary.component';
 
 const routes: Routes = [
-  // { path: 'socket-events', loadChildren: () => import('./pages/socket-events/socket-events.module').then(m => m.SocketEventsModule) },
-  { path: 'tasks', loadChildren: () => import('./pages/tasks/tasks.module').then(m => m.TasksModule) },
-  { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
-  { path: 'item-shop', component: ItemShopComponent},
-  { path: '**', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: "surroundwall",
+    component: SurroundWallComponent,
+    children: [
+      {path: "pantomime", component: GameDisplayComponent},
+      {path: "pictionary", component: PictionaryComponent},
+    ]
+  },
+  {
+    path: "smartphone",
+    component: SmartphoneComponent,
+    children: [
+      {path: "join", component: JoinTeamComponent},
+      // {path: "pictionary", component: PictionaryComponent},
+    ]
+  },
+  { path: "**", redirectTo: "surroundwall", pathMatch: "full" },
 ];
 
 @NgModule({

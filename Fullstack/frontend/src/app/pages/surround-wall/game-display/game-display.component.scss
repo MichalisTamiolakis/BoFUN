@@ -1,0 +1,215 @@
+.myContainer {
+  height: 590px;
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description {
+  position: absolute;
+//   font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  left: 20px;
+  top: 13px;
+  width: 35%;
+}
+
+.outer-circle {
+  width: 540px;
+  height: 540px;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    rgb(65 40 249 / 50%) 0%,
+    rgb(72 47 255 / 50%) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+}
+
+.startGame {
+  animation-duration: 1s;
+  animation-name: changewidth;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.circleEnd {
+  animation-duration: 4s;
+  animation-name: changewidthEndGame;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  color: black;
+}
+
+.loseTimer {
+  animation-duration: 2s;
+  animation-name: disappear;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-delay: 1.5s;
+}
+
+.circle {
+  display: flex;
+  width: 470px;
+  height: 470px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #4128f9 0%, #482fff 100%);
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.endGameTitle {
+    animation-duration: 2s;
+    animation-name: appearTitle;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+    position: relative;
+  }
+
+.endGameSubTitle {
+  animation-duration: 2s;
+  animation-name: appearSubTitle;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+  position: relative;
+}
+
+.appear {
+  animation-duration: 2s;
+  animation-name: appear;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+}
+
+.endGame {
+  position: absolute;
+  display: flex;
+  width: 0px;
+  height: 0px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #db625e 0%, #e5716d 100%);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 0px;
+  z-index: 100;
+}
+
+@keyframes changewidth {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes changewidthEndGame {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(0.7);
+  }
+}
+
+@keyframes disappear {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  from {
+    //   transform: scale(0);
+    width: 0px;
+    height: 0px;
+    font-size: 0px;
+  }
+
+  to {
+    width: 800px;
+    height: 800px;
+    // font-family: "Roboto";
+    
+  }
+}
+@keyframes appearTitle {
+    from {
+      //   transform: scale(0);
+      font-size: 0px;
+    }
+  
+    to {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 100px;
+        // line-height: 117px;
+        // display: flex;
+        // align-items: center;
+        // text-align: center;
+        // letter-spacing: -0.02em;
+    }
+  }
+@keyframes appearSubTitle {
+  from {
+    //   transform: scale(0);
+    font-size: 0px;
+  }
+
+  to {
+    // font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 70px;
+    // line-height: 82px;
+    // display: flex;
+    // align-items: center;
+    // text-align: center;
+    // letter-spacing: -0.02em;
+  }
+}
+
+.timer {
+//   font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 128px;
+  line-height: 150px;
+}
+
+.bolder {
+  font-weight: 700;
+}
