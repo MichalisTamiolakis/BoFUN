@@ -24,7 +24,9 @@ namespace BoFUN.Menu
         public int minNumberOfTeams = 2;
         public int maxNumberOfTeams = 4;
         public int minNumberOfPlayersPerTeam = 2;
-        public int maxNumberOfPlayersPerTeam = 5;
+        public int maxNumberOfPlayersPerTeam = 4;
+        public int maxNumberOfPlayersTotal = 8;
+
 
         [HideInInspector]
         public bool focused = true;
@@ -41,23 +43,19 @@ namespace BoFUN.Menu
             {
                 MenuManager.Instance.NumberOfTeams = Mathf.Clamp(value, minNumberOfTeams, maxNumberOfTeams);
 
+                // Enable Both Buttons Initally
+                decrementTeams.interactable = true;
+                incrementTeams.interactable = true;
+
                 // If min num of teams, disable - button
                 if (MenuManager.Instance.NumberOfTeams <= minNumberOfTeams)
                 {
                     decrementTeams.interactable = false;
-                    incrementTeams.interactable = true;
                 }
                 // If max num of teams, disable + button        
-                else if (MenuManager.Instance.NumberOfTeams >= maxNumberOfTeams)
+                if (MenuManager.Instance.NumberOfTeams >= maxNumberOfTeams)
                 {
-                    decrementTeams.interactable = true;
                     incrementTeams.interactable = false;
-                }
-                // Else enable both buttons
-                else
-                {
-                    decrementTeams.interactable = true;
-                    incrementTeams.interactable = true;
                 }
 
                 // Update Display
@@ -74,27 +72,23 @@ namespace BoFUN.Menu
             set
             {
                 int minNumberOfPlayers = MenuManager.Instance.NumberOfTeams * minNumberOfPlayersPerTeam;
-                int maxNumberOfPlayers = MenuManager.Instance.NumberOfTeams * maxNumberOfPlayersPerTeam;
+                int maxNumberOfPlayers = Mathf.Min(MenuManager.Instance.NumberOfTeams * maxNumberOfPlayersPerTeam, maxNumberOfPlayersTotal);
 
                 MenuManager.Instance.NumberOfPlayers = Mathf.Clamp(value, minNumberOfPlayers, maxNumberOfPlayers);
+
+                // Enable Both Buttons Initially
+                decrementPlayers.interactable = true;
+                incrementPlayers.interactable = true;
 
                 // If min num of teams, disable - button
                 if (MenuManager.Instance.NumberOfPlayers <= minNumberOfPlayers)
                 {
                     decrementPlayers.interactable = false;
-                    incrementPlayers.interactable = true;
                 }
                 // If max num of teams, disable + button        
-                else if (MenuManager.Instance.NumberOfPlayers >= maxNumberOfPlayers)
+                if (MenuManager.Instance.NumberOfPlayers >= maxNumberOfPlayers)
                 {
-                    decrementPlayers.interactable = true;
                     incrementPlayers.interactable = false;
-                }
-                // Else enable both buttons
-                else
-                {
-                    decrementPlayers.interactable = true;
-                    incrementPlayers.interactable = true;
                 }
 
                 // Update Display
