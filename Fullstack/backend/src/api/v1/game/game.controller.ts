@@ -15,17 +15,10 @@ export class Game{
         router
         
         .post('/create', this.createGame())
-        .post('/createPlayer', this.createPlayer())
-        .put('/assignPlayerToTeam/:id',this.assignPlayerToTeam())
-        .get('/getGame',this.getGame())
+        .post('/createPlayer', this.createPlayer)
+
         return router; 
 
-    }
-
-    public getGame(){
-        return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
-            return res.send(currentGameModule.game);
-          };
     }
 
     public createGame(){
@@ -39,7 +32,7 @@ export class Game{
             for (let i = 0; i < req.body.totalTeams; i++) {
                 let choice = Math.floor(Math.random()*colors.length);
                 let chosenColor = colors[choice];
-                colors =colors.splice(choice,1);
+                colors.splice(choice,1);
 
                 teams.push({
                     id:i,
@@ -56,15 +49,15 @@ export class Game{
                 totalPlayers: req.body.totalPlayers,
                 players:[],
                 teams: teams,
-                pantomime: req.body.pantomime,
-                pictionary: req.body.pictionary,
-                trivia: req.body.trivia,
+                pantomime: Boolean(req.body.pantomime),
+                pictionary: Boolean(req.body.pictionary),
+                trivia: Boolean(req.body.trivia),
                 sequence: [],
                 winningTeam: -1,
                 rounds: []
-            };
+            };            
             
-            return res.sendStatus(200);
+            return res.send(currentGameModule.game);
           };
     }
 
@@ -82,6 +75,7 @@ export class Game{
             positionId: req.body.positionId,
           };
           currentGameModule.game.players.push(player);
+          res.sendStatus(200);
           return res.send(currentGameModule.game);
         };
       }
@@ -101,6 +95,7 @@ export class Game{
           let chosenTeam = teams.find(({ id }) => id === Number(req.body.teamId));
           if(chosenTeam !== undefined){
             chosenTeam.members.push(Number(req.params.id));
+            res.sendStatus(200);
             return res.send(currentGameModule.game);
           }
           return res.sendStatus(400);
