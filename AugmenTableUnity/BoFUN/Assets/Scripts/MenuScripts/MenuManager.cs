@@ -24,7 +24,6 @@ namespace BoFUN.Menu
             }
         }
 
-
         public int NumberOfTeams
         {
             get => GameManager.GameManager.Instance.gameDescriptor.numberOfTeams;
@@ -61,9 +60,10 @@ namespace BoFUN.Menu
             set => GameManager.GameManager.Instance.gameDescriptor.timePerRound = value;
         }
 
-
-        public NumberOfPlayersAndTeamsSelection numberOfPlayersAndTeamsSelectionWindow;
-        public GameSettings gameSettingsWindow;
+        public GameObject menuWindow;
+        public NumberOfPlayersAndTeamsSelection numberOfPlayersAndTeamsSelectionPanel;
+        public GameSettings gameSettingsPanel;
+        //public 
         //public GameObject
 
         public enum MenuPage
@@ -78,11 +78,11 @@ namespace BoFUN.Menu
         {
 
             // Adjust positions
-            gameSettingsWindow.Window.transform.localPosition += new Vector3(1920, 0, 0);
-            gameSettingsWindow.focused = false;
+            gameSettingsPanel.Window.transform.localPosition += new Vector3(1920, 0, 0);
+            gameSettingsPanel.focused = false;
 
-            numberOfPlayersAndTeamsSelectionWindow.Window.SetActive(true);
-            gameSettingsWindow.Window.SetActive(true);
+            numberOfPlayersAndTeamsSelectionPanel.Window.SetActive(true);
+            gameSettingsPanel.Window.SetActive(true);
         }
 
         void Update()
@@ -90,20 +90,25 @@ namespace BoFUN.Menu
 
         }
 
+        public void ShowMenu(bool show)
+        {
+            menuWindow.SetActive(show);
+        }
+
         public void NextPage()
         {
             if (UIPage == MenuPage.NumberOfPlayersAndTeams)
             {
                 UIPage++;
-                numberOfPlayersAndTeamsSelectionWindow.focused = false;
+                numberOfPlayersAndTeamsSelectionPanel.focused = false;
 
                 // Play animation
-                numberOfPlayersAndTeamsSelectionWindow.Window.LeanMoveLocalX(numberOfPlayersAndTeamsSelectionWindow.Window.transform.localPosition.x - 1920, .5f).setEaseOutQuart();
-                gameSettingsWindow.Window.LeanMoveLocalX(gameSettingsWindow.Window.transform.localPosition.x - 1920, .5f).setEaseOutQuart().setOnComplete(()=> { gameSettingsWindow.focused = true; });
+                numberOfPlayersAndTeamsSelectionPanel.Window.LeanMoveLocalX(numberOfPlayersAndTeamsSelectionPanel.Window.transform.localPosition.x - 1920, .5f).setEaseOutQuart();
+                gameSettingsPanel.Window.LeanMoveLocalX(gameSettingsPanel.Window.transform.localPosition.x - 1920, .5f).setEaseOutQuart().setOnComplete(()=> { gameSettingsPanel.focused = true; });
             }
-            else if (UIPage == MenuPage.GameSettings)
+            else
             {
-                CreateGame();
+                Debug.LogWarning("Menu Manager no next page");
             }
         }
 
@@ -112,19 +117,39 @@ namespace BoFUN.Menu
             if(UIPage == MenuPage.GameSettings)
             {
                 UIPage--;
-                gameSettingsWindow.focused = false;
+                gameSettingsPanel.focused = false;
 
                 // Play animation
-                gameSettingsWindow.Window.LeanMoveLocalX(gameSettingsWindow.Window.transform.localPosition.x + 1920, .5f).setEaseOutQuart();
-                numberOfPlayersAndTeamsSelectionWindow.Window.LeanMoveLocalX(numberOfPlayersAndTeamsSelectionWindow.Window.transform.localPosition.x + 1920, .5f).setEaseOutQuart().setOnComplete(() => { numberOfPlayersAndTeamsSelectionWindow.focused = true; });
-
+                gameSettingsPanel.Window.LeanMoveLocalX(gameSettingsPanel.Window.transform.localPosition.x + 1920, .5f).setEaseOutQuart();
+                numberOfPlayersAndTeamsSelectionPanel.Window.LeanMoveLocalX(numberOfPlayersAndTeamsSelectionPanel.Window.transform.localPosition.x + 1920, .5f).setEaseOutQuart().setOnComplete(() => { numberOfPlayersAndTeamsSelectionPanel.focused = true; });
             }
+            else
+            {
+                Debug.LogWarning("Menu Manager no previous page");
+            }
+        }
+
+        public void GoToPage(MenuPage menupage)
+        {
+            if(menupage == MenuPage.GameSettings)
+            {
+                NextPage();
+            }
+            else if(menupage == MenuPage.NumberOfPlayersAndTeams)
+            {
+                PreviousPage();
+            }
+        }
+
+        public void ShowLoading(bool show)
+        {
+
         }
 
         public void CreateGame()
         {
             Debug.Log("Creating Game...");
-            throw new System.NotImplementedException();
+            GameManager.GameManager.Instance.CreateGame();
         }
 
     }

@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 311093757}
   - component: {fileID: 311093756}
   m_Layer: 5
-  m_Name: GameSettingsScreen
+  m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1561,7 +1561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94437b0d289e760499d05720483353c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDescriptor: {fileID: 0}
+  networkSettings: {fileID: 11400000, guid: 01aa5df9042bb274886aca2fdf21a3d5, type: 2}
 --- !u!1 &533211517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,7 +3104,7 @@ MonoBehaviour:
   timerText: {fileID: 933886712}
   timerIncreaseButton: {fileID: 644383164}
   timerDecreaseButton: {fileID: 533211520}
-  next: {fileID: 1185666222}
+  start: {fileID: 1185666222}
   previous: {fileID: 1957623294}
   minTimePerRound: 30
   maxTimePerRound: 300
@@ -4640,7 +4640,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1353847109
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7094,8 +7094,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9c2482f0db85444b85b78fc6005f78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfPlayersAndTeamsSelectionWindow: {fileID: 458887540}
-  gameSettingsWindow: {fileID: 756658226}
+  menuWindow: {fileID: 311093754}
+  numberOfPlayersAndTeamsSelectionPanel: {fileID: 458887540}
+  gameSettingsPanel: {fileID: 756658226}
 --- !u!1 &2126963742
 GameObject:
   m_ObjectHideFlags: 0

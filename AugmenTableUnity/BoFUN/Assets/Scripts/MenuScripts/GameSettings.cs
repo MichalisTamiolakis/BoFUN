@@ -16,7 +16,7 @@ namespace BoFUN.Menu {
         public Button timerIncreaseButton;
         public Button timerDecreaseButton;
 
-        public Button next;
+        public Button start;
         public Button previous;
 
         [Space(10)]
@@ -101,18 +101,18 @@ namespace BoFUN.Menu {
         {
             if (!(PantomimeOption || TriviaOption || PictionaryOption))
             {
-                next.interactable = false;
+                start.interactable = false;
             }
             else
             {
-                next.interactable = true;
+                start.interactable = true;
             }
 
         }
 
         void Start()
         {
-            if(!triviaToggle || !pantomimeToggle || !pictionaryToggle || !timerIncreaseButton || !timerDecreaseButton || !timerText || !next || !previous)
+            if(!triviaToggle || !pantomimeToggle || !pictionaryToggle || !timerIncreaseButton || !timerDecreaseButton || !timerText || !start || !previous)
             {
                 Debug.LogError("Incorrect Game Settings window setup");
                 return;
@@ -125,7 +125,7 @@ namespace BoFUN.Menu {
             pictionaryToggle.onToggle.AddListener((bool value) => { if (focused) PictionaryOption = value; });
             timerIncreaseButton.onClick.AddListener(()=> { if (focused) TimePerRound = TimePerRound + 15; });
             timerDecreaseButton.onClick.AddListener(() => { if (focused) TimePerRound = TimePerRound - 15; });
-            next.onClick.AddListener(() => { if (focused) MenuManager.Instance.NextPage(); });
+            start.onClick.AddListener(() => { if (focused) MenuManager.Instance.CreateGame(); });
             previous.onClick.AddListener(() => { if (focused) MenuManager.Instance.PreviousPage(); });
 
 
