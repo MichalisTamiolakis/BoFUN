@@ -1,5 +1,5 @@
 import * as express from 'express';
-// import { apiV1Router } from './v1';
+import { apiV1Router } from './v1';
 
 export class Api {
 
@@ -13,7 +13,7 @@ export class Api {
 
         const apiRouter = express.Router();
 
-        // apiRouter.use('/BoFUN/', apiV1Router);
+        apiRouter.use('/BoFUN/', apiV1Router);
 
         return apiRouter;
     }

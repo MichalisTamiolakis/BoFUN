@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import { NotFound, BadRequest } from 'http-errors';
-import { DIContainer, MinioService, SocketsService } from '@app/services';
 
 import { IGame } from "../../../models/Game/game";
 
