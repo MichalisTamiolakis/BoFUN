@@ -1,4 +1,4 @@
-export interface Pantomime{
+export interface IPantomime{
     id:number;
     task: string;
     category: Category;

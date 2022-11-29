@@ -1,7 +1,7 @@
-import { Player } from "../player/player";
-import { Team } from "../team/team";
-import { Round } from "../round/round";
-export interface Game{
+import { Player } from "../Player/player";
+import { Team } from "../Team/team";
+import { Round } from "../Round/round";
+export interface IGame{
     duration: number;
     totalPlayers: number;
     players: Array<Player>;

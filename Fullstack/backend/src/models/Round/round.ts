@@ -1,4 +1,4 @@
-export interface Round{
+export interface IRound{
     team: number; //which team is playing
     player: number; // which player is playing
     miniGame: MiniGame;
