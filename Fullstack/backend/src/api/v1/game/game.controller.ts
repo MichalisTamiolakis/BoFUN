@@ -36,8 +36,7 @@ export class Game{
                     name: "",
                     image: "",
                     members: [],
-                    color: chosenColor,
-                    sequence: []
+                    color: chosenColor
                 })
             }
 
