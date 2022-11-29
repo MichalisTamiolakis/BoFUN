@@ -5,7 +5,7 @@ import { IGame } from "../../../models/Game/game";
 import { ITeam } from '../../../models/Team/team';
 
 var currentGameModule = require('../../../models/Game/currentGame.module');
-var currentGameModule = require('../../../models/GameSettings/gameSettings.module');
+var gameSettingsModule = require('../../../models/GameSettings/gameSettings.module');
 
 export class Game{
     public applyRoutes():Router {
@@ -21,7 +21,7 @@ export class Game{
     public createGame(){
         return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
             
-            let colors:Array<string> = availableTeamColors;
+            let colors:Array<string> = gameSettingsModule.availableTeamColors;
 
             let teams:Array<ITeam> = 
             [];
