@@ -1,3 +1,5 @@
 import { IGame} from "./game";
 
-var game:IGame;
+var game:IGame | undefined;
+
+exports.game = game;
