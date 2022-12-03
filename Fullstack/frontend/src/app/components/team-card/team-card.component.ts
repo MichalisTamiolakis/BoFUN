@@ -1,7 +1,8 @@
-
 import { Team } from './../../global/models/team/team';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Player } from 'src/app/global/models/player/player';
+import { TeamService } from 'src/app/global/services/team.service';
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 
 @Component({
   selector: 'app-team-card',
@@ -9,49 +10,33 @@ import { Player } from 'src/app/global/models/player/player';
   styleUrls: ['./team-card.component.scss'],
 })
 export class TeamCardComponent implements OnInit {
+  @Output("emitTeamId") teamEmitter: EventEmitter<number> = new EventEmitter();
   @Input('team') team: Team = {
-    id: -1,
+    id: -2,
     name: '',
     image: '',
     members: [],
     color: '',
-    sequence: [],
   };
-  players: Array<Player> = [
-    {
-      id: 1,
-      username: 'Alexandra',
-      teamId: 1,
-      image: '',
-      positionId: 0,
-    },
-    {
-      id: 2,
-      username: 'Michalis',
-      teamId: 1,
-      image: '',
-      positionId: 1,
-    },
-    // {
-    //   id: 3,
-    //   username: 'Kostas',
-    //   teamId: 2,
-    //   image: '',
-    //   positionId: 2,
-    // },
-    // {
-    //   id: 4,
-    //   username: 'Zack',
-    //   teamId: 2,
-    //   image: '',
-    //   positionId: 3,
-    // },
-  ]
-  teamPlayers:any;
-  constructor() {}
+  players: Array<Player> = [];
+  teamPlayers: any;
+  constructor(
+    private teamService: TeamService,
+    private sockets: SocketsService
+  ) {}
 
   ngOnInit(): void {
-    this.teamPlayers = this.players.filter(({teamId})=> teamId === this.team.id)
-    console.log(this.teamPlayers)
+    this.teamService.getTeamPlayers(this.team.id).subscribe((result) => {
+      this.teamPlayers = result;
+      console.log(this.teamPlayers);
+    });
+
+    this.sockets.subscribe('TeamUpdated', (data: any) => {
+      console.log("socket msg",data)
+    });
+  }
+
+  emitTeamId(){
+    this.teamEmitter.emit(this.team.id);
   }
 }

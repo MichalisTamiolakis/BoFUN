@@ -22,13 +22,13 @@
                 </div>
             </div>
         </div>
-        <input style="width: 70%;
+        <input [(ngModel)]="playerName" style="width: 70%;
         border-radius: 30px;
         height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname...">
     </div>
     <div class="join-title">Join a team</div>
     <div class="cards">
-        <app-team-card *ngFor="let team of game.teams" [team]="team"></app-team-card>
+        <app-team-card *ngFor="let team of teams" [team]="team" (emitTeamId)="joinTeam($event)"></app-team-card>
     </div>
 
 </div>

@@ -4,5 +4,5 @@ export interface Team{
     image: string;
     members: Array<number>;
     color: string;
-    sequence: Array<number>; //seira paiktwn
+    // sequence: Array<number>; //seira paiktwn
 }

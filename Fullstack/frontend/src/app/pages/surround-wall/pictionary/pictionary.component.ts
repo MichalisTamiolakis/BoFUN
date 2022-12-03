@@ -19,7 +19,7 @@ export class PictionaryComponent implements OnInit {
         image: 'string',
         members: [1, 2],
         color: 'purple',
-        sequence: [1, 2], //seira paiktwn
+        // sequence: [1, 2], //seira paiktwn
       },
       {
         id: 2,
@@ -27,7 +27,7 @@ export class PictionaryComponent implements OnInit {
         image: 'string',
         members: [3, 4],
         color: 'yellow',
-        sequence: [3, 4], //seira paiktwn
+        // sequence: [3, 4], //seira paiktwn
       },
     ],
     pantomime: true,

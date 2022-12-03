@@ -6,6 +6,7 @@ import { SocketServer } from './socket-server';
 
 @injectable()
 export class SocketsService {
+  
 
   private socketServer!: SocketServer;
 
@@ -30,6 +31,10 @@ export class SocketsService {
      * Every socket-client in the frontend has subscribed in this event and
     */
     this.socketServer.io.emit(event, data);
+  }
+
+  broadcast(event: string, message: any) {
+    this.socketServer.io.emit('server:event', event, message);
   }
 
 }

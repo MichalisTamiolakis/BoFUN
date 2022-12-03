@@ -14,6 +14,7 @@ import { PictionaryComponent } from './pages/surround-wall/pictionary/pictionary
 import { SmartphoneComponent } from './pages/smartphone/smartphone.component';
 import { JoinTeamComponent } from './pages/smartphone/join-team/join-team.component';
 import { TeamCardComponent } from './components/team-card/team-card.component';
+import { FormsModule } from '@angular/forms';
 
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
@@ -33,7 +34,8 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     SocketIoModule.forRoot(socketIoConfig),
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

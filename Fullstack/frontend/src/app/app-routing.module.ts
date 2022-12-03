@@ -21,7 +21,7 @@ const routes: Routes = [
     path: "smartphone",
     component: SmartphoneComponent,
     children: [
-      {path: "join", component: JoinTeamComponent},
+      {path: "join/:positionId", component: JoinTeamComponent},
       // {path: "pictionary", component: PictionaryComponent},
     ]
   },
