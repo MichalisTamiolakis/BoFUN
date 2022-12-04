@@ -20,8 +20,10 @@ export class Game {
       .get("", this.getGame())
       .get("/teamPlayers/:teamId", this.getPlayersOfATeam())
       .get("/teams", this.getTeams())
+      .get("/team/:teamId", this.getTeam())
       .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
-      .put("/setPlayerName/:playerId", this.setNameToPlayer());
+      .put("/setPlayerName/:playerId", this.setNameToPlayer())
+      .delete("/removePlayer/:playerId/fromTeam/:teamId", this.removePlayerFromTeam());
     return router;
   }
 
@@ -52,7 +54,7 @@ export class Game {
 
         teams.push({
           id: i,
-          name: "",
+          name: "Team " + (i + 1),
           image: "",
           members: [],
           color: chosenColor,
@@ -119,9 +121,9 @@ export class Game {
       if (chosenTeam !== undefined) {
         chosenTeam.members.push(Number(req.params.playerId));
         // res.sendStatus(200);
-        
+
         const socketService = DIContainer.get(SocketsService);
-        socketService.broadcast('TeamUpdated', Number(req.body.teamId));
+        socketService.broadcast("TeamUpdated", Number(req.body.teamId));
         return res.send(currentGameModule.game);
       }
       return res.sendStatus(400);
@@ -140,6 +142,37 @@ export class Game {
         player.username = req.body.username;
       }
       return res.send(player);
+    };
+  }
+
+  public removePlayerFromTeam(){
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let players: Array<IPlayer> = currentGameModule.game.players;
+      let player = players.find(({ id }) => id === Number(req.params.playerId));
+      if (player !== undefined) {
+        player.teamId = -1;
+        player.username = '';
+      }
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      let chosenTeam = teams.find(({ id }) => id === Number(req.params.teamId));
+      if (chosenTeam !== undefined) {
+        for (let i = 0; i < chosenTeam.members.length; i++) {
+          if (chosenTeam.members[i] === Number(req.params.playerId)) {
+            chosenTeam.members.splice(i, 1); // Remove one element at pos i
+            break;
+          }
+        }
+        // res.sendStatus(200);
+
+        const socketService = DIContainer.get(SocketsService);
+        socketService.broadcast("TeamUpdated", Number(req.body.teamId));
+        return res.send(currentGameModule.game);
+      }
+      return res.sendStatus(400);
     };
   }
 
@@ -165,6 +198,21 @@ export class Game {
     ): Promise<Response> => {
       let teams: Array<ITeam> = currentGameModule.game.teams;
       return res.send(teams);
+    };
+  }
+
+  public getTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      let team: any = teams.find(({ id }) => id === Number(req.params.teamId));
+      if (team !== undefined) {
+        return res.send(team);
+      }
+      return res.sendStatus(400);
     };
   }
 }

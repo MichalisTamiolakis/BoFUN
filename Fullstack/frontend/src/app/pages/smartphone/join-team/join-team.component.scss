@@ -1,7 +1,6 @@
 .myContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -61,6 +60,10 @@
 
 textarea:focus, input:focus {
     color: #f9f8f2;
+}
+
+textarea, input {
+  color: #f9f8f2;
 }
 
 .cards{

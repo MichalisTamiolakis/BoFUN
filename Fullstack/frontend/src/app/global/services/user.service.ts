@@ -22,4 +22,9 @@ export class UserService {
     return this.http
       .put(`${this.apiUrl}/BoFUN/game/setPlayerName/${playerId}`, {username: username});
   }
+
+  public removePlayerFromTeam(playerId:number,teamId:number){
+    return this.http
+      .delete(`${this.apiUrl}/BoFUN/game/removePlayer/${playerId}/fromTeam/${teamId}`);
+  }
 }

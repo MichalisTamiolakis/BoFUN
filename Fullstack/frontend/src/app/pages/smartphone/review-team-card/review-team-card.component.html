@@ -1,0 +1,21 @@
+<div class="mobile-container" style="display: flex;
+flex-direction: column;
+align-items: center;">
+    <div style="font-style: italic;
+font-weight: 500;
+font-size: 20px;
+line-height: 23px;
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: -0.02em;
+margin-top: 12%;
+    width: 70%;
+    margin-bottom: 7%;justify-content: center;">
+        Waiting for others to join a team...
+    </div>
+    <app-selected-team-card *ngIf="team!==undefined && players!==undefined" [team]="team" [players]="players">
+    </app-selected-team-card>
+
+    <div class="mobileButton" style="margin-top: 13%;" (click)="removePlayer()">Back to team selection</div>
+</div>

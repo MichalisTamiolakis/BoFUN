@@ -1,3 +1,4 @@
+import { ReviewTeamCardComponent } from './pages/smartphone/review-team-card/review-team-card.component';
 import { JoinTeamComponent } from './pages/smartphone/join-team/join-team.component';
 import { SmartphoneComponent } from './pages/smartphone/smartphone.component';
 import { GameDisplayComponent } from './pages/surround-wall/game-display/game-display.component';
@@ -22,6 +23,7 @@ const routes: Routes = [
     component: SmartphoneComponent,
     children: [
       {path: "join/:positionId", component: JoinTeamComponent},
+      {path: "reviewTeam/:teamId/player/:playerId", component: ReviewTeamCardComponent},
       // {path: "pictionary", component: PictionaryComponent},
     ]
   },

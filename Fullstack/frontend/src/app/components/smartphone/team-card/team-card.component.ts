@@ -1,4 +1,4 @@
-import { Team } from './../../global/models/team/team';
+import { Team } from '../../../global/models/team/team';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Player } from 'src/app/global/models/player/player';
 import { TeamService } from 'src/app/global/services/team.service';

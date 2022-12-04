@@ -1,4 +1,4 @@
-<div class="myContainer">
+<div class="myContainer mobile-container">
     <div class="personal-settings">
         <div class="user-icon">
             <div class="icon" style="display: flex;height:60px;">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <input [(ngModel)]="playerName" style="width: 70%;
+        <input (keypress)="keyPress($event)" [ngStyle]="{outline: missingName ? '2px solid red' : 'none'}" [(ngModel)]="playerName" style="width: 70%;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 30px;
         height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname...">
     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Game } from 'src/app/global/models/game/game';
 import { TeamService } from 'src/app/global/services/team.service';
 import { UserService } from 'src/app/global/services/user.service';
@@ -80,12 +80,16 @@ export class JoinTeamComponent implements OnInit {
   positionId: any;
   teams: any;
   playerName: string = '';
+  missingName: boolean = false;
+  namePass: boolean = false;
+  // joinClicked: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private teamService: TeamService
+    private teamService: TeamService, private router: Router
   ) {}
-
+ 
+  
   ngOnInit(): void {
     this.positionId = this.route.snapshot.paramMap.get('positionId');
     if (this.positionId !== null) {
@@ -101,19 +105,33 @@ export class JoinTeamComponent implements OnInit {
 
   joinTeam(teamId: number) {
     console.log('username', this.playerName);
-    if (this.playerName !== '')
+    if (this.playerName !== '' && this.missingName===false)
       this.teamService
         .assignPlayerToTeam(
           Number.parseInt(this.positionId),
           teamId,
           this.playerName
         )
-        .subscribe((result) => {});
+        .subscribe((result) => {
+          this.router.navigateByUrl("smartphone/reviewTeam/" + teamId + "/player/"+this.positionId);
+        });
+    else this.missingName = true
   }
 
-  setPlayerName(event: any) {
-    this.userService
-      .setName(Number.parseInt(this.positionId), event.target.value.toString())
-      .subscribe(() => {});
-  }
+  keyPress(event: KeyboardEvent) {
+    const pattern = /[a-zA-Z0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+        // invalid character, prevent input
+        this.missingName=true;
+        // event.preventDefault();
+    }
+    else this.missingName=false;
+}
+
+  // setPlayerName(event: any) {
+  //   this.userService
+  //     .setName(Number.parseInt(this.positionId), event.target.value.toString())
+  //     .subscribe(() => {});
+  // }
 }

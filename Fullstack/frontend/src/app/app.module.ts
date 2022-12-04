@@ -13,8 +13,10 @@ import { GameDisplayComponent } from './pages/surround-wall/game-display/game-di
 import { PictionaryComponent } from './pages/surround-wall/pictionary/pictionary.component';
 import { SmartphoneComponent } from './pages/smartphone/smartphone.component';
 import { JoinTeamComponent } from './pages/smartphone/join-team/join-team.component';
-import { TeamCardComponent } from './components/team-card/team-card.component';
+import { TeamCardComponent } from './components/smartphone/team-card/team-card.component';
 import { FormsModule } from '@angular/forms';
+import { ReviewTeamCardComponent } from './pages/smartphone/review-team-card/review-team-card.component';
+import { SelectedTeamCardComponent } from './components/smartphone/selected-team-card/selected-team-card.component';
 
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
@@ -28,7 +30,9 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     PictionaryComponent,
     SmartphoneComponent,
     JoinTeamComponent,
-    TeamCardComponent
+    TeamCardComponent,
+    ReviewTeamCardComponent,
+    SelectedTeamCardComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),
