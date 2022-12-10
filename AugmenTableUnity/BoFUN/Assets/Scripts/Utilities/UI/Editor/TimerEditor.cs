@@ -18,12 +18,20 @@ public class TimerEditor : Editor
 
         EditorGUI.BeginChangeCheck();
         var totalSeconds = EditorGUILayout.FloatField("Total Time In Seconds", m_Timer.TotalTimeInSeconds);
+        if (EditorGUI.EndChangeCheck())
+        {
+            m_Timer.TotalTimeInSeconds = totalSeconds;
+            EditorUtility.SetDirty(m_Timer);
+            SceneView.RepaintAll();
+        }
+        
+        EditorGUI.BeginChangeCheck();
         var remainingSeconds = EditorGUILayout.Slider("Remaining Time In Seconds", m_Timer.RemainingTimeInSeconds, 0, m_Timer.TotalTimeInSeconds);
 
         if (EditorGUI.EndChangeCheck())
         {
             m_Timer.RemainingTimeInSeconds = remainingSeconds;
-            m_Timer.TotalTimeInSeconds = totalSeconds;
+            EditorUtility.SetDirty(m_Timer);
             SceneView.RepaintAll();
         }
     }
