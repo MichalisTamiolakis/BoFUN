@@ -18,20 +18,19 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
     private PointerEventData previousMouseEventData;
 
 
-    private Color32[] colorsArray;
 
     // Start is called before the first frame update
     void Start()
     {
-        colorsArray = texture.GetPixels32();
+        Color32[] colorsArray = texture.GetPixels32();
 
         // Initialize texture to default color
         for(int i=0; i<colorsArray.Length; i++)
         {
             colorsArray[i] = backgroundColor;
         }
-        ApplyChangesToTexture();
-
+        texture.SetPixels32(colorsArray);
+        texture.Apply();
     }
 
     private void StartDrawing(PointerEventData eventData)
@@ -45,7 +44,7 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
 
     private void StopDrawing(PointerEventData eventData)
     {
-        if (eventData.pointerId == previousMouseEventData.pointerId)
+        if (isDrawing && eventData.pointerId == previousMouseEventData.pointerId)
         {
             CheckDraw(eventData, false);
             isDrawing = false;
@@ -93,7 +92,7 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
             interpolationValue += interpolationStep;
         }
 
-        ApplyChangesToTexture();
+        texture.Apply();
     }
 
     /// <summary>
@@ -120,16 +119,10 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
                 if (y >= texture.height || y < 0)
                     continue;
 
-                colorsArray[y * texture.width + x] = color;
+                texture.SetPixel(x, y, color);//[y * texture.width + x] = color;
                 
             }
         }
-    }
-
-    private void ApplyChangesToTexture()
-    {
-        texture.SetPixels32(colorsArray);
-        texture.Apply();
     }
 
     public Vector2 GetLocalPointerPositionOverImage(PointerEventData eventData, Image img)
