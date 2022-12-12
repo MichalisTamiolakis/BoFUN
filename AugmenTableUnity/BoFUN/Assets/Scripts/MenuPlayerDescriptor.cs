@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Stares data for a player of the game
 /// </summary>
-public class PlayerDescriptor
+public class MenuPlayerDescriptor
 {
     private int m_PlayerId = -1;
     private string m_NickName = "";
@@ -31,7 +31,7 @@ public class PlayerDescriptor
         set => m_Avatar = value;
     }
 
-    public PlayerDescriptor(int playerId, string nickName, Sprite avatar = null)
+    public MenuPlayerDescriptor(int playerId, string nickName, Sprite avatar = null)
     {
         PlayerId = playerId;
         NickName = nickName;

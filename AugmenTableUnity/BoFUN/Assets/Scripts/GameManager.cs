@@ -58,7 +58,7 @@ namespace BoFUN.GameManager
             //request.SetRequestHeader("Accept", "text/csv");
             //request.SetRequestHeader("appKey", "ABC");
 
-            UnityWebRequest request = UnityWebRequest.Post(networkSettings.serverURI+"/"+networkSettings.createGamePath, form);
+            UnityWebRequest request = UnityWebRequest.Post(networkSettings.serverURL+"/"+networkSettings.gameAPI.createGamePath, form);
             StartCoroutine(OnCreateGameResponse(request));
 
         }
@@ -88,13 +88,15 @@ namespace BoFUN.GameManager
         private void HideMenuAndTransitionToTeamJoin()
         {
             Menu.MenuManager.Instance.ShowMenu(false);
+            TeamAssignmentManager.Instance.ShowScreen(true);
+            TeamAssignmentManager.Instance.StartUpdating();
         }
 
 
         // ======================= GAME LOGIC ====================
 
         /// <summary>
-        /// Starts a game 
+        /// Starts a new game 
         /// </summary>
         public void StartGame()
         {

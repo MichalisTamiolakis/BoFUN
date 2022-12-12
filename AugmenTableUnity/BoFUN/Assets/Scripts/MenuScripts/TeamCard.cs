@@ -23,9 +23,9 @@ public class TeamCard : MonoBehaviour
         set => avatarImageComponent.sprite = value;
     }
 
-    private List<PlayerDescriptor> m_JoinedPlayers = new List<PlayerDescriptor>();
+    private List<MenuPlayerDescriptor> m_JoinedPlayers = new List<MenuPlayerDescriptor>();
 
-    public void AddPlayer(PlayerDescriptor player)
+    public void AddPlayer(MenuPlayerDescriptor player)
     {
         m_JoinedPlayers.Add(player);
     }
