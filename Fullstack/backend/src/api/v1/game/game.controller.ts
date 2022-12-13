@@ -43,15 +43,14 @@ export class Game {
       res: Response,
       next?: NextFunction
     ): Promise<Response> => {
-      let colors: Array<string> = gameSettingsModule.availableTeamColors;
+      let colors: Array<string> = gameSettingsModule.availableTeamColors.slice();
 
       let teams: Array<ITeam> = [];
-      console.log(req.body);
       for (let i = 0; i < Number(req.body.totalTeams); i++) {
         let choice = Math.floor(Math.random() * colors.length);
         let chosenColor = colors[choice];
         colors.splice(choice, 1);
-
+        
         teams.push({
           id: i,
           name: "Team " + (i + 1),
@@ -60,7 +59,7 @@ export class Game {
           color: chosenColor,
         });
       }
-
+      
       currentGameModule.game = {
         duration: req.body.duration,
         totalPlayers: req.body.totalPlayers,
@@ -73,11 +72,12 @@ export class Game {
         winningTeam: -1,
         rounds: [],
       };
-
+      
+      console.log(req.body);
       return res.send(currentGameModule.game);
     };
   }
-
+  
   public createPlayer() {
     return async (
       req: Request,

@@ -26,38 +26,38 @@ namespace BoFUN.Menu
 
         public int NumberOfTeams
         {
-            get => GameManager.GameManager.Instance.gameDescriptor.numberOfTeams;
-            set => GameManager.GameManager.Instance.gameDescriptor.numberOfTeams = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfTeams;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfTeams = value;
         }
 
         public int NumberOfPlayers
         {
-            get => GameManager.GameManager.Instance.gameDescriptor.numberOfPlayers;
-            set => GameManager.GameManager.Instance.gameDescriptor.numberOfPlayers = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfPlayers;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfPlayers = value;
         }
 
         public bool TriviaOption
         {
-            get => GameManager.GameManager.Instance.gameDescriptor.trivia;
-            set => GameManager.GameManager.Instance.gameDescriptor.trivia = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.trivia;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.trivia = value;
         }
 
         public bool PantomimeOption
         {
-            get => GameManager.GameManager.Instance.gameDescriptor.pantomime;
-            set => GameManager.GameManager.Instance.gameDescriptor.pictionary = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.pantomime;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.pictionary = value;
         }
 
         public bool PictionaryOption
         {
-            get => GameManager.GameManager.Instance.gameDescriptor.pictionary;
-            set => GameManager.GameManager.Instance.gameDescriptor.pantomime = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.pictionary;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.pantomime = value;
         }
 
         public int TimePerRound
         {
-            get => GameManager.GameManager.Instance.gameDescriptor.timePerRound;
-            set => GameManager.GameManager.Instance.gameDescriptor.timePerRound = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.timePerRound;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.timePerRound = value;
         }
 
         public GameObject menuWindow;

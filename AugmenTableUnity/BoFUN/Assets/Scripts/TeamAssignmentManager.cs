@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using BoFUN.GameManager;
+using UnityEngine.UI;
+using BoFUN.Entities;
+using System;
 
 public class TeamAssignmentManager : MonoBehaviour
 {
@@ -28,16 +31,29 @@ public class TeamAssignmentManager : MonoBehaviour
 
 
     public GameObject TeamJoinScreen;
-    public GameObject content;
+    public Transform content;
     public GameObject loading;
+    [Space(5)]
+    public Button startGame;
+    public Button exitGame;
+
 
     [Header("Prefabs")]
     public GameObject teamCardPrefab;
 
+    public void ShowScreen(bool show)
+    {
+        TeamJoinScreen.SetActive(show);
+    }
+
+
     public void StartUpdating()
     {
         EnableLoading(true);
-        RemoveAllTeamCards();
+
+        StartCoroutine("BeginRenderProcess");
+
+        //SpawnTeamCards();
     }
 
     public void StopUpdating()
@@ -45,45 +61,61 @@ public class TeamAssignmentManager : MonoBehaviour
 
     }
 
-    public void ShowScreen(bool show)
+    private IEnumerator BeginRenderProcess()
     {
-        TeamJoinScreen.SetActive(show);
+        yield return new WaitUntil(() => GameManager.Instance.game!=null && GameManager.Instance.game.teams!=null && GameManager.Instance.game.teams.Length>0);
+
+        // Game has been loaded
+
+        // Disable Loading screen
+        EnableLoading(false);
+
+        SpawnTeamCards();
     }
 
-    private void RemoveAllTeamCards()
+
+    // Private methods
+    private List<TeamCard> spawnedTeamCards = new List<TeamCard>();
+    private void SpawnTeamCards()
     {
+        RemoveAllCards();
+
+        // Sort teams by Id
+        Array.Sort(GameManager.Instance.game.teams, (Team x, Team y) => x.id.CompareTo(y.id));
+
+        // Add new team cards
+        foreach (Team t in GameManager.Instance.game.teams)
+        {
+            GameObject teamCard = Instantiate(teamCardPrefab);
+            teamCard.transform.SetParent(content.transform, false);
+
+            TeamCard teamCardComponent;
+            if(teamCard.TryGetComponent(out teamCardComponent))
+            {
+                teamCardComponent.associatedTeam = t;
+                spawnedTeamCards.Add(teamCardComponent);
+            }
+        }
+
+        // Render all cards
+        foreach(TeamCard tc in spawnedTeamCards)
+        {
+            tc.Render();
+        }
+    }
+
+    private void RemoveAllCards()
+    {
+        // Remove any old team cards
         foreach (Transform child in content.transform)
         {
             Destroy(child.gameObject);
         }
+        spawnedTeamCards.Clear();
     }
 
     private void EnableLoading(bool enabled)
     {
         loading.SetActive(enabled);
     }
-
-    private void FetchAllTeams()
-    {
-        UnityWebRequest request = UnityWebRequest.Post(GameManager.Instance.networkSettings.serverURL + "/" + GameManager.Instance.networkSettings.gameAPI.createGamePath, "");
-        StartCoroutine(OnFetchAllTeamsRequestCompleted(request));
-    }
-
-    private IEnumerator OnFetchAllTeamsRequestCompleted(UnityWebRequest req)
-    {
-        yield return req.SendWebRequest();
-
-        if (req.result != UnityWebRequest.Result.Success)
-        {
-            Debug.Log(req.error);
-        }
-        else
-        {
-            string jsonString = req.downloadHandler.text;
-            Debug.Log(jsonString);
-            // Parse result
-            //req.result.t
-        }
-    }
-
 }

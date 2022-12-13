@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BoFUN.GameManager
 {
-    public class GameDescriptor
+    public class GameCreationDescriptor
     {
         public int numberOfPlayers = 4;
         public int numberOfTeams = 2;
