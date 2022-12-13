@@ -13,8 +13,17 @@ MonoBehaviour:
   m_Name: NetworkSettings
   m_EditorClassIdentifier: 
   serverURL: localhost:8080/BoFUN
+  frontendURL: localhost:4200
   gameAPI:
     getGamePath: game
+    getAllTeamsPath: teams
+    getTeamPath: team/$teamId
     createGamePath: game/create
     createPlayerPath: game/createPlayer
-  socketServerURL: 
+    assignPlayerToTeamPath: assignPlayerToTeam/$playerId
+    setPlayerNamePath: setPlayerName/$playerId
+    deletePlayerFromTeamPath: removePlayer/$playerId/fromTeam/$teamId
+  sockets:
+    socketServerURL: ws:localhost:8080
+  frontEnd:
+    joinPagePath: join/$seatId
