@@ -15,6 +15,7 @@ export class Game {
 
     router
 
+      .delete("/", this.destroyGame())
       .post("/create", this.createGame())
       .post("/createPlayer", this.createPlayer())
       .get("", this.getGame())
@@ -61,7 +62,7 @@ export class Game {
       }
       
       currentGameModule.game = {
-        duration: req.body.duration,
+        duration: req.body.timePerRound,
         totalPlayers: req.body.totalPlayers,
         players: [],
         teams: teams,
@@ -75,6 +76,18 @@ export class Game {
       
       console.log(req.body);
       return res.send(currentGameModule.game);
+    };
+  }
+
+  public destroyGame(){
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game = null;
+
+      return res.sendStatus(200);
     };
   }
   
@@ -215,4 +228,5 @@ export class Game {
       return res.sendStatus(400);
     };
   }
+
 }
