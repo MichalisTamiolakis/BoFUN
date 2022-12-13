@@ -8,6 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ItemShopComponent } from './pages/item-shop/item-shop.component';
 import { SurroundWallComponent } from './pages/surround-wall/surround-wall.component';
 import { PictionaryComponent } from './pages/surround-wall/pictionary/pictionary.component';
+import { MainComponent } from './pages/surround-wall/main/main.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       {path: "pantomime", component: GameDisplayComponent},
       {path: "pictionary", component: PictionaryComponent},
+      {path: "main", component: MainComponent},
     ]
   },
   {

@@ -17,6 +17,7 @@ import { TeamCardComponent } from './components/smartphone/team-card/team-card.c
 import { FormsModule } from '@angular/forms';
 import { ReviewTeamCardComponent } from './pages/smartphone/review-team-card/review-team-card.component';
 import { SelectedTeamCardComponent } from './components/smartphone/selected-team-card/selected-team-card.component';
+import { MainComponent } from './pages/surround-wall/main/main.component';
 
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
@@ -32,7 +33,8 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     JoinTeamComponent,
     TeamCardComponent,
     ReviewTeamCardComponent,
-    SelectedTeamCardComponent
+    SelectedTeamCardComponent,
+    MainComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),

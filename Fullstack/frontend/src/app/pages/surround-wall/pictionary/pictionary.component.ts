@@ -43,6 +43,7 @@ export class PictionaryComponent implements OnInit {
         victory: false,
         remainingTime: 0,
         started: true,
+        ended:false
       },
       {
         team: 2, //which team is playing
@@ -51,6 +52,7 @@ export class PictionaryComponent implements OnInit {
         victory: false,
         remainingTime: 150,
         started: false,
+        ended:false
       },
     ],
   };

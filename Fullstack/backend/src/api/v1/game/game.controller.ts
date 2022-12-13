@@ -23,7 +23,10 @@ export class Game {
       .get("/team/:teamId", this.getTeam())
       .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
       .put("/setPlayerName/:playerId", this.setNameToPlayer())
-      .delete("/removePlayer/:playerId/fromTeam/:teamId", this.removePlayerFromTeam());
+      .delete(
+        "/removePlayer/:playerId/fromTeam/:teamId",
+        this.removePlayerFromTeam()
+      );
     return router;
   }
 
@@ -44,14 +47,14 @@ export class Game {
       next?: NextFunction
     ): Promise<Response> => {
       let colors: Array<string> = gameSettingsModule.availableTeamColors;
-
+      let teamsIds: Array<number> = [];
       let teams: Array<ITeam> = [];
       console.log(req.body);
       for (let i = 0; i < Number(req.body.totalTeams); i++) {
         let choice = Math.floor(Math.random() * colors.length);
         let chosenColor = colors[choice];
         colors.splice(choice, 1);
-
+        teamsIds.push(i);
         teams.push({
           id: i,
           name: "Team " + (i + 1),
@@ -59,6 +62,22 @@ export class Game {
           members: [],
           color: chosenColor,
         });
+      }
+
+      let currentIndex = teamsIds.length,
+        randomIndex;
+
+      // While there remain elements to shuffle.
+      while (currentIndex != 0) {
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [teamsIds[currentIndex], teamsIds[randomIndex]] = [
+          teamsIds[randomIndex],
+          teamsIds[currentIndex],
+        ];
       }
 
       currentGameModule.game = {
@@ -69,7 +88,7 @@ export class Game {
         pantomime: Boolean(req.body.pantomime),
         pictionary: Boolean(req.body.pictionary),
         trivia: Boolean(req.body.trivia),
-        sequence: [],
+        sequence: teamsIds,
         winningTeam: -1,
         rounds: [],
       };
@@ -145,7 +164,7 @@ export class Game {
     };
   }
 
-  public removePlayerFromTeam(){
+  public removePlayerFromTeam() {
     return async (
       req: Request,
       res: Response,
@@ -155,7 +174,7 @@ export class Game {
       let player = players.find(({ id }) => id === Number(req.params.playerId));
       if (player !== undefined) {
         player.teamId = -1;
-        player.username = '';
+        player.username = "";
       }
       let teams: Array<ITeam> = currentGameModule.game.teams;
       let chosenTeam = teams.find(({ id }) => id === Number(req.params.teamId));

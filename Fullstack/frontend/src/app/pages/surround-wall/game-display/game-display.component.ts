@@ -42,6 +42,7 @@ export class GameDisplayComponent implements OnInit {
         victory: false,
         remainingTime: 150,
         started: false,
+        ended:false
       },
     ],
   };

@@ -5,6 +5,7 @@ export interface IRound{
     victory: boolean;
     remainingTime: number;
     started: boolean;
+    ended:boolean;
 }
 
 enum MiniGame {

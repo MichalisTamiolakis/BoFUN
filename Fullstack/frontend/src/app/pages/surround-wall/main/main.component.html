@@ -1,0 +1,72 @@
+<div style="display: flex;
+align-items: center;
+height: 590px;
+margin-left: 50px;">
+    <div class="table-container" [ngStyle]="{width:120 + 200*game.teams.length + 'px'}">
+        <table>
+            <thead>
+                <tr>
+                    <th class="roundHeader"></th>
+                    <th class="header" *ngFor="let name of teamNames; index as i">{{name}}</th>
+                </tr>
+            </thead>
+            <!-- el:brush -->
+            <tr *ngFor="let round of groupedRounds; index as i">
+                <td class="round">Round {{i+1}} </td>
+                <td class="rest" *ngFor="let game of toArray(round);">
+                    <div *ngIf="game.team!==-1" style="display: flex;align-items: center;justify-content: space-evenly;">
+                        <div style="display: flex;align-items: center;width: 70%;">
+                            <span class="iconify pen" style="width: 20px;height:20px" [ngStyle]="icons[game.miniGame].style" [attr.data-icon]="icons[game.miniGame].class"></span>
+                        <div>{{getMiniGameName(game.miniGame)}}</div>
+                        </div>
+                        
+                        <div style="width: 15px;
+                    height: 15px;border-radius:50%; background-color:red"
+                            [ngStyle]="{backgroundColor : !game.ended ? 'gray' : (game.victory ? 'rgba(59, 183, 39, 1)' : 'red')}">
+
+                        </div>
+                    </div>
+
+
+                </td>
+                <div *ngIf="i===groupedRounds.length-1">
+                    <td *ngFor="let cell of emptyCells;"></td>
+                </div>
+                
+                <!-- <td>Maria Anders</td>
+                <td>Germany</td> -->
+            </tr>
+            <!-- <tr>
+                <td>Centro comercial Moctezuma</td>
+                <td>Francisco Chang</td>
+                <td>Mexico</td>
+            </tr>
+            <tr>
+                <td>Ernst Handel</td>
+                <td>Roland Mendel</td>
+                <td>Austria</td>
+            </tr>
+            <tr>
+                <td>Island Trading</td>
+                <td>Helen Bennett</td>
+                <td>UK</td>
+            </tr>
+            <tr>
+                <td>Laughing Bacchus Winecellars</td>
+                <td>Yoshi Tannamuri</td>
+                <td>Canada</td>
+            </tr>
+            <tr>
+                <td>Magazzini Alimentari Riuniti</td>
+                <td>Giovanni Rovelli</td>
+                <td>Italy</td>
+            </tr>
+            <tr>
+                <td>Alfreds Futterkiste</td>
+                <td>Maria Anders</td>
+                <td>Germany</td>
+            </tr> -->
+
+        </table>
+    </div>
+</div>
