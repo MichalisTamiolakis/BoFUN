@@ -26,14 +26,14 @@ namespace BoFUN.Menu
 
         public int NumberOfTeams
         {
-            get => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfTeams;
-            set => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfTeams = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.totalTeams;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.totalTeams = value;
         }
 
         public int NumberOfPlayers
         {
-            get => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfPlayers;
-            set => GameManager.GameManager.Instance.gameCreationDescriptor.numberOfPlayers = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.totalPlayers;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.totalPlayers = value;
         }
 
         public bool TriviaOption

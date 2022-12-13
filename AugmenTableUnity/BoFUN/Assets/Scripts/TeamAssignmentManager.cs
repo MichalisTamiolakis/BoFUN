@@ -1,121 +1,254 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
-using BoFUN.GameManager;
 using UnityEngine.UI;
 using BoFUN.Entities;
+using BoFUN.Utilities;
+using BoFUN.UI;
 using System;
 
-public class TeamAssignmentManager : MonoBehaviour
+namespace BoFUN.Menu
 {
-    public static TeamAssignmentManager Instance
+    public class TeamAssignmentManager : MonoBehaviour
     {
-        get;
-        private set;
-    }
-
-    private void Awake()
-    {
-        // If there is an instance, and it's not me, delete myself.
-
-        if (Instance != null && Instance != this)
+        public static TeamAssignmentManager Instance
         {
-            Destroy(this);
+            get;
+            private set;
         }
-        else
+
+        private void Awake()
         {
-            Instance = this;
-        }
-    }
+            // If there is an instance, and it's not me, delete myself.
 
-
-    public GameObject TeamJoinScreen;
-    public Transform content;
-    public GameObject loading;
-    [Space(5)]
-    public Button startGame;
-    public Button exitGame;
-
-
-    [Header("Prefabs")]
-    public GameObject teamCardPrefab;
-
-    public void ShowScreen(bool show)
-    {
-        TeamJoinScreen.SetActive(show);
-    }
-
-
-    public void StartUpdating()
-    {
-        EnableLoading(true);
-
-        StartCoroutine("BeginRenderProcess");
-
-        //SpawnTeamCards();
-    }
-
-    public void StopUpdating()
-    {
-
-    }
-
-    private IEnumerator BeginRenderProcess()
-    {
-        yield return new WaitUntil(() => GameManager.Instance.game!=null && GameManager.Instance.game.teams!=null && GameManager.Instance.game.teams.Length>0);
-
-        // Game has been loaded
-
-        // Disable Loading screen
-        EnableLoading(false);
-
-        SpawnTeamCards();
-    }
-
-
-    // Private methods
-    private List<TeamCard> spawnedTeamCards = new List<TeamCard>();
-    private void SpawnTeamCards()
-    {
-        RemoveAllCards();
-
-        // Sort teams by Id
-        Array.Sort(GameManager.Instance.game.teams, (Team x, Team y) => x.id.CompareTo(y.id));
-
-        // Add new team cards
-        foreach (Team t in GameManager.Instance.game.teams)
-        {
-            GameObject teamCard = Instantiate(teamCardPrefab);
-            teamCard.transform.SetParent(content.transform, false);
-
-            TeamCard teamCardComponent;
-            if(teamCard.TryGetComponent(out teamCardComponent))
+            if (Instance != null && Instance != this)
             {
-                teamCardComponent.associatedTeam = t;
-                spawnedTeamCards.Add(teamCardComponent);
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
             }
         }
 
-        // Render all cards
-        foreach(TeamCard tc in spawnedTeamCards)
-        {
-            tc.Render();
-        }
-    }
 
-    private void RemoveAllCards()
-    {
-        // Remove any old team cards
-        foreach (Transform child in content.transform)
-        {
-            Destroy(child.gameObject);
-        }
-        spawnedTeamCards.Clear();
-    }
+        public GameObject TeamJoinScreen;
+        public Transform content;
+        public GameObject loading;
+        [Space(5)]
+        public Button startGameButton;
+        public Button exitGameButton;
+        [Space(5)]
+        public Transform QRCodesLeft;
+        public Transform QRCodesRight;
+        public Transform QRCodesTop;
+        public Transform QRCodesBottom;
 
-    private void EnableLoading(bool enabled)
-    {
-        loading.SetActive(enabled);
+        [Header("Prefabs")]
+        public GameObject teamCardPrefab;
+        public GameObject QRCodePrefab;
+
+
+        private Dictionary<Team, TeamCard> spawnedTeamCards = new Dictionary<Team, TeamCard>();
+
+        public void ShowScreen(bool show)
+        {
+            TeamJoinScreen.SetActive(show);
+
+            if (show)
+            {
+                StartCoroutine(CheckForUpdates());
+            }
+            else
+            {
+                StopCoroutine(CheckForUpdates());
+            }
+        }
+
+        Dictionary<int, QRCode> seatsToQRs = new Dictionary<int, QRCode>();
+
+        public void GenerateQRCodes()
+        {
+            int qrCodesRemaining = GameManager.GameManager.Instance.gameCreationDescriptor.totalPlayers;
+
+            int leftQRs = 1;
+            int rightQRs = 1;
+            int topQRs = qrCodesRemaining - leftQRs - rightQRs/2;
+            int bottomQRs = qrCodesRemaining - leftQRs - rightQRs - topQRs;
+
+            int seat = 0;
+            // Bottom
+            for(int i=0; i< bottomQRs; i++)
+            {
+                QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
+                code.transform.SetParent(QRCodesBottom, false);
+                seatsToQRs.Add(seat, code);
+                seat++;
+            }
+
+            // Right
+            for (int i = 0; i < rightQRs; i++)
+            {
+                QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
+                code.transform.SetParent(QRCodesRight, false);
+                seatsToQRs.Add(seat, code);
+                seat++;
+            }
+
+            // Top
+            for (int i = 0; i < topQRs; i++)
+            {
+                QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
+                code.transform.SetParent(QRCodesTop, false);
+                seatsToQRs.Add(seat, code);
+                seat++;
+            }
+
+            // Left
+            for (int i = 0; i < leftQRs; i++)
+            {
+                QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
+                code.transform.SetParent(QRCodesLeft, false);
+                seatsToQRs.Add(seat, code);
+                seat++;
+            }
+
+        }
+
+        /// <summary>
+        /// Removes all cards from the screen and enables loading
+        /// </summary>
+        public void Clear()
+        {
+            // Remove all team cards
+            foreach (TeamCard tc in spawnedTeamCards.Values)
+            {
+                tc.Destroy();
+            }
+            spawnedTeamCards.Clear();
+        }
+
+        public void Repaint()
+        {
+            if (GameManager.GameManager.Instance.currentGame == null || GameManager.GameManager.Instance.currentGame.teams == null)
+            {
+                EnableLoading(true);
+                //Debug.Log("NoTeams");
+            }
+            else
+            {
+                EnableLoading(false);
+            }
+
+            RepaintTeamCards();
+
+            // Enable/Disable buttons
+            UpdateButtonStates();
+
+        }
+
+        // ========== Private Functions ==========
+        private IEnumerator CheckForUpdates()
+        {
+            while (true)
+            {
+                Repaint();
+
+                yield return new WaitForSeconds(.2f);
+            }
+
+        }
+
+        private void RepaintTeamCards()
+        {
+            if (GameManager.GameManager.Instance.currentGame == null || GameManager.GameManager.Instance.currentGame.teams == null) // No cards now, remove all of them
+            {
+                Clear();
+            }
+            else
+            {
+                // Remove old cards
+                List<Team> markToRemove = new List<Team>();
+                foreach (Team t in spawnedTeamCards.Keys)
+                {
+                    if (!Array.Exists(GameManager.GameManager.Instance.currentGame.teams, e => e == t)) // Delete card
+                    {
+                        markToRemove.Add(t);
+                    }
+                }
+                foreach (Team t in markToRemove)
+                {
+                    spawnedTeamCards[t].Destroy();
+                    spawnedTeamCards.Remove(t);
+                }
+
+                // Spawn new cards
+                foreach (Team t in GameManager.GameManager.Instance.currentGame.teams)
+                {
+                    if (!spawnedTeamCards.ContainsKey(t))
+                    {
+                        GameObject card = Instantiate(teamCardPrefab);
+                        card.transform.SetParent(content, false);
+
+                        if (card.TryGetComponent(out TeamCard tc))
+                        {
+                            tc.associatedTeam = t;
+                        }
+                        else
+                        {
+                            DestroyImmediate(card);
+                        }
+
+                        spawnedTeamCards.Add(t, tc);
+                    }
+                }
+
+                // Repaint all cards
+                foreach (TeamCard tc in spawnedTeamCards.Values)
+                {
+                    tc.Repaint();
+                }
+            }
+        }
+
+        private void EnableLoading(bool enabled)
+        {
+            loading.SetActive(enabled);
+        }
+
+        private void UpdateButtonStates()
+        {
+            bool canStartGame = true;
+
+            int totalPlayersInTeams = 0;
+
+            if (GameManager.GameManager.Instance.currentGame != null && GameManager.GameManager.Instance.currentGame.teams != null)
+            {
+                foreach (Team t in GameManager.GameManager.Instance.currentGame.teams)
+                {
+                    totalPlayersInTeams += t.members.Length;
+                    if (t.members.Length < GameManager.GameManager.Instance.gameCreationDescriptor.minPlayersPerTeam)
+                    {
+                        canStartGame = false;
+                        break;
+                    }
+                    else if (t.members.Length > GameManager.GameManager.Instance.gameCreationDescriptor.maxPlayersPerTeam)
+                    {
+                        canStartGame = false;
+                        break;
+                    }
+                }
+
+                // TODO: Do we need the game to be able to start without all the players? If yes, remove this if statement
+                if (totalPlayersInTeams != GameManager.GameManager.Instance.gameCreationDescriptor.totalPlayers)
+                {
+                    canStartGame = false;
+                }
+            }
+
+
+            startGameButton.interactable = canStartGame;
+            exitGameButton.interactable = true;
+        }
     }
 }

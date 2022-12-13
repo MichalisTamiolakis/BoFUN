@@ -29,7 +29,7 @@ namespace BoFUN.Entities
             return JsonUtility.FromJson<Game>(jsonString);
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return JsonUtility.ToJson(this);
         }
