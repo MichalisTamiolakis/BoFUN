@@ -15,6 +15,7 @@ export class Game {
 
     router
 
+      .delete("/", this.destroyGame())
       .post("/create", this.createGame())
       .post("/createPlayer", this.createPlayer())
       .get("", this.getGame())
@@ -46,15 +47,16 @@ export class Game {
       res: Response,
       next?: NextFunction
     ): Promise<Response> => {
-      let colors: Array<string> = gameSettingsModule.availableTeamColors;
       let teamsIds: Array<number> = [];
+      let colors: Array<string> = gameSettingsModule.availableTeamColors.slice();
+
       let teams: Array<ITeam> = [];
-      console.log(req.body);
       for (let i = 0; i < Number(req.body.totalTeams); i++) {
         let choice = Math.floor(Math.random() * colors.length);
         let chosenColor = colors[choice];
         colors.splice(choice, 1);
         teamsIds.push(i);
+        
         teams.push({
           id: i,
           name: "Team " + (i + 1),
@@ -80,8 +82,9 @@ export class Game {
         ];
       }
 
+      
       currentGameModule.game = {
-        duration: req.body.duration,
+        duration: req.body.timePerRound,
         totalPlayers: req.body.totalPlayers,
         players: [],
         teams: teams,
@@ -92,11 +95,24 @@ export class Game {
         winningTeam: -1,
         rounds: [],
       };
-
+      
+      console.log(req.body);
       return res.send(currentGameModule.game);
     };
   }
 
+  public destroyGame(){
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game = null;
+
+      return res.sendStatus(200);
+    };
+  }
+  
   public createPlayer() {
     return async (
       req: Request,
@@ -234,4 +250,5 @@ export class Game {
       return res.sendStatus(400);
     };
   }
+
 }

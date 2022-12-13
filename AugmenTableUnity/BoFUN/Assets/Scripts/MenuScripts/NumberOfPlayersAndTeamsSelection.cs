@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using BoFUN.GameManager;
 
 namespace BoFUN.Menu
 {
@@ -21,11 +22,7 @@ namespace BoFUN.Menu
 
         [Space(10)]
 
-        public int minNumberOfTeams = 2;
-        public int maxNumberOfTeams = 4;
-        public int minNumberOfPlayersPerTeam = 2;
-        public int maxNumberOfPlayersPerTeam = 4;
-        public int maxNumberOfPlayersTotal = 8;
+        
 
 
         [HideInInspector]
@@ -41,19 +38,19 @@ namespace BoFUN.Menu
             get => MenuManager.Instance.NumberOfTeams;
             set
             {
-                MenuManager.Instance.NumberOfTeams = Mathf.Clamp(value, minNumberOfTeams, maxNumberOfTeams);
+                MenuManager.Instance.NumberOfTeams = Mathf.Clamp(value, GameManager.GameManager.Instance.gameSettings.minNumberOfTeams, GameManager.GameManager.Instance.gameSettings.maxNumberOfTeams);
 
                 // Enable Both Buttons Initally
                 decrementTeams.interactable = true;
                 incrementTeams.interactable = true;
 
                 // If min num of teams, disable - button
-                if (MenuManager.Instance.NumberOfTeams <= minNumberOfTeams)
+                if (MenuManager.Instance.NumberOfTeams <= GameManager.GameManager.Instance.gameSettings.minNumberOfTeams)
                 {
                     decrementTeams.interactable = false;
                 }
                 // If max num of teams, disable + button        
-                if (MenuManager.Instance.NumberOfTeams >= maxNumberOfTeams)
+                if (MenuManager.Instance.NumberOfTeams >= GameManager.GameManager.Instance.gameSettings.maxNumberOfTeams)
                 {
                     incrementTeams.interactable = false;
                 }
@@ -71,8 +68,8 @@ namespace BoFUN.Menu
             get => MenuManager.Instance.NumberOfPlayers;
             set
             {
-                int minNumberOfPlayers = MenuManager.Instance.NumberOfTeams * minNumberOfPlayersPerTeam;
-                int maxNumberOfPlayers = Mathf.Min(MenuManager.Instance.NumberOfTeams * maxNumberOfPlayersPerTeam, maxNumberOfPlayersTotal);
+                int minNumberOfPlayers = MenuManager.Instance.NumberOfTeams * GameManager.GameManager.Instance.gameSettings.minNumberOfPlayersPerTeam;
+                int maxNumberOfPlayers = Mathf.Min(MenuManager.Instance.NumberOfTeams * GameManager.GameManager.Instance.gameSettings.maxNumberOfPlayersPerTeam, GameManager.GameManager.Instance.gameSettings.maxNumberOfPlayersTotal);
 
                 MenuManager.Instance.NumberOfPlayers = Mathf.Clamp(value, minNumberOfPlayers, maxNumberOfPlayers);
 

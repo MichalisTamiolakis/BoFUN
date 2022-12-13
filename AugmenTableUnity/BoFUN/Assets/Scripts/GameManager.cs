@@ -1,7 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
+using BoFUN.Entities;
+using BoFUN.Utilities;
+using BoFUN.Menu;
 
 namespace BoFUN.GameManager
 {
@@ -24,14 +25,19 @@ namespace BoFUN.GameManager
             else
             {
                 Instance = this;
-                gameDescriptor = new GameDescriptor();
+                gameCreationDescriptor = new GameCreationDescriptor();
             }
         }
 
+        [Tooltip("The network URL and paths for communicating with the backend")]
         public NetworkSettings networkSettings;
+        [Tooltip("Adjustable game design settings such as Max number of teams and players")]
+        public GameSettings gameSettings;
         
         [HideInInspector]
-        public GameDescriptor gameDescriptor;
+        public GameCreationDescriptor gameCreationDescriptor; // Before a game is created all game settings are stored here
+        public Game currentGame; // The current active game;
+
 
         private bool hasGameCreated = false;
 
@@ -41,43 +47,40 @@ namespace BoFUN.GameManager
         public void CreateGame()
         {
             hasGameCreated = true;
-            Debug.Log(gameDescriptor.ToString());
 
-
-            // Send data to server
-            WWWForm form = new WWWForm();
-            form.AddField("duration", gameDescriptor.timePerRound);
-            form.AddField("totalPlayers", gameDescriptor.numberOfPlayers);
-            form.AddField("totalTeams", gameDescriptor.numberOfTeams);
-            form.AddField("pantomime", gameDescriptor.pantomime ? 1:0);
-            form.AddField("pictionary", gameDescriptor.pictionary ? 1 : 0);
-            form.AddField("trivia", gameDescriptor.trivia ? 1 : 0);
-
-
-            //request.SetRequestHeader("Content-Type", "application/json");
-            //request.SetRequestHeader("Accept", "text/csv");
             //request.SetRequestHeader("appKey", "ABC");
+            Debug.Log(gameCreationDescriptor.ToString());
+            currentGame = null;
 
-            UnityWebRequest request = UnityWebRequest.Post(networkSettings.serverURI+"/"+networkSettings.createGamePath, form);
-            StartCoroutine(OnCreateGameResponse(request));
 
+            HideMenuAndTransitionToTeamJoin();
+            StartCoroutine(DelayCreateGame());
         }
 
 
 
         // =================== HELPER FUNCTIONS ==================
-        private IEnumerator OnCreateGameResponse(UnityWebRequest req)
+        // NOTE: Only needed to showcase loading screen.
+        private IEnumerator DelayCreateGame() 
         {
-            yield return req.SendWebRequest();
+            yield return new WaitForSeconds(2f);
 
-            if (req.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(req.error);
-            }
-            else
-            {
-                HideMenuAndTransitionToTeamJoin();
-            }
+            string jsonString = gameCreationDescriptor.toJSON();
+            Debug.Log("Creating Game: " + jsonString);
+
+            NetworkUtilities.Instance.Post(networkSettings.serverURL + "/" + networkSettings.gameAPI.createGamePath, jsonString,
+            (bool success, string response) => {
+                if (success)
+                {
+                    currentGame = Game.CreateFromJSON(response);
+                    Debug.Log("Game created: " + currentGame.ToString());
+                    TeamAssignmentManager.Instance.GenerateQRCodes();
+                }
+                else
+                {
+                    Debug.LogError("Error: " + response);
+                }
+            });
 
         }
 
@@ -88,16 +91,20 @@ namespace BoFUN.GameManager
         private void HideMenuAndTransitionToTeamJoin()
         {
             Menu.MenuManager.Instance.ShowMenu(false);
+            TeamAssignmentManager.Instance.ShowScreen(true);
         }
 
 
         // ======================= GAME LOGIC ====================
 
         /// <summary>
-        /// Starts a game 
+        /// Starts a new game 
         /// </summary>
         public void StartGame()
         {
+            TeamAssignmentManager.Instance.ShowScreen(false);
+
+
             // show menu
             Menu.MenuManager.Instance.ShowMenu(true);
         }

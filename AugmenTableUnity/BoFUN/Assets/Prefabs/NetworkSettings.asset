@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125135f3211b6ea439a710d7c3a5d5c0, type: 3}
   m_Name: NetworkSettings
   m_EditorClassIdentifier: 
-  serverURI: localhost:4200/BoFun
-  createGamePath: game/create
+  serverURL: localhost:8080/BoFUN
+  gameAPI:
+    getGamePath: game
+    createGamePath: game/create
+    createPlayerPath: game/createPlayer
+  socketServerURL: 
