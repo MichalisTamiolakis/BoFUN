@@ -60,6 +60,7 @@ public class NetworkSettings : ScriptableObject
         deletePlayerFromTeamPath= "removePlayer/$playerId/fromTeam/$teamId"
     };
 
+    [System.Serializable]
     public struct Sockets {
         public string socketServerURL;
     }
@@ -68,6 +69,7 @@ public class NetworkSettings : ScriptableObject
         socketServerURL = "ws:localhost:8080"
     };
 
+    [System.Serializable]
     public struct FrontEnd
     {
         public string joinPagePath;
@@ -78,7 +80,7 @@ public class NetworkSettings : ScriptableObject
         }
     }
     [Space(5)]
-    public FrontEnd frontEnd = new FrontEnd{ joinPagePath = "/join/$seatId" };
+    public FrontEnd frontEnd = new FrontEnd{ joinPagePath = "join/$seatId" };
 
 
 }
