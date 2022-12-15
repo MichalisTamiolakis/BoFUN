@@ -1,7 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using WebSocketSharp;
+using SocketIOClient;
+using SocketIOClient.Newtonsoft.Json;
+using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace BoFUN.Utilities
 {
@@ -110,26 +114,107 @@ namespace BoFUN.Utilities
         }
 
         // =========== Sockets ===========
-        public WebSocket CreateSocket(string url, System.EventHandler<MessageEventArgs> onMessageReceived)
+        private SocketIOUnity socket;
+        private Dictionary<string, UnityEvent<SocketEvent>> eventSubscriptions = new Dictionary<string, UnityEvent<SocketEvent>>();
+
+        /// <summary>
+        /// Connects to the websocket and starts listening to server events
+        /// </summary>
+        private async void ConnectToSocket()
         {
-            WebSocket ws = new WebSocket(url);
-            ws.Connect();
+            var uri = new Uri(GameManager.GameManager.Instance.networkSettings.sockets.socketServerURL);
+            socket = new SocketIOUnity(uri, new SocketIOOptions
+            {
+                Transport = SocketIOClient.Transport.TransportProtocol.WebSocket
+            });
 
-            ws.OnMessage += onMessageReceived;
+            socket.unityThreadScope = SocketIOUnity.UnityThreadScope.Update;
 
-            return ws;
+            await socket.ConnectAsync();
+
+            Debug.Log($"Socket connected on {uri}");
+
+
+
+
+            socket.On("server:event", (response) =>
+            {
+                SocketEvent ev = new SocketEvent(response.GetValue<string>(0), response.GetValue<string>(1));
+
+                if(eventSubscriptions.TryGetValue(ev.eventName, out UnityEvent<SocketEvent> ue))
+                {
+                    ue.Invoke(ev);
+                }
+            });
         }
 
-        public void SubscribeToSocket(WebSocket ws, System.EventHandler<MessageEventArgs> onMessageReceived)
+
+        /// <summary>
+        /// Subscribe to a socket event
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public void SocketSubscribe(string eventName, UnityAction<SocketEvent> callback)
         {
-            if(ws!=null)
-                ws.OnMessage += onMessageReceived;
+            if (eventSubscriptions.TryGetValue(eventName, out UnityEvent<SocketEvent> e))
+            {
+                e.AddListener(callback);
+            }
+            else
+            {
+                // Create new unity event
+                UnityEvent<SocketEvent> newEvent = new UnityEvent<SocketEvent>();
+
+                // Add it in dictionary
+                eventSubscriptions[eventName] = newEvent;
+
+                // Add listeners to UnityEvent
+                newEvent.AddListener(callback);
+            }
         }
 
-        public void SendToSocket(WebSocket ws, string messgage)
+        /// <summary>
+        /// Unsubscribe from a socket event
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="callback"></param>
+        public void SocketUnsubscribe(string eventName, UnityAction<SocketEvent> callback)
         {
-            if (ws!=null)
-                ws.Send(messgage); 
+            if(eventSubscriptions.TryGetValue(eventName, out UnityEvent<SocketEvent> e))
+            {
+                e.RemoveListener(callback);
+            }
+        }
+
+        /// <summary>
+        /// Publish to the socket
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="dataJsonString"></param>
+        public void SocketPublish(string eventName, string dataJsonString)
+        {
+            if (socket.Connected)
+            {
+                socket.EmitStringAsJSON("client:event", "{\"{"+eventName+"}\": "+dataJsonString+"}");
+            }
+            else
+            {
+                Debug.LogError("Socket is not connected", this);
+            }
+            
+        }
+
+        public void Start()
+        {
+            ConnectToSocket();
+        }
+
+        public void OnDestroy()
+        {
+            if (socket.Connected)
+            {
+                socket.Disconnect();
+            }
         }
 
     }

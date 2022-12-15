@@ -102,16 +102,19 @@ namespace BoFUN.GameManager
         /// </summary>
         public void StartGame()
         {
+            // Close all menus
             TeamAssignmentManager.Instance.ShowScreen(false);
 
-
-            // show menu
+            // Show game creation menu
             Menu.MenuManager.Instance.ShowMenu(true);
         }
 
         public void Start()
         {
             StartGame();
+            NetworkUtilities.Instance.SocketSubscribe("Test", (data) => {
+                Debug.Log("Works: " + data.eventName + " " + data.data);
+            });
         }
     }
 }

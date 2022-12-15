@@ -24,6 +24,6 @@ MonoBehaviour:
     setPlayerNamePath: setPlayerName/$playerId
     deletePlayerFromTeamPath: removePlayer/$playerId/fromTeam/$teamId
   sockets:
-    socketServerURL: ws:localhost:8080
+    socketServerURL: http://localhost:8080
   frontEnd:
     joinPagePath: join/$seatId
