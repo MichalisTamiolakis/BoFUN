@@ -1,0 +1,9 @@
+<div class="answer" (click)="chooseAnswer()" [ngStyle]="{background: options[index] ? '#DB625E' : '#DEDCD4'}">
+    <div class="order"
+        [ngStyle]="{background : options[index] ? 'radial-gradient(50% 50% at 50% 50%, #1C2020 0%, #2B2F2F 100%)' : 'linear-gradient(180deg, #DB625E 0%, #E5716D 100%)'}">
+        <div class="alphabet">
+            {{alphabet[index]}}
+        </div>
+    </div>
+    <div class="text">"{{text}}"</div>
+</div>

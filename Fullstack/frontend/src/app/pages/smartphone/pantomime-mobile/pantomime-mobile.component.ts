@@ -1,0 +1,52 @@
+import { Component, OnInit } from '@angular/core';
+import { GameService } from 'src/app/global/services/game.service';
+interface IObjectKeys {
+  [key: string]: string | number | undefined;
+}
+@Component({
+  selector: 'app-pantomime-mobile',
+  templateUrl: './pantomime-mobile.component.html',
+  styleUrls: ['./pantomime-mobile.component.scss'],
+})
+
+export class PantomimeMobileComponent implements OnInit {
+  
+  public gameInfo = {
+    category: 'Movies',
+    topic: 'Avengers: Age of Ultron',
+  };
+  public icons:IObjectKeys = {
+    Movies : "bxs:movie-play",
+    Book : "material-symbols:menu-book-outline-rounded"
+  }
+  Math: any;
+  Object: any;
+  minutes: number = 0;
+  seconds: number = 0;
+  constructor(private gameService: GameService) {}
+  public game: any;
+  ngOnInit(): void {
+    this.Math = Math;
+    this.Object = Object;
+
+    this.gameService.getGame().subscribe((result: any) => {
+      this.minutes = Math.trunc(result.duration / 60);
+      this.seconds = result.duration - this.minutes * 60;
+    });
+  }
+
+  // startGame() {
+  //   if (this.round.started === false) {
+  //     this.round.started = true;
+  //     const timer = setInterval(() => {
+  //       if (this.seconds === 0 && this.minutes === 0) {
+  //         clearInterval(timer);
+  //       } else if (this.seconds === 0) {
+  //         this.seconds = 59;
+  //         this.minutes--;
+  //       } else this.seconds--;
+  //       console.log(this.minutes, this.seconds);
+  //     }, 1000);
+  //   }
+  // }
+}

@@ -22,9 +22,9 @@
                 </div>
             </div>
         </div>
-        <input (keypress)="keyPress($event)" [ngStyle]="{outline: missingName ? '2px solid red' : 'none'}" [(ngModel)]="playerName" style="width: 70%;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        <input (keypress)="keyPress($event)"  [ngStyle]="{outline: missingName ? '2px solid red' : 'none'}" [(ngModel)]="playerName" style="width: 70%;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 30px;
-        height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname...">
+        height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname..." [ngModel]="playerName">
     </div>
     <div class="join-title">Join a team</div>
     <div class="cards">

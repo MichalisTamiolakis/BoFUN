@@ -1,0 +1,15 @@
+<div class="myContainer mobile-container">
+    <div class="title">Trivia</div>
+    <span class="iconify pen" style="width: 50px;
+    height: 50px;" data-icon="ic:twotone-question-mark" ></span>
+          <div class="clock">
+            <div class="time">0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}</div>
+        </div>
+        <div>
+            <div class="description">Get ready to answer the question...</div>
+        <div class="mobileButton" (click)="revealQuestion()">
+            Reveal question
+        </div>  
+        </div>
+        
+</div>

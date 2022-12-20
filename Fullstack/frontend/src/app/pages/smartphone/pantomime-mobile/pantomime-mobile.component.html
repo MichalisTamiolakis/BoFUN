@@ -1,0 +1,18 @@
+<div class="myContainer mobile-container">
+    <div class="content">
+        <div class="description">
+            It’ s time to play <span class="bold">pantomime</span> . The category is <span class="bold">“{{gameInfo.category}}”</span>
+            and the topic is...
+        </div>
+        <div class="topic">
+            <span class="iconify pen" style="width: 20px;height:20px;margin-right: 7px;" data-icon="bxs:movie-play" [attr.data-icon]="icons[gameInfo.category]"></span>
+            <div>{{gameInfo.topic}}</div>
+        </div>
+        <div class="clock">
+            <div class="time">0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}</div>
+        </div>
+        <div class="mobileButton">
+            Start
+        </div>
+    </div>
+</div>

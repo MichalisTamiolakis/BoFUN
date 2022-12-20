@@ -10,6 +10,7 @@ import { UserService } from 'src/app/global/services/user.service';
   styleUrls: ['./join-team.component.scss'],
 })
 export class JoinTeamComponent implements OnInit {
+  // playerName:any = ""
   // game: Game = {
   //   duration: 10,
   //   totalPlayers: 4,
@@ -95,7 +96,10 @@ export class JoinTeamComponent implements OnInit {
     if (this.positionId !== null) {
       this.userService
         .create(Number.parseInt(this.positionId))
-        .subscribe(() => {});
+        .subscribe((result:any) => {
+          console.log("player",result)
+          this.playerName = result.username
+        });
     }
     this.teamService.getTeams().subscribe((result) => {
       this.teams = result;

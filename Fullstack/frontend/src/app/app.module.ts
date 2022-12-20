@@ -18,6 +18,11 @@ import { FormsModule } from '@angular/forms';
 import { ReviewTeamCardComponent } from './pages/smartphone/review-team-card/review-team-card.component';
 import { SelectedTeamCardComponent } from './components/smartphone/selected-team-card/selected-team-card.component';
 import { MainComponent } from './pages/surround-wall/main/main.component';
+import { PantomimeMobileComponent } from './pages/smartphone/pantomime-mobile/pantomime-mobile.component';
+import { PictionaryMobileComponent } from './pages/smartphone/pictionary-mobile/pictionary-mobile.component';
+import { TriviaHiddenQuestionComponent } from './pages/smartphone/trivia-hidden-question/trivia-hidden-question.component';
+import { TriviaAnswerQuestionComponent } from './pages/smartphone/trivia-answer-question/trivia-answer-question.component';
+import { TriviaOptionComponent } from './components/smartphone/trivia-option/trivia-option.component';
 
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
@@ -34,7 +39,12 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     TeamCardComponent,
     ReviewTeamCardComponent,
     SelectedTeamCardComponent,
-    MainComponent
+    MainComponent,
+    PantomimeMobileComponent,
+    PictionaryMobileComponent,
+    TriviaHiddenQuestionComponent,
+    TriviaAnswerQuestionComponent,
+    TriviaOptionComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),

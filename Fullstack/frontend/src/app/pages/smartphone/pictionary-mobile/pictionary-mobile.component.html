@@ -1,0 +1,16 @@
+<div class="myContainer mobile-container">
+    <div class="content">
+        <div class="description">
+            It’ s time to play <span class="bold">pictionary</span> . The topic is...
+        </div>
+        <div class="topic">
+            <div>"{{gameInfo.topic}}"</div>
+        </div>
+        <div class="clock">
+            <div class="time">0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}</div>
+        </div>
+        <div class="mobileButton">
+            Start
+        </div>
+    </div>
+</div>

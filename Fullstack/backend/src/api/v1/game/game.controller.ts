@@ -84,7 +84,7 @@ export class Game {
 
       
       currentGameModule.game = {
-        duration: req.body.timePerRound,
+        duration: req.body.duration,
         totalPlayers: req.body.totalPlayers,
         players: [],
         teams: teams,
@@ -133,9 +133,10 @@ export class Game {
           positionId: req.body.positionId,
         };
         currentGameModule.game.players.push(newPlayer);
+        return res.send(newPlayer);
       }
       // return res.sendStatus(200);
-      return res.send(currentGameModule.game);
+      return res.send(player);
     };
   }
 
@@ -190,7 +191,7 @@ export class Game {
       let player = players.find(({ id }) => id === Number(req.params.playerId));
       if (player !== undefined) {
         player.teamId = -1;
-        player.username = "";
+        // player.username = "";
       }
       let teams: Array<ITeam> = currentGameModule.game.teams;
       let chosenTeam = teams.find(({ id }) => id === Number(req.params.teamId));
