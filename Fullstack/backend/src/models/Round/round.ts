@@ -9,8 +9,8 @@ export interface IRound{
     ended:boolean;
 }
 
-enum MiniGame {
+export enum MiniGame {
     Pantomime = 0,
     Trivia = 1,
     Pictionary = 2
-  }
+}
