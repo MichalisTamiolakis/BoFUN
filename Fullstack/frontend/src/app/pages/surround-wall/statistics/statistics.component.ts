@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+// import { ApexChart } from "apexcharts";
 
 @Component({
   selector: 'app-statistics',
@@ -6,8 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./statistics.component.scss']
 })
 export class StatisticsComponent implements OnInit {
+  chartOptions:any
+  constructor() { 
+    
 
-  constructor() { }
+  }
 
   ngOnInit(): void {
   }

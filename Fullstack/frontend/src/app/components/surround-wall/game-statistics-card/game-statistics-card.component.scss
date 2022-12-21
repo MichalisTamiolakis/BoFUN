@@ -1,0 +1,47 @@
+.content {
+    display: flex;
+    padding-top: 15px;
+    padding-left: 25px;
+    padding-bottom: 15px;
+    height: 100%;
+  }
+  
+  .mycard {
+    background: #e9e9e9;
+    border-radius: 30px;
+    color: black;
+    width: 90%;
+    height: 490px;
+  }
+  
+  .teamName {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.02em;
+  }
+  
+  .line {
+    width: 113px;
+    height: 2px;
+    background: black;
+    margin-bottom: 15px;
+  }
+
+  .left, .right{
+    width: 50%;
+  }
+
+  .left{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .chart{
+    margin-left: -35px;
+  }

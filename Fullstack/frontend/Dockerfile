@@ -10,7 +10,7 @@ ENV PATH /frontend/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json /frontend/package.json
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN npm install -g @angular/cli@14.2.8
 
 # add app

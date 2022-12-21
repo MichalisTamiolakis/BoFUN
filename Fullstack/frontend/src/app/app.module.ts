@@ -26,7 +26,9 @@ import { TriviaOptionComponent } from './components/smartphone/trivia-option/tri
 import { TriviaComponent } from './pages/surround-wall/trivia/trivia.component';
 import { StatisticsComponent } from './pages/surround-wall/statistics/statistics.component';
 import { PlayerStatisticsCardComponent } from './components/surround-wall/player-statistics-card/player-statistics-card.component';
-
+import { NgApexchartsModule } from "ng-apexcharts";
+import { TeamStatisticsCardComponent } from './components/surround-wall/team-statistics-card/team-statistics-card.component';
+import { GameStatisticsCardComponent } from './components/surround-wall/game-statistics-card/game-statistics-card.component';
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
   declarations: [
@@ -50,14 +52,17 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     TriviaOptionComponent,
     TriviaComponent,
     StatisticsComponent,
-    PlayerStatisticsCardComponent
+    PlayerStatisticsCardComponent,
+    TeamStatisticsCardComponent,
+    GameStatisticsCardComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgApexchartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
