@@ -24,6 +24,8 @@ import { TriviaHiddenQuestionComponent } from './pages/smartphone/trivia-hidden-
 import { TriviaAnswerQuestionComponent } from './pages/smartphone/trivia-answer-question/trivia-answer-question.component';
 import { TriviaOptionComponent } from './components/smartphone/trivia-option/trivia-option.component';
 import { TriviaComponent } from './pages/surround-wall/trivia/trivia.component';
+import { StatisticsComponent } from './pages/surround-wall/statistics/statistics.component';
+import { PlayerStatisticsCardComponent } from './components/surround-wall/player-statistics-card/player-statistics-card.component';
 
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
@@ -46,7 +48,9 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     TriviaHiddenQuestionComponent,
     TriviaAnswerQuestionComponent,
     TriviaOptionComponent,
-    TriviaComponent
+    TriviaComponent,
+    StatisticsComponent,
+    PlayerStatisticsCardComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),

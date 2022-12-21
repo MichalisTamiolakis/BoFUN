@@ -14,6 +14,7 @@ import { MainComponent } from './pages/surround-wall/main/main.component';
 import { PictionaryMobileComponent } from './pages/smartphone/pictionary-mobile/pictionary-mobile.component';
 import { TriviaAnswerQuestionComponent } from './pages/smartphone/trivia-answer-question/trivia-answer-question.component';
 import { TriviaComponent } from './pages/surround-wall/trivia/trivia.component';
+import { StatisticsComponent } from './pages/surround-wall/statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       {path: "pictionary", component: PictionaryComponent},
       {path: "main", component: MainComponent},
       {path: "trivia", component: TriviaComponent},
+      {path: "statistics", component: StatisticsComponent},
     ]
   },
   {
