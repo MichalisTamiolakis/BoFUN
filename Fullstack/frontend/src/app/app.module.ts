@@ -23,6 +23,7 @@ import { PictionaryMobileComponent } from './pages/smartphone/pictionary-mobile/
 import { TriviaHiddenQuestionComponent } from './pages/smartphone/trivia-hidden-question/trivia-hidden-question.component';
 import { TriviaAnswerQuestionComponent } from './pages/smartphone/trivia-answer-question/trivia-answer-question.component';
 import { TriviaOptionComponent } from './components/smartphone/trivia-option/trivia-option.component';
+import { TriviaComponent } from './pages/surround-wall/trivia/trivia.component';
 
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
@@ -44,7 +45,8 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     PictionaryMobileComponent,
     TriviaHiddenQuestionComponent,
     TriviaAnswerQuestionComponent,
-    TriviaOptionComponent
+    TriviaOptionComponent,
+    TriviaComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),
