@@ -24,8 +24,6 @@ export class Game{
     hasGameEnded: boolean;
 
 
-
-
     constructor(duration:number, numberOfTeams:number, numberOfPlayers:number, pantomime:boolean, pictionary:boolean, trivia:boolean){
 
         let teamsIds: Array<number> = [];
