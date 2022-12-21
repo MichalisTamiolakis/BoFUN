@@ -109,7 +109,7 @@ export class Round {
                 lastRound = currentGameModule.game.rounds[currentGameModule.game.rounds.length-1];
             }
 
-            let nextPlayingTeamSequenceIndex = currentGameModule.indexOf(lastRound.team);
+            let nextPlayingTeamSequenceIndex = currentGameModule.game.teams.indexOf(lastRound.team);
             nextPlayingTeamSequenceIndex = nextPlayingTeamSequenceIndex + 1 > currentGameModule.sequence.length-1 ? 0:nextPlayingTeamSequenceIndex + 1;
             let nextPlayingTeamId = currentGameModule.game.sequence[nextPlayingTeamSequenceIndex];
 

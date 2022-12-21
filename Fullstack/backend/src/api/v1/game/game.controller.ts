@@ -1,3 +1,4 @@
+import { MiniGame } from './../../../../../frontend/src/app/global/models/round/round';
 import { Request, Response, NextFunction, Router } from "express";
 import { NotFound, BadRequest } from "http-errors";
 
@@ -250,6 +251,64 @@ export class Game {
         return res.send(team);
       }
       return res.sendStatus(400);
+    };
+  }
+
+  public getTeamsPlayersScores() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      var results = [];
+      let teamsId: Array<number> = currentGameModule.game.teams.map(({id} : {id:number})=>{ return id;});
+      for (let i = 0; i < teamsId.length; i++) {
+        var teamResults: {
+          teamId:number,
+          bestOverAll:any[],
+          miniGames: any[]
+        } = {
+          teamId: i,
+          bestOverAll : [],
+          miniGames: []
+        };
+        var victoryRounds = currentGameModule.game.rounds.filter(({teamId} : {teamId:number},{victory} : {victory:boolean}) => {teamId === teamsId[i] && victory})
+        for (let j = 0; j < 2; j++) { //for every miniGame
+          var miniGame : {
+            id:number,
+            bestPlayers: any
+          } = {
+            id: -1,
+            bestPlayers: []
+          }
+          miniGame.id = j;
+          var victoryMiniGame = victoryRounds.filter(({miniGame}: {miniGame:number})=>{miniGame === j})
+          let players: Array<IPlayer> = currentGameModule.game.players.filter(
+            ({ teamId } : {teamId:number}) => teamId === i);
+          let counters:Array<number> = [];
+            players.forEach(player => {
+              counters.push(0);
+          });
+          players.forEach(player => {
+            victoryMiniGame.forEach((round:any) => {
+                if(round.player === player.id) counters[players.indexOf(player)] ++;
+            });
+        });
+        var maxScore = Math.max(...counters);
+        var bestPlayers:any = [];
+        counters.forEach(counter => {
+          if(counter===maxScore) bestPlayers.push(players[counter])
+        });
+        miniGame.bestPlayers = bestPlayers
+        teamResults.miniGames.push(miniGame)
+        }
+        results.push(teamResults)
+      }
+      // let team: any = teams.find(({ id }) => id === Number(req.params.teamId));
+      // if (team !== undefined) {
+      //   return res.send(team);
+      // }
+      return res.send(results);
     };
   }
 
