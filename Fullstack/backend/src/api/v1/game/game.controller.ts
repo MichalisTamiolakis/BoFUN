@@ -63,6 +63,7 @@ export class Game {
           image: "",
           members: [],
           color: chosenColor,
+          nextPlayer:-1
         });
       }
 

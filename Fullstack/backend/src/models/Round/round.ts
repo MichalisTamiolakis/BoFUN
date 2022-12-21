@@ -1,4 +1,5 @@
 export interface IRound{
+    id:number; // The sequenceId
     team: number; //which team is playing
     player: number; // which player is playing
     miniGame: MiniGame;

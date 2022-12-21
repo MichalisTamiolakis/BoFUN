@@ -5,4 +5,5 @@ export interface ITeam{
     members: Array<number>;
     color: string;
     // sequence: Array<number>; //seira paiktwn
+    nextPlayer:number | undefined;
 }
