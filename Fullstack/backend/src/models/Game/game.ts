@@ -76,6 +76,64 @@ export class Game{
         this.nextRoundId = 0;
     }
 
+    setupDummyGame():void{
+        this.duration = 120;
+        this.totalPlayers = 4;
+        this.players = [
+            {
+                id:0,
+                username:"Michalis",
+                teamId: 0,
+                image: "",
+                positionId:0
+            },
+            {
+                id:1,
+                username:"Alexandra",
+                teamId: 1,
+                image: "",
+                positionId:1
+            },
+            {
+                id:2,
+                username:"Dimitris",
+                teamId: 0,
+                image: "",
+                positionId:2
+            },
+            {
+                id:3,
+                username:"Georgia",
+                teamId: 1,
+                image: "",
+                positionId:3
+            },
+
+        ]
+        this.teams = [
+            {
+                id:0,
+                name: "Team 1",
+                image: "",
+                members: [0,2],
+                color: "#6096BA"
+            },
+            {
+                id:1,
+                name: "Team 2",
+                image: "",
+                members: [1,3],
+                color: "#6096BA"
+            }
+        ];
+        this.pantomime = true;
+        this.pictionary = true;
+        this.trivia = true;
+        this.sequence = [1,0];
+        this.winningTeam = -1;
+        this.rounds = [];
+    }
+
     startGame():void{
         this.hasGameStarted = true;
         this.hasGameEnded = false;

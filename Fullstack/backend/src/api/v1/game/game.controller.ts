@@ -24,21 +24,19 @@ export class GameController {
         .get("/team/:teamId", this.getTeam())
         .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
         .put("/setPlayerName/:playerId", this.setNameToPlayer())
-        .delete(
-        "/removePlayer/:playerId/fromTeam/:teamId",
-        this.removePlayerFromTeam()
-        );
+        .delete("/removePlayer/:playerId/fromTeam/:teamId",this.removePlayerFromTeam())
+        .post("/create/dummyGame", this.createDummyGame());
     return router;
     }
 
     public getGame() {
-    return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-    ): Promise<Response> => {
-        return res.send(currentGameModule.game);
-    };
+        return async (
+            req: Request,
+            res: Response,
+            next?: NextFunction
+        ): Promise<Response> => {
+            return res.send(currentGameModule.game);
+        };
     }
 
     public createGame() {
@@ -52,6 +50,17 @@ export class GameController {
 
             currentGameModule.game = newGame;
         
+            return res.send(currentGameModule.game);
+        };
+    }
+
+    public createDummyGame() {
+        return async (
+            req: Request,
+            res: Response,
+            next?: NextFunction
+        ): Promise<Response> => {
+            currentGameModule.game.setupDummyGame();
             return res.send(currentGameModule.game);
         };
     }
