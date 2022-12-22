@@ -154,21 +154,22 @@ export class Game{
         }
         let nextPlayerForTeam:IPlayer | undefined = this.getNextPlayerForTeam(nextTeam);
         if(!nextPlayerForTeam){
-            console.log("Could not create round, next player for team is undefined");
+            console.log("Could not create round, next player for team:" +nextTeam.id+"is undefined");
             return undefined;
         }
-
-
+        
         let newRound:IRound = {
             id : this.nextRoundId++,
             team : nextTeam.id,
             player: nextPlayerForTeam.id,
-            miniGame:miniGame,
+            miniGame: miniGame,
             victory: false,
             remainingTime: this.duration,
             started: false,
             ended:false
         }
+
+        this.rounds.push(newRound);
 
         return newRound;
     }
@@ -229,8 +230,11 @@ export class Game{
             teamObj = team;
         }
 
-        if(!teamObj)
-            return undefined; 
+        if(!teamObj){
+            console.log("Could not find the team with the given id");
+            return undefined;
+        }
+
         
         lastTeamsRound = this.getLastTeamsRound(teamId);
 
@@ -241,11 +245,11 @@ export class Game{
             if(nextPlayerIndex>=teamObj.members.length){ // wrap around
                 nextPlayerIndex = 0;
             }
-            
             return this.getPlayer(teamObj.members[nextPlayerIndex]);
 
         }
         else{
+
             if(teamObj.members.length>0){
                 return this.getPlayer(teamObj.members[0]);
             }
@@ -266,15 +270,15 @@ export class Game{
         if(currentRound){
             // Find the team of the current round
             let currentRoundTeam:ITeam | undefined = this.getTeam(currentRound.team);
-
+            
             if(currentRoundTeam){
                 for(let i=0; i<this.sequence.length; i++){
                     if(this.sequence[i] == currentRoundTeam.id){
                         
                         // Next team index
                         let nextTeamSequenceIndex:number = i+1;
-                        if(i+1>=this.sequence.length){
-                            i=0;
+                        if(nextTeamSequenceIndex>=this.sequence.length){
+                            nextTeamSequenceIndex=0;
                         }
                         return this.getTeam(this.sequence[nextTeamSequenceIndex]);
                     }
