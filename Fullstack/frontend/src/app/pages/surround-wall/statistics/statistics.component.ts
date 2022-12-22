@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from 'src/app/global/services/game.service';
 // import { ApexChart } from "apexcharts";
 
 @Component({
@@ -8,12 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StatisticsComponent implements OnInit {
   chartOptions:any
-  constructor() { 
+  teamsScores:any
+  gamesScores:any
+  constructor(private gameService: GameService) { 
     
 
   }
 
   ngOnInit(): void {
+    this.gameService.getTeamsScores().subscribe((result) => {
+      this.teamsScores = result
+    })
+    this.gameService.getGamesScores().subscribe((result) => {
+      this.gamesScores = result
+    })
   }
 
 }

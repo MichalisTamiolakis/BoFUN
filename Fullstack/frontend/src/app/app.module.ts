@@ -29,6 +29,7 @@ import { PlayerStatisticsCardComponent } from './components/surround-wall/player
 import { NgApexchartsModule } from "ng-apexcharts";
 import { TeamStatisticsCardComponent } from './components/surround-wall/team-statistics-card/team-statistics-card.component';
 import { GameStatisticsCardComponent } from './components/surround-wall/game-statistics-card/game-statistics-card.component';
+import { ChartComponent } from './components/surround-wall/chart/chart.component';
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     StatisticsComponent,
     PlayerStatisticsCardComponent,
     TeamStatisticsCardComponent,
-    GameStatisticsCardComponent
+    GameStatisticsCardComponent,
+    ChartComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),

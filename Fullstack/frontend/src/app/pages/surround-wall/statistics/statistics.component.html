@@ -11,10 +11,7 @@
     <div class="teamStatistics">
         <div class="title">Team Statistics</div>
         <div class="cards">
-            <app-team-statistics-card></app-team-statistics-card>
-            <app-team-statistics-card></app-team-statistics-card>
-            <app-team-statistics-card></app-team-statistics-card>
-            <app-team-statistics-card></app-team-statistics-card>
+            <app-team-statistics-card *ngFor="let teamScore of teamsScores" [teamScore]="teamScore"></app-team-statistics-card>
         </div>
         
         
@@ -22,7 +19,7 @@
     <div class="gameStatistics">
         <div class="title">Game Statistics</div>
         <div>
-            <app-game-statistics-card></app-game-statistics-card>
+            <app-game-statistics-card [gamesScores]="gamesScores"></app-game-statistics-card>
         </div>
     </div>
 </div>

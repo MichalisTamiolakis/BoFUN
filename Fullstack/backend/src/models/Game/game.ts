@@ -123,7 +123,7 @@ export class Game{
                 name: "Team 2",
                 image: "",
                 members: [1,3],
-                color: "#6096BA"
+                color: "#A663CC"
             }
         ];
         this.pantomime = true;
@@ -131,7 +131,56 @@ export class Game{
         this.trivia = true;
         this.sequence = [1,0];
         this.winningTeam = -1;
-        this.rounds = [];
+        this.rounds = [{
+            id: 0, 
+            team: 1,
+            player: 1,
+            miniGame: 0,
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 1, 
+            team: 0,
+            player: 0,
+            miniGame: 1,
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 2, 
+            team: 1,
+            player: 3,
+            miniGame: 2,
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 3, 
+            team: 0,
+            player: 2,
+            miniGame: 0,
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 4, 
+            team: 1,
+            player: 1,
+            miniGame: 1,
+            victory: false,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },];
     }
 
     startGame():void{

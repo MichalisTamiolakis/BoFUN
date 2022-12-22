@@ -13,7 +13,7 @@ export class GameController {
     const router = Router();
 
     router
-
+    
         .delete("/", this.destroyGame())
         .post("/create", this.createGame())
         .post("/createPlayer", this.createPlayer())
@@ -21,6 +21,8 @@ export class GameController {
         .get("/teamPlayers/:teamId", this.getPlayersOfATeam())
         .get("/teams", this.getTeams())
         .get("/team/:teamId", this.getTeam())
+        .get("/teamsScores", this.getTeamsScores())
+        .get("/gamesScores", this.getGamesScores())
         .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
         .put("/setPlayerName/:playerId", this.setNameToPlayer())
         .delete("/removePlayer/:playerId/fromTeam/:teamId",this.removePlayerFromTeam())
@@ -309,6 +311,7 @@ export class GameController {
             return id;
             }
         );
+        console.log("teamsId",teamsId)
         var results = []
         for (let teamId = 0; teamId < teamsId.length; teamId++) {
             var teamResults: {
@@ -328,21 +331,19 @@ export class GameController {
             }
             var victoryRounds = currentGameModule.game.rounds.filter(
                 (
-                { teamId }: { teamId: number },
-                { victory }: { victory: boolean }
+                round:any
                 ) => {
-                teamId === teamsId[teamId] && victory;
+                return (round.team === teamsId[teamId] && round.victory && round.miniGame===miniGameId);
                 }
             );
-
+                console.log("victoryRounds=",victoryRounds,"-----------------")
             var defeatRounds = currentGameModule.game.rounds.filter(
-                (
-                { teamId }: { teamId: number },
-                { victory }: { victory: boolean }
-                ) => {
-                teamId === teamsId[teamId] && !victory;
-                }
-            );
+              (
+              round:any
+              ) => {
+              return (round.team === teamsId[teamId] && !round.victory && round.miniGame===miniGameId);
+              }
+          );
             miniGame.statistics.push(victoryRounds.length)
             miniGame.statistics.push(defeatRounds.length)
             teamResults.miniGames.push(miniGame)
@@ -364,6 +365,7 @@ export class GameController {
             return id;
             }
         );
+        console.log("teamsId",teamsId)
         var results:any = []
         for (let miniGameId = 0; miniGameId < 3; miniGameId++) {
             var miniGame: {
@@ -374,14 +376,14 @@ export class GameController {
             statistics: []
             }
             for (let teamId = 0; teamId < teamsId.length; teamId++) {
-            var victoryRounds = currentGameModule.game.rounds.filter(
+              var victoryRounds = currentGameModule.game.rounds.filter(
                 (
-                { teamId }: { teamId: number },
-                { victory }: { victory: boolean }
+                round:any
                 ) => {
-                teamId === teamsId[teamId] && victory;
+                return (round.team === teamsId[teamId] && round.victory && round.miniGame===miniGameId);
                 }
             );
+            console.log("victoryRounds=",victoryRounds,"-----------------")
             miniGame.statistics.push(victoryRounds.length)
             }
             results.push(miniGame)
