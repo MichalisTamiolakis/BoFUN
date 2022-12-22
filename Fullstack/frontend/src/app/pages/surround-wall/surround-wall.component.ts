@@ -32,14 +32,8 @@ export class SurroundWallComponent implements OnInit {
     'November',
     'December',
   ];
-  public current_date_str: string =
-    this.days_of_the_week[new Date().getDay()] +
-    ' ' +
-    new Date().getDate().toString() +
-    ' ' +
-    this.months[new Date().getMonth()];
-  public current_time_str: string =
-    new Date().getHours().toString() + ':' + new Date().getMinutes().toString();
+  public current_date_str: string ="";
+  public current_time_str: string = "";
 
   isPictionary:boolean = false;
   constructor(private router: Router) {
@@ -51,15 +45,13 @@ export class SurroundWallComponent implements OnInit {
     setInterval(() => {
       const current_date = new Date();
       this.current_time_str =
-        new Date().getHours().toString() +
-        ':' +
-        new Date().getMinutes().toString();
+        new Date().toLocaleTimeString();
       this.current_date_str =
         this.days_of_the_week[current_date.getDay()] +
         ' ' +
         current_date.getDate().toString() +
         ' ' +
         this.months[current_date.getMonth()];
-    }, 60000);
+    }, 1000);
   }
 }
