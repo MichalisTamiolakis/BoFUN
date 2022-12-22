@@ -1,24 +1,24 @@
 <div class="myContainer">
-    <div class="playerStatistics">
+    <div class="playerStatistics" [ngClass] = "selected == 0 ? 'selected':''">
         <div class="title">Player Statistics</div>
-        <div class="cards">
+        <div class="cards" >
             <app-player-statistics-card></app-player-statistics-card>
         <app-player-statistics-card></app-player-statistics-card>
         <app-player-statistics-card></app-player-statistics-card>
         </div>
         
     </div>
-    <div class="teamStatistics">
+    <div class="teamStatistics" [ngClass] = "selected == 1 ? 'selected':''">
         <div class="title">Team Statistics</div>
-        <div class="cards">
+        <div class="cards" >
             <app-team-statistics-card *ngFor="let teamScore of teamsScores" [teamScore]="teamScore"></app-team-statistics-card>
         </div>
         
         
     </div>
-    <div class="gameStatistics">
+    <div class="gameStatistics" [ngClass] = "selected == 2 ? 'selected':''">
         <div class="title">Game Statistics</div>
-        <div>
+        <div >
             <app-game-statistics-card [gamesScores]="gamesScores"></app-game-statistics-card>
         </div>
     </div>

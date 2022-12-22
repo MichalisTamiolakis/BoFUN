@@ -11,7 +11,10 @@ export class StatisticsComponent implements OnInit {
   chartOptions:any
   teamsScores:any
   gamesScores:any
-  constructor(private gameService: GameService) { 
+
+  public selected:number = 0;
+
+  constructor(private gameService: GameService, /*private leapService:LeapService*/) { 
     
 
   }
@@ -23,6 +26,7 @@ export class StatisticsComponent implements OnInit {
     this.gameService.getGamesScores().subscribe((result) => {
       this.gamesScores = result
     })
+
   }
 
 }
