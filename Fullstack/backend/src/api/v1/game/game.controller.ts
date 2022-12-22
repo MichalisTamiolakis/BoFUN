@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { NotFound, BadRequest } from "http-errors";
 
 import { Game } from "../../../models/Game/game";
 import { ITeam } from "../../../models/Team/team";

@@ -74,7 +74,7 @@ export class Round {
       next?: NextFunction
     ): Promise<Response> => {
 
-        let newRound:IRound | undefined = currentGame.newRound(Number(req.body.miniGame));
+        let newRound:IRound | undefined = currentGame.newRound(Number(req.params.miniGame));
 
         if(newRound){
             return res.send(newRound);
