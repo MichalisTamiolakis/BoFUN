@@ -1,6 +1,4 @@
-import { GameService } from 'src/app/global/services/game.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { ChartComponent } from "ng-apexcharts";
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -9,8 +7,6 @@ import {
   ApexDataLabels,
   ApexLegend
 } from "ng-apexcharts";
-import { MiniGame } from 'src/app/global/models/round/round';
-import { TeamService } from 'src/app/global/services/team.service';
 
 type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -23,16 +19,14 @@ type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-team-statistics-card',
-  templateUrl: './team-statistics-card.component.html',
-  styleUrls: ['./team-statistics-card.component.scss']
+  selector: 'app-chart',
+  templateUrl: './chart.component.html',
+  styleUrls: ['./chart.component.scss']
 })
-export class TeamStatisticsCardComponent implements OnInit {
+export class ChartComponent implements OnInit {
+  @Input('miniGame') miniGame: any
   chartOptions:ChartOptions | any;
-  teamName: string ='';
-  @Input('teamScore') teamScore: any
-  
-  constructor(private teamService:TeamService) { 
+constructor() { 
     this.chartOptions = {
     series: [4, 6],
     labels: ['won', 'lost'],
@@ -68,14 +62,6 @@ export class TeamStatisticsCardComponent implements OnInit {
   };}
 
   ngOnInit(): void {
-    console.log("teamScore",this.teamScore)
-    this.teamService.getTeam(this.teamScore.teamId).subscribe((result:any)=>{
-      this.teamName = result.name
-    })
-  }
-
-  getMiniGameName(id: number) {
-    return Object.values(MiniGame)[id].toString();
   }
 
 }

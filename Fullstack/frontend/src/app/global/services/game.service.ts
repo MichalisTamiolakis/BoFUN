@@ -16,4 +16,19 @@ export class GameService {
     return this.http
       .get(`${this.apiUrl}/BoFUN/game`);
   }
+
+  public getRounds(){
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/round/all`);
+  }
+
+  public getTeamsScores(){
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/teamsScores`);
+  }
+
+  public getGamesScores(){
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/gamesScores`);
+  }
 }

@@ -1,13 +1,14 @@
 <div class="mycard">
     <div class="content">
-        <div class="teamName">Team 1</div>
+        <div class="teamName">{{teamName}}</div>
         <div class="line"></div>
         <div class="allCharts">
-            <div >
-                <div>Pantomime</div>
+            <!-- <app-chart *ngFor="let miniGame of teamScore.miniGames" [miniGame]="miniGame"></app-chart> -->
+            <div *ngFor="let miniGame of teamScore.miniGames">
+                <div>{{getMiniGameName(miniGame.miniGameId)}}</div>
                 <div class="chart">
                     <apx-chart
-                      [series]="chartOptions.series"
+                      [series]="miniGame.statistics"
                       [chart]="chartOptions.chart"
                       [labels]="chartOptions.labels"
                       [fill]="chartOptions.fill"
@@ -16,7 +17,7 @@
                     ></apx-chart>
                   </div>
             </div>
-            <div>
+            <!-- <div>
                 <div>Pictionary</div>
                 <div class="chart">
                     <apx-chart
@@ -41,7 +42,7 @@
                       [responsive]="chartOptions.responsive"
                     ></apx-chart>
                   </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

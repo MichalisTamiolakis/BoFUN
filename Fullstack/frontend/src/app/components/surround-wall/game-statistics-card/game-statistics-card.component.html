@@ -5,7 +5,7 @@
                 <div class="teamName">Pictionary</div>
                 <div class="line"></div>
                 <div class="chart">
-                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                    <apx-chart [series]="gamesScores[2].statistics" [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels" [fill]="chartOptions.fill" [dataLabels]="chartOptions.dataLabels"
                         [responsive]="chartOptions.responsive"></apx-chart>
                 </div>
@@ -14,7 +14,7 @@
                 <div class="teamName">Pantomime</div>
                 <div class="line"></div>
                 <div class="chart">
-                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                    <apx-chart [series]="gamesScores[0].statistics" [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels" [fill]="chartOptions.fill" [dataLabels]="chartOptions.dataLabels"
                         [responsive]="chartOptions.responsive"></apx-chart>
                 </div>
@@ -25,7 +25,7 @@
                 <div class="teamName">Trivia</div>
                 <div class="line"></div>
                 <div class="chart">
-                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                    <apx-chart [series]="gamesScores[1].statistics" [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels" [fill]="chartOptions.fill" [dataLabels]="chartOptions.dataLabels"
                         [responsive]="chartOptions.responsive"></apx-chart>
                 </div>

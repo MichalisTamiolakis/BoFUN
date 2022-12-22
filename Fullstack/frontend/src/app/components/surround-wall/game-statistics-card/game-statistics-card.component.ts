@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { TeamService } from './../../../global/services/team.service';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -23,7 +24,9 @@ type ChartOptions = {
 })
 export class GameStatisticsCardComponent implements OnInit {
   chartOptions: ChartOptions | any;
-  constructor() {
+  colors:any
+  @Input('gamesScores') gamesScores: any
+  constructor(private teamService:TeamService) {
     this.chartOptions = {
       series: [4, 6],
       labels: ['won', 'lost'],
@@ -36,7 +39,7 @@ export class GameStatisticsCardComponent implements OnInit {
       },
       fill: {
         type: 'gradient',
-        colors: ['rgba(59, 183, 39, 1)', '#F44336'],
+        colors: this.colors,
       },
       legend: {
         formatter: function (val: any, opts: any) {
@@ -59,5 +62,10 @@ export class GameStatisticsCardComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.teamService.getTeams().subscribe((result:any)=>{
+      this.colors= result.map((team:any)=> team.color)
+      // console.log(colors)
+    })
+  }
 }

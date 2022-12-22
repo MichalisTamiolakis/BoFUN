@@ -161,7 +161,7 @@ export class MainComponent implements OnInit {
           });
       }
       let test = [];
-
+      this.rounds = this.game.rounds
       while (this.rounds.length > 0) {
         test.push(this.rounds.splice(0, this.game.teams.length));
       }
