@@ -22,9 +22,19 @@ export class GameService {
       .get(`${this.apiUrl}/BoFUN/game/round/all`);
   }
 
+  public getWinnerTeam(){
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/winnerTeam`);
+  }
+
   public getTeamsScores(){
     return this.http
       .get(`${this.apiUrl}/BoFUN/game/teamsScores`);
+  }
+
+  public getPlayersScores(){
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/playersScores`);
   }
 
   public getGamesScores(){

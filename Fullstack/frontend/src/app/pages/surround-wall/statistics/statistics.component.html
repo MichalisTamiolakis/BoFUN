@@ -2,9 +2,7 @@
     <div class="playerStatistics">
         <div class="title">Player Statistics</div>
         <div class="cards">
-            <app-player-statistics-card></app-player-statistics-card>
-        <app-player-statistics-card></app-player-statistics-card>
-        <app-player-statistics-card></app-player-statistics-card>
+            <app-player-statistics-card *ngFor="let playerScores of playersScores" [playerScores]="playerScores"></app-player-statistics-card>
         </div>
         
     </div>

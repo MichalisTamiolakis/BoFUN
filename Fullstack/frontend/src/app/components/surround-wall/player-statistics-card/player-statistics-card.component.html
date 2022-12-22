@@ -1,32 +1,32 @@
 <div class="mycard">
     <div class="content">
-        <div class="teamName">Team 1</div>
+        <div class="teamName">{{playerScores.teamName}}</div>
         <div class="line"></div>
         <div class="bestField">
             <div class="title">
                 Best Overall:
             </div>
-            <div class="player">
+            <div class="player" *ngFor="let player of playerScores.bestOverall">
                 <span style="width: 23px;
         height: 23px;color:black;margin-right:5px" class="iconify user-avatar"
                 data-icon="carbon:user-avatar-filled"></span>
-                <div class="playerName">Alexandra Alexandridi</div>
+                <div class="playerName">{{player.username}}</div>
             </div>
 
         </div>
-        <div class="bestField">
+        <div class="bestField" *ngFor="let miniGame of playerScores.miniGames">
             <div class="title">
-                Best at Pantomime:
+                Best at {{getMiniGameName(miniGame.miniGameId)}}:
             </div>
-            <div class="player">
+            <div class="player" *ngFor="let player of miniGame.bestPlayers">
                 <span style="width: 23px;
         height: 23px;color:black;margin-right:5px" class="iconify user-avatar"
                 data-icon="carbon:user-avatar-filled"></span>
-                <div class="playerName">Alexandra Alexandridi</div>
+                <div class="playerName">{{player.username}}</div>
             </div>
 
         </div>
-        <div class="bestField">
+        <!-- <div class="bestField">
             <div class="title">
                 Best at Pictionary:
             </div>
@@ -49,6 +49,6 @@
                 <div class="playerName">Alexandra Alexandridi</div>
             </div>
 
-        </div>
+        </div> -->
     </div>
 </div>

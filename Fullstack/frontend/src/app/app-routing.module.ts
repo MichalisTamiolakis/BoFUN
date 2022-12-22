@@ -15,6 +15,7 @@ import { PictionaryMobileComponent } from './pages/smartphone/pictionary-mobile/
 import { TriviaAnswerQuestionComponent } from './pages/smartphone/trivia-answer-question/trivia-answer-question.component';
 import { TriviaComponent } from './pages/surround-wall/trivia/trivia.component';
 import { StatisticsComponent } from './pages/surround-wall/statistics/statistics.component';
+import { EndGameComponent } from './pages/surround-wall/end-game/end-game.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
       {path: "main", component: MainComponent},
       {path: "trivia", component: TriviaComponent},
       {path: "statistics", component: StatisticsComponent},
+      {path: "endGame", component: EndGameComponent},
     ]
   },
   {
