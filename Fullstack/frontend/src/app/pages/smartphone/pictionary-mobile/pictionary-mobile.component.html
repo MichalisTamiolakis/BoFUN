@@ -9,8 +9,8 @@
         <div class="clock">
             <div class="time">0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}</div>
         </div>
-        <div class="mobileButton">
-            Start
+        <div class="mobileButton" (click)="onClick()">
+            {{currentRound.started? 'Found it' : 'Start'}}
         </div>
     </div>
 </div>

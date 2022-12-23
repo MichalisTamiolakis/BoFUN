@@ -9,386 +9,446 @@ var currentGameModule = require("../../../models/Game/currentGame.module");
 var gameSettingsModule = require("../../../models/GameSettings/gameSettings.module");
 
 export class GameController {
-    public applyRoutes(): Router {
+  public applyRoutes(): Router {
     const router = Router();
 
     router
     
-        .delete("/", this.destroyGame())
-        .post("/create", this.createGame())
-        .post("/createPlayer", this.createPlayer())
-        .get("", this.getGame())
-        .get("/teamPlayers/:teamId", this.getPlayersOfATeam())
-        .get("/teams", this.getTeams())
-        .get("/team/:teamId", this.getTeam())
-        .get("/teamsScores", this.getTeamsScores())
-        .get("/gamesScores", this.getGamesScores())
-        .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
-        .put("/setPlayerName/:playerId", this.setNameToPlayer())
-        .delete("/removePlayer/:playerId/fromTeam/:teamId",this.removePlayerFromTeam())
-        .post("/create/dummyGame", this.createDummyGame());
+      .delete("/", this.destroyGame())
+      .post("/create", this.createGame())
+      .post("/createPlayer", this.createPlayer())
+      .get("", this.getGame())
+      .get("/teamPlayers/:teamId", this.getPlayersOfATeam())
+      .get("/teams", this.getTeams())
+      .get("/team/:teamId", this.getTeam())
+      .get("/playersScores", this.getTeamsPlayersScores())
+      .get("/teamsScores", this.getTeamsScores())
+      .get("/gamesScores", this.getGamesScores())
+      .get("/winnerTeam", this.getWinnerTeam())
+      .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
+      .put("/setPlayerName/:playerId", this.setNameToPlayer())
+      .delete(
+        "/removePlayer/:playerId/fromTeam/:teamId",
+        this.removePlayerFromTeam()
+      )
+      .post("/create/dummyGame", this.createDummyGame());
     return router;
-    }
+  }
 
-    public getGame() {
-        return async (
-            req: Request,
-            res: Response,
-            next?: NextFunction
-        ): Promise<Response> => {
-            return res.send(currentGameModule.game);
-        };
-    }
-
-    public createGame() {
-        return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-        ): Promise<Response> => {
-
-            let newGame:Game = new Game(Number(req.body.duration), Number(req.body.totalTeams), Number(req.body.totalPlayers), Boolean(req.body.pantomime), Boolean(req.body.pictionary), Boolean(req.body.trivia));
-
-            currentGameModule.game = newGame;
-        
-            return res.send(currentGameModule.game);
-        };
-    }
-
-    public createDummyGame() {
-        return async (
-            req: Request,
-            res: Response,
-            next?: NextFunction
-        ): Promise<Response> => {
-            currentGameModule.game.setupDummyGame();
-            return res.send(currentGameModule.game);
-        };
-    }
-
-    public destroyGame(){
+  public getGame() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        currentGameModule.game = null;
-
-        return res.sendStatus(200);
+      return res.send(currentGameModule.game);
     };
-    }
+  }
 
-    public createPlayer() {
+  public createGame() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-        ): Promise<Response> => {
-            // console.log("body",req.body.positionId )
-            let allPlayers: Array<IPlayer> = currentGameModule.game.players;
-            let player = allPlayers.find(
-            ({ positionId }) => positionId === Number(req.body.positionId)
-            );
-            if (player === undefined) {
-            let newPlayer: IPlayer = {
-                id: req.body.positionId,
-                username: "",
-                teamId: -1,
-                image: "",
-                positionId: req.body.positionId,
-            };
-            currentGameModule.game.players.push(newPlayer);
-            return res.send(newPlayer);
-            }
-            // return res.sendStatus(200);
-            return res.send(player);
-        };
-    }
-
-    public assignPlayerToTeam() {
-    return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        let players: Array<IPlayer> = currentGameModule.game.players;
-        let player = players.find(({ id }) => id === Number(req.params.playerId));
-        if (player !== undefined) {
+      let newGame: Game = new Game(
+        Number(req.body.duration),
+        Number(req.body.totalTeams),
+        Number(req.body.totalPlayers),
+        Boolean(req.body.pantomime),
+        Boolean(req.body.pictionary),
+        Boolean(req.body.trivia)
+      );
+
+      currentGameModule.game = newGame;
+
+      return res.send(currentGameModule.game);
+    };
+  }
+
+  public createDummyGame() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game.setupDummyGame();
+      return res.send(currentGameModule.game);
+    };
+  }
+
+  public destroyGame() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game = null;
+
+      return res.sendStatus(200);
+    };
+  }
+
+  public createPlayer() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      // console.log("body",req.body.positionId )
+      let allPlayers: Array<IPlayer> = currentGameModule.game.players;
+      let player = allPlayers.find(
+        ({ positionId }) => positionId === Number(req.body.positionId)
+      );
+      if (player === undefined) {
+        let newPlayer: IPlayer = {
+          id: req.body.positionId,
+          username: "",
+          teamId: -1,
+          image: "",
+          positionId: req.body.positionId,
+        };
+        currentGameModule.game.players.push(newPlayer);
+        return res.send(newPlayer);
+      }
+      // return res.sendStatus(200);
+      return res.send(player);
+    };
+  }
+
+  public assignPlayerToTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let players: Array<IPlayer> = currentGameModule.game.players;
+      let player = players.find(({ id }) => id === Number(req.params.playerId));
+      if (player !== undefined) {
         player.teamId = req.body.teamId;
         player.username = req.body.username;
-        }
-        let teams: Array<ITeam> = currentGameModule.game.teams;
-        let chosenTeam = teams.find(({ id }) => id === Number(req.body.teamId));
-        if (chosenTeam !== undefined) {
+      }
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      let chosenTeam = teams.find(({ id }) => id === Number(req.body.teamId));
+      if (chosenTeam !== undefined) {
         chosenTeam.members.push(Number(req.params.playerId));
         // res.sendStatus(200);
 
         const socketService = DIContainer.get(SocketsService);
-        socketService.broadcast("TeamUpdated", Number(req.body.teamId));
+        console.log("WAWAWA", typeof teams)
+        // socketService.broadcast("TeamUpdated", [teams]);
         return res.send(currentGameModule.game);
-        }
-        return res.sendStatus(400);
+      }
+      return res.sendStatus(400);
     };
-    }
+  }
 
-    public setNameToPlayer() {
+  public setNameToPlayer() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        let players: Array<IPlayer> = currentGameModule.game.players;
-        let player = players.find(({ id }) => id === Number(req.params.playerId));
-        if (player !== undefined) {
+      let players: Array<IPlayer> = currentGameModule.game.players;
+      let player = players.find(({ id }) => id === Number(req.params.playerId));
+      if (player !== undefined) {
         player.username = req.body.username;
-        }
-        return res.send(player);
+      }
+      return res.send(player);
     };
-    }
+  }
 
-    public removePlayerFromTeam() {
+  public removePlayerFromTeam() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        let players: Array<IPlayer> = currentGameModule.game.players;
-        let player = players.find(({ id }) => id === Number(req.params.playerId));
-        if (player !== undefined) {
+      let players: Array<IPlayer> = currentGameModule.game.players;
+      let player = players.find(({ id }) => id === Number(req.params.playerId));
+      if (player !== undefined) {
         player.teamId = -1;
         // player.username = "";
-        }
-        let teams: Array<ITeam> = currentGameModule.game.teams;
-        let chosenTeam = teams.find(({ id }) => id === Number(req.params.teamId));
-        if (chosenTeam !== undefined) {
+      }
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      let chosenTeam = teams.find(({ id }) => id === Number(req.params.teamId));
+      if (chosenTeam !== undefined) {
         for (let i = 0; i < chosenTeam.members.length; i++) {
-            if (chosenTeam.members[i] === Number(req.params.playerId)) {
+          if (chosenTeam.members[i] === Number(req.params.playerId)) {
             chosenTeam.members.splice(i, 1); // Remove one element at pos i
             break;
-            }
+          }
         }
         // res.sendStatus(200);
 
         const socketService = DIContainer.get(SocketsService);
         socketService.broadcast("TeamUpdated", Number(req.body.teamId));
         return res.send(currentGameModule.game);
-        }
-        return res.sendStatus(400);
+      }
+      return res.sendStatus(400);
     };
-    }
+  }
 
-    public getPlayersOfATeam() {
+  public getPlayersOfATeam() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        let allPlayers: Array<IPlayer> = currentGameModule.game.players;
-        let players: Array<IPlayer> = allPlayers.filter(
+      let allPlayers: Array<IPlayer> = currentGameModule.game.players;
+      let players: Array<IPlayer> = allPlayers.filter(
         ({ teamId }) => teamId === Number(req.params.teamId)
-        );
-        return res.send(players);
+      );
+      return res.send(players);
     };
-    }
+  }
 
-    public getTeams() {
+  public getTeams() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        let teams: Array<ITeam> = currentGameModule.game.teams;
-        return res.send(teams);
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      return res.send(teams);
     };
-    }
+  }
 
-    public getTeam() {
+  public getTeam() {
     return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
+      req: Request,
+      res: Response,
+      next?: NextFunction
     ): Promise<Response> => {
-        let teams: Array<ITeam> = currentGameModule.game.teams;
-        let team: any = teams.find(({ id }) => id === Number(req.params.teamId));
-        if (team !== undefined) {
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      let team: any = teams.find(({ id }) => id === Number(req.params.teamId));
+      if (team !== undefined) {
         return res.send(team);
-        }
-        return res.sendStatus(400);
+      }
+      return res.sendStatus(400);
     };
-    }
+  }
 
-    public getTeamsPlayersScores() {
-        return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-        ): Promise<Response> => {
-        var results = [];
-        let teamsId: Array<number> = currentGameModule.game.teams.map(
-            ({ id }: { id: number }) => {
-            return id;
-            }
-        );
-        for (let i = 0; i < teamsId.length; i++) {
-            var teamResults: {
-            teamId: number;
-            bestOverall: any[];
-            miniGames: any[];
-            } = {
-            teamId: i,
-            bestOverall: [],
-            miniGames: [],
-            };
-            var victoryRounds = currentGameModule.game.rounds.filter(
-            (
-                { teamId }: { teamId: number },
-                { victory }: { victory: boolean }
-            ) => {
-                teamId === teamsId[i] && victory;
-            }
-            );
-            let players: Array<IPlayer> = currentGameModule.game.players.filter(
-            ({ teamId }: { teamId: number }) => teamId === i
-            );
-            let overallCounters: Array<number> = [];
-            players.forEach((player) => {
-            overallCounters.push(0);
-            });
-            for (let j = 0; j < 3; j++) {
-            //for every miniGame
-            var miniGame: {
-                id: number;
-                bestPlayers: any;
-            } = {
-                id: -1,
-                bestPlayers: [],
-            };
-            miniGame.id = j;
-            var victoryMiniGame = victoryRounds.filter(
-                ({ miniGame }: { miniGame: number }) => {
-                miniGame === j;
-                }
-            );
+  public getWinnerTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let winningTeamId: number = currentGameModule.game.winningTeam;
+      let team: any =  currentGameModule.game.teams.find(({ id }:{ id :number }) => id === winningTeamId);
+      if (team !== undefined) {
+        return res.send(team);
+      }
+      return res.sendStatus(400);
+    };
+  }
 
-            let counters: Array<number> = [];
-            players.forEach((player) => {
-                counters.push(0);
-            });
-            players.forEach((player) => {
-                victoryMiniGame.forEach((round: any) => {
-                if (round.player === player.id) {
-                    overallCounters[players.indexOf(player)]++;
-                    counters[players.indexOf(player)]++;
-                }
-                });
-            });
-            var maxScore = Math.max(...counters);
-            var bestPlayers: any = [];
-            counters.forEach((counter) => {
-                if (counter === maxScore) bestPlayers.push(players[counter]);
-            });
-            miniGame.bestPlayers = bestPlayers;
-            teamResults.miniGames.push(miniGame);
-            }
-            var overallMaxScore = Math.max(...overallCounters);
-            overallCounters.forEach((counter) => {
-            if (counter === overallMaxScore) teamResults.bestOverall.push(players[counter]);
-            });
-            results.push(teamResults);
+  public getTeamsPlayersScores() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      var results: any = [];
+      let teamsId: Array<number> = currentGameModule.game.teams.map(
+        ({ id }: { id: number }) => {
+          return id;
         }
-        return res.send(results);
-        };
-    }
+      );
+      let selectedMiniGames: any = [];
+      //gather selected miniGames
+      if (currentGameModule.game.pantomime) selectedMiniGames.push(0);
+      if (currentGameModule.game.trivia) selectedMiniGames.push(1);
+      if (currentGameModule.game.pictionary) selectedMiniGames.push(2);
 
-    public getTeamsScores() {
-        return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-        ): Promise<Response> => {
-        let teamsId: Array<number> = currentGameModule.game.teams.map(
-            ({ id }: { id: number }) => {
-            return id;
-            }
+      for (let i = 0; i < teamsId.length; i++) {
+        // for each team
+        var teamResults: {
+          teamName: number;
+          bestOverall: any[];
+          miniGames: any[];
+        } = {
+          teamName: currentGameModule.game.teams.find(({ id }:{ id:number }) => id === i).name,
+          bestOverall: [],
+          miniGames: [],
+        };
+        var bestOverallCounters: any = []; // array of total wins in every game for each team's player
+
+        //get players of current team
+        let players: Array<IPlayer> = currentGameModule.game.players.filter(
+          ({ teamId }: { teamId: number }) => teamId === i
         );
-        console.log("teamsId",teamsId)
-        var results = []
-        for (let teamId = 0; teamId < teamsId.length; teamId++) {
-            var teamResults: {
-            teamId: number;
-            miniGames: any[];
-            } = {
-            teamId:teamId,
-            miniGames: []
-            }
-            for (let miniGameId = 0; miniGameId < 3; miniGameId++){
-            var miniGame:{
-                miniGameId: number,
-                statistics: any[]
-            }={
-                miniGameId: miniGameId,
-                statistics: []
-            }
-            var victoryRounds = currentGameModule.game.rounds.filter(
-                (
-                round:any
-                ) => {
-                return (round.team === teamsId[teamId] && round.victory && round.miniGame===miniGameId);
-                }
-            );
-                console.log("victoryRounds=",victoryRounds,"-----------------")
-            var defeatRounds = currentGameModule.game.rounds.filter(
-              (
-              round:any
-              ) => {
-              return (round.team === teamsId[teamId] && !round.victory && round.miniGame===miniGameId);
+
+        //initialize bestOverallCounters with zeros
+        players.forEach((element) => {
+          bestOverallCounters.push(0);
+        });
+
+        //for every miniGame
+        for (
+          let miniGame = 0;
+          miniGame < selectedMiniGames.length;
+          miniGame++
+        ) {
+          let miniGameEntry: {
+            miniGameId: any;
+            bestPlayers: any[];
+          } = {
+            miniGameId: selectedMiniGames[miniGame],
+            bestPlayers: [],
+          };
+
+          // victory counters for every player of a team in one minigame
+          let victoryCounters: any = [];
+          players.forEach((element) => {
+            victoryCounters.push(0);
+          });
+
+          players.forEach((player) => {
+            let victoryRounds = currentGameModule.game.rounds.filter(
+              (round: any) => {
+                return (
+                  round.player === player.id &&
+                  round.team === teamsId[i] &&
+                  round.victory &&
+                  round.miniGame === selectedMiniGames[miniGame]
+                );
               }
-          );
-            miniGame.statistics.push(victoryRounds.length)
-            miniGame.statistics.push(defeatRounds.length)
-            teamResults.miniGames.push(miniGame)
-            }
-            results.push(teamResults)
-        }
-        return res.send(results);
-        };
-    }
-
-    public getGamesScores() {
-        return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-        ): Promise<Response> => {
-        let teamsId: Array<number> = currentGameModule.game.teams.map(
-            ({ id }: { id: number }) => {
-            return id;
-            }
-        );
-        console.log("teamsId",teamsId)
-        var results:any = []
-        for (let miniGameId = 0; miniGameId < 3; miniGameId++) {
-            var miniGame: {
-            miniGameId: number,
-            statistics: Array<number>
-            }={
-            miniGameId: miniGameId,
-            statistics: []
-            }
-            for (let teamId = 0; teamId < teamsId.length; teamId++) {
-              var victoryRounds = currentGameModule.game.rounds.filter(
-                (
-                round:any
-                ) => {
-                return (round.team === teamsId[teamId] && round.victory && round.miniGame===miniGameId);
-                }
             );
-            console.log("victoryRounds=",victoryRounds,"-----------------")
-            miniGame.statistics.push(victoryRounds.length)
+            victoryCounters[players.indexOf(player)] = victoryRounds.length;
+            bestOverallCounters[players.indexOf(player)] +=
+              victoryRounds.length;
+          });
+
+          let maxScore = Math.max(...victoryCounters);
+          for (
+            let scoreIndex = 0;
+            scoreIndex < victoryCounters.length;
+            scoreIndex++
+          ) {
+            if (victoryCounters[scoreIndex] === maxScore) {
+              miniGameEntry.bestPlayers.push(players[scoreIndex]);
             }
-            results.push(miniGame)
+          }
+          teamResults.miniGames.push(miniGameEntry);
         }
-        return res.send(results);
+        let maxScore = Math.max(...bestOverallCounters);
+          for (
+            let scoreIndex = 0;
+            scoreIndex < bestOverallCounters.length;
+            scoreIndex++
+          ) {
+            if (bestOverallCounters[scoreIndex] === maxScore) {
+              teamResults.bestOverall.push(players[scoreIndex]);
+            }
+          }
+        results.push(teamResults);
+      }
+      return res.send(results);
+    };
+  }
+
+  public getTeamsScores() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let teamsId: Array<number> = currentGameModule.game.teams.map(
+        ({ id }: { id: number }) => {
+          return id;
+        }
+      );
+      let selectedMiniGames: any = [];
+      //gather selected miniGames
+      if (currentGameModule.game.pantomime) selectedMiniGames.push(0);
+      if (currentGameModule.game.trivia) selectedMiniGames.push(1);
+      if (currentGameModule.game.pictionary) selectedMiniGames.push(2);
+      console.log("teamsId", teamsId);
+      var results = [];
+      for (let teamId = 0; teamId < teamsId.length; teamId++) {
+        var teamResults: {
+          teamId: number;
+          miniGames: any[];
+        } = {
+          teamId: teamId,
+          miniGames: [],
         };
-    }
+        for (let miniGameId = 0; miniGameId < selectedMiniGames.length; miniGameId++) {
+          var miniGame: {
+            miniGameId: number;
+            statistics: any[];
+          } = {
+            miniGameId: selectedMiniGames[miniGameId],
+            statistics: [],
+          };
+          var victoryRounds = currentGameModule.game.rounds.filter(
+            (round: any) => {
+              return (
+                round.team === teamsId[teamId] &&
+                round.victory &&
+                round.miniGame === selectedMiniGames[miniGameId]
+              );
+            }
+          );
+
+          var defeatRounds = currentGameModule.game.rounds.filter(
+            (round: any) => {
+              return (
+                round.team === teamsId[teamId] &&
+                !round.victory &&
+                round.miniGame === selectedMiniGames[miniGameId]
+              );
+            }
+          );
+          miniGame.statistics.push(victoryRounds.length);
+          miniGame.statistics.push(defeatRounds.length);
+          teamResults.miniGames.push(miniGame);
+        }
+        results.push(teamResults);
+      }
+      return res.send(results);
+    };
+  }
+
+  public getGamesScores() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let teamsId: Array<number> = currentGameModule.game.teams.map(
+        ({ id }: { id: number }) => {
+          return id;
+        }
+      );
+      console.log("teamsId", teamsId);
+      var results: any = [];
+      for (let miniGameId = 0; miniGameId < 3; miniGameId++) {
+        var miniGame: {
+          miniGameId: number;
+          statistics: Array<number>;
+        } = {
+          miniGameId: miniGameId,
+          statistics: [],
+        };
+        for (let teamId = 0; teamId < teamsId.length; teamId++) {
+          var victoryRounds = currentGameModule.game.rounds.filter(
+            (round: any) => {
+              return (
+                round.team === teamsId[teamId] &&
+                round.victory &&
+                round.miniGame === miniGameId
+              );
+            }
+          );
+          console.log("victoryRounds=", victoryRounds, "-----------------");
+          miniGame.statistics.push(victoryRounds.length);
+        }
+        results.push(miniGame);
+      }
+      return res.send(results);
+    };
+  }
 }

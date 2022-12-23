@@ -9,6 +9,7 @@ import { TeamService } from 'src/app/global/services/team.service';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
+  currentTeamName:string = ''
   icons: any = [
     {
       class: 'fa6-solid:masks-theater',
@@ -162,6 +163,12 @@ export class MainComponent implements OnInit {
       }
       let test = [];
       this.rounds = this.game.rounds
+      var currentTeamId = this.rounds[this.rounds.length-1].team;
+      this.teamService
+          .getTeam(currentTeamId)
+          .subscribe((team: any) => {
+            this.currentTeamName = team.name
+          });
       while (this.rounds.length > 0) {
         test.push(this.rounds.splice(0, this.game.teams.length));
       }

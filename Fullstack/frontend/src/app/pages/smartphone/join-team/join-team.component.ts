@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Game } from 'src/app/global/models/game/game';
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 import { TeamService } from 'src/app/global/services/team.service';
 import { UserService } from 'src/app/global/services/user.service';
 
@@ -87,7 +88,7 @@ export class JoinTeamComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private teamService: TeamService, private router: Router
+    private teamService: TeamService, private router: Router,private sockets: SocketsService
   ) {}
  
   
@@ -104,6 +105,11 @@ export class JoinTeamComponent implements OnInit {
     this.teamService.getTeams().subscribe((result) => {
       this.teams = result;
       console.log(this.teams);
+    });
+    
+this.sockets.subscribe("server:event",(msg:any) => {
+  console.log("LALALA",msg)
+      this.teams = msg
     });
   }
 

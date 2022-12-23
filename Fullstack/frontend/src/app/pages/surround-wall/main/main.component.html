@@ -1,7 +1,17 @@
 <div style="display: flex;
-align-items: center;
+flex-direction:column;
+justify-content: space-evenly;
 height: 590px;
 margin-left: 50px;">
+<div>
+   <div class='currentPlayer'>
+    {{currentTeamName}}, it's your turn to play!
+</div> 
+<div class='nextPlayer'>
+    Next up is “BoFunners”...
+</div>
+</div>
+
     <div class="table-container" [ngStyle]="{width:120 + 200*game.teams.length + 'px'}">
         <table>
             <thead>

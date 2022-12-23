@@ -96,14 +96,14 @@ export class Game{
             },
             {
                 id:2,
-                username:"Dimitris",
+                username:"Makis",
                 teamId: 0,
                 image: "",
                 positionId:2
             },
             {
                 id:3,
-                username:"Georgia",
+                username:"Ioustini",
                 teamId: 1,
                 image: "",
                 positionId:3
@@ -130,7 +130,7 @@ export class Game{
         this.pictionary = true;
         this.trivia = true;
         this.sequence = [1,0];
-        this.winningTeam = -1;
+        this.winningTeam = 1;
         this.rounds = [{
             id: 0, 
             team: 1,
@@ -178,7 +178,7 @@ export class Game{
             miniGame: 1,
             victory: false,
             remainingTime: 20,
-            started: true,
+            started: false,
             ended: true,
           },];
     }
@@ -345,4 +345,6 @@ export class Game{
             return this.getTeam(this.sequence[0]);
         }
     }
+
+
 }

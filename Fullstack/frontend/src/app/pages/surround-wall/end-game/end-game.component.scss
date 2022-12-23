@@ -1,0 +1,116 @@
+.myContainer{
+    height: 590px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.endGame {
+    position: absolute;
+    display: flex;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #4128F9 0%, #482FFF 100%);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 0px;
+    z-index: -1;
+  }
+
+  .appear {
+    animation-duration: 2s;
+    animation-name: appear;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+  }
+  @keyframes appear {
+    from {
+      //   transform: scale(0);
+      width: 0px;
+      height: 0px;
+      font-size: 0px;
+    }
+  
+    to {
+      width: 1000px;
+      height: 1000px;
+      // font-family: "Roboto";
+      
+    }
+  }
+
+  .circleEnd {
+    animation-duration: 4s;
+    animation-name: changewidthEndGame;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    color: black;
+  }
+  @keyframes changewidthEndGame {
+    from {
+      transform: scale(1);
+    }
+  
+    to {
+      transform: scale(0.7);
+    }
+  }
+
+  .endGameTitle {
+    animation-duration: 2s;
+    animation-name: appearTitle;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+    position: relative;
+  }
+@keyframes appearTitle {
+    from {
+      //   transform: scale(0);
+      font-size: 0px;
+    }
+  
+    to {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 100px;
+        // line-height: 117px;
+        // display: flex;
+        // align-items: center;
+        // text-align: center;
+        // letter-spacing: -0.02em;
+    }
+  }
+
+  .endGameSubTitle {
+    animation-duration: 2s;
+    animation-name: appearSubTitle;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+    position: relative;
+  }
+  @keyframes appearSubTitle {
+    from {
+      //   transform: scale(0);
+      font-size: 0px;
+    }
+  
+    to {
+      // font-family: "Roboto";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 70px;
+      // line-height: 82px;
+      // display: flex;
+      // align-items: center;
+      // text-align: center;
+      // letter-spacing: -0.02em;
+    }
+  }
