@@ -8,6 +8,8 @@ import { DIContainer, SocketsService } from "../../../services";
 var currentGameModule = require("../../../models/Game/currentGame.module");
 var gameSettingsModule = require("../../../models/GameSettings/gameSettings.module");
 
+const socketService = DIContainer.get(SocketsService);
+
 export class GameController {
   public applyRoutes(): Router {
     const router = Router();
@@ -31,7 +33,9 @@ export class GameController {
         "/removePlayer/:playerId/fromTeam/:teamId",
         this.removePlayerFromTeam()
       )
-      .post("/create/dummyGame", this.createDummyGame());
+      .post("/create/dummyGame", this.createDummyGame())
+      .get("/sendEvent", this.sendEvent());
+
     return router;
   }
 
@@ -89,6 +93,7 @@ export class GameController {
     };
   }
 
+  // Called from smartphone when a player scans the qr code and goes to the webpage
   public createPlayer() {
     return async (
       req: Request,
@@ -109,9 +114,15 @@ export class GameController {
           positionId: req.body.positionId,
         };
         currentGameModule.game.players.push(newPlayer);
+
+        console.log("Player created, seating at " + req.body.positionId);
+        socketService.broadcast("SeatOccupied", Number(req.body.positionId));
+        socketService.broadcast("PlayerUpdated", JSON.stringify(newPlayer));
         return res.send(newPlayer);
       }
-      // return res.sendStatus(200);
+
+      
+
       return res.send(player);
     };
   }
@@ -127,6 +138,7 @@ export class GameController {
       if (player !== undefined) {
         player.teamId = req.body.teamId;
         player.username = req.body.username;
+        socketService.broadcast("PlayerUpdated", JSON.stringify(player));
       }
       let teams: Array<ITeam> = currentGameModule.game.teams;
       let chosenTeam = teams.find(({ id }) => id === Number(req.body.teamId));
@@ -134,9 +146,9 @@ export class GameController {
         chosenTeam.members.push(Number(req.params.playerId));
         // res.sendStatus(200);
 
-        const socketService = DIContainer.get(SocketsService);
-        console.log("WAWAWA", typeof teams)
+        
         // socketService.broadcast("TeamUpdated", [teams]);
+        socketService.broadcast("TeamUpdated", JSON.stringify(chosenTeam));
         return res.send(currentGameModule.game);
       }
       return res.sendStatus(400);
@@ -153,6 +165,7 @@ export class GameController {
       let player = players.find(({ id }) => id === Number(req.params.playerId));
       if (player !== undefined) {
         player.username = req.body.username;
+        socketService.broadcast("PlayerUpdated", JSON.stringify(player));
       }
       return res.send(player);
     };
@@ -181,7 +194,7 @@ export class GameController {
         }
         // res.sendStatus(200);
 
-        const socketService = DIContainer.get(SocketsService);
+        // const socketService = DIContainer.get(SocketsService);
         socketService.broadcast("TeamUpdated", Number(req.body.teamId));
         return res.send(currentGameModule.game);
       }
@@ -451,4 +464,18 @@ export class GameController {
       return res.send(results);
     };
   }
+
+  public sendEvent() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let team:ITeam = currentGameModule.game.teams[0];
+      team.name = "IT WORKS";
+      socketService.broadcast("TeamUpdated", JSON.stringify(team));
+      return res.sendStatus(200);
+    };
+  }
+
 }

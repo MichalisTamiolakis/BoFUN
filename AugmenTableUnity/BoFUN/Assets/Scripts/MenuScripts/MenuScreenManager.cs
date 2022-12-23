@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace BoFUN.Menu
 {
-    public class MenuManager : MonoBehaviour
+    public class MenuScreenManager : MonoBehaviour
     {
-        public static MenuManager Instance
+        public static MenuScreenManager Instance
         {
             get;
             private set;
@@ -90,7 +90,7 @@ namespace BoFUN.Menu
 
         }
 
-        public void ShowMenu(bool show)
+        public void ShowScreen(bool show)
         {
             menuWindow.SetActive(show);
         }
@@ -143,7 +143,8 @@ namespace BoFUN.Menu
 
         public void ShowLoading(bool show)
         {
-
+            numberOfPlayersAndTeamsSelectionPanel.ShowLoading(show);
+            gameSettingsPanel.ShowLoading(show);
         }
 
         public void CreateGame()

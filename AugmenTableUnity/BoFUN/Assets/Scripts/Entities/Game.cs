@@ -18,7 +18,6 @@ namespace BoFUN.Entities
         public int winningTeam;
         public Round[] rounds;
 
-
         /// <summary>
         /// Creates a Game Instance from a JSON string
         /// </summary>
@@ -32,6 +31,36 @@ namespace BoFUN.Entities
         public override string ToString()
         {
             return JsonUtility.ToJson(this);
+        }
+
+        public Team GetTeam(int teamId)
+        {
+            foreach(Team t in teams)
+            {
+                if(t.id == teamId)
+                    return t;
+            }
+            return null;
+        }
+
+        public Player GetPlayer(int playerId)
+        {
+            foreach (Player p in players)
+            {
+                if (p.id == playerId)
+                    return p;
+            }
+            return null;
+        }
+
+        public Round GetRound(int roundId)
+        {
+            foreach (Round r in rounds)
+            {
+                if (r.id == roundId)
+                    return r;
+            }
+            return null;
         }
     }
 }

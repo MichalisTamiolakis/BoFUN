@@ -14,10 +14,28 @@ namespace BoFUN.Menu
         public Image backgroundImageComponent;
         public TMP_Text teamName;
         public Image avatarImageComponent;
-        public GameObject playerEntry;
+        public Transform playerEntriesParent;
         public GameObject waitingPlayers;
 
-        public Team associatedTeam; // The team entity this card shows
+        private Team m_AssociatedTeam; // The team entity this card shows
+
+        public Team AssociatedTeam
+        {
+            set{
+                if (m_AssociatedTeam!=null)
+                {
+                    m_AssociatedTeam.onUpdate.RemoveListener(TeamUpdateHandler);
+                }
+
+                m_AssociatedTeam = value;
+
+                m_AssociatedTeam.onUpdate.AddListener(TeamUpdateHandler);
+            }
+            get
+            {
+                return m_AssociatedTeam;
+            }
+        }
 
         public Color BackgroundColor
         {
@@ -31,6 +49,10 @@ namespace BoFUN.Menu
             set => avatarImageComponent.sprite = value;
         }
 
+        public void TeamUpdateHandler(Team t)
+        {
+            Repaint();
+        }
 
         //public void AddPlayer(MenuPlayerDescriptor player)
         //{
@@ -62,32 +84,49 @@ namespace BoFUN.Menu
         }
 
 
-        private Dictionary<Player, PlayerDescription> spanwedPlayers = new Dictionary<Player, PlayerDescription>();
+        private Dictionary<Player, TeamCardPlayerEntry> spanwedPlayers = new Dictionary<Player, TeamCardPlayerEntry>();
+
         /// <summary>
         /// Renders the associated team in tha card
         /// </summary>
         public void Repaint()
         {
             //Render name
-            teamName.text = associatedTeam.name;
+            teamName.text = m_AssociatedTeam.name;
 
             // Add background card color
-            if (ColorUtility.TryParseHtmlString(associatedTeam.color, out Color teamColor))
+            if (ColorUtility.TryParseHtmlString(m_AssociatedTeam.color, out Color teamColor))
             {
                 backgroundImageComponent.color = teamColor;
             }
 
-            // Remove any extra players
-            //for ()
+            // Destroy old player entries
+            foreach(TeamCardPlayerEntry e in spanwedPlayers.Values)
+            {
+                Destroy(e);
+            }
+            spanwedPlayers.Clear();
 
+            foreach(int playerId in m_AssociatedTeam.members)
+            {
+                Player p = GameManager.GameManager.Instance.currentGame.GetPlayer(playerId);
+                if (p!=null) {
+                    TeamCardPlayerEntry pe = TeamCardPlayerEntry.Create(p);
+                    pe.transform.SetParent(playerEntriesParent, false);
+                    pe.Repaint();
+                    spanwedPlayers[p] = pe;
+                }
+
+            }
 
             // Show waiting players to join only when no player has joined
             waitingPlayers.SetActive(spanwedPlayers.Count == 0);
         }
 
-        public void Destroy()
+        public void OnDestroy()
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Remove the whole gameobject
+            m_AssociatedTeam.onUpdate.RemoveListener(TeamUpdateHandler);
         }
     }
 }

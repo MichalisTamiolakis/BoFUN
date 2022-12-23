@@ -12,17 +12,16 @@ namespace BoFUN.Menu
         public TMP_Text numberOfTeamsText;
         public Button incrementTeams;
         public Button decrementTeams;
-
+        [Space(5)]
         public TMP_Text numberOfPlayersText;
         public Button incrementPlayers;
         public Button decrementPlayers;
-
-        public Button next;
-
-
-        [Space(10)]
-
         
+        [Space(5)]
+        public GameObject loadingScreen;
+
+        [Space(5)]
+        public Button next;
 
 
         [HideInInspector]
@@ -35,28 +34,28 @@ namespace BoFUN.Menu
 
         private int NumberOfTeams
         {
-            get => MenuManager.Instance.NumberOfTeams;
+            get => MenuScreenManager.Instance.NumberOfTeams;
             set
             {
-                MenuManager.Instance.NumberOfTeams = Mathf.Clamp(value, GameManager.GameManager.Instance.gameSettings.minNumberOfTeams, GameManager.GameManager.Instance.gameSettings.maxNumberOfTeams);
+                MenuScreenManager.Instance.NumberOfTeams = Mathf.Clamp(value, GameManager.GameManager.Instance.gameSettings.minNumberOfTeams, GameManager.GameManager.Instance.gameSettings.maxNumberOfTeams);
 
                 // Enable Both Buttons Initally
                 decrementTeams.interactable = true;
                 incrementTeams.interactable = true;
 
                 // If min num of teams, disable - button
-                if (MenuManager.Instance.NumberOfTeams <= GameManager.GameManager.Instance.gameSettings.minNumberOfTeams)
+                if (MenuScreenManager.Instance.NumberOfTeams <= GameManager.GameManager.Instance.gameSettings.minNumberOfTeams)
                 {
                     decrementTeams.interactable = false;
                 }
                 // If max num of teams, disable + button        
-                if (MenuManager.Instance.NumberOfTeams >= GameManager.GameManager.Instance.gameSettings.maxNumberOfTeams)
+                if (MenuScreenManager.Instance.NumberOfTeams >= GameManager.GameManager.Instance.gameSettings.maxNumberOfTeams)
                 {
                     incrementTeams.interactable = false;
                 }
 
                 // Update Display
-                numberOfTeamsText.text = MenuManager.Instance.NumberOfTeams.ToString();
+                numberOfTeamsText.text = MenuScreenManager.Instance.NumberOfTeams.ToString();
 
                 // Update number of players to match the change of number of teams
                 NumberOfPlayers = NumberOfPlayers;
@@ -65,34 +64,38 @@ namespace BoFUN.Menu
 
         private int NumberOfPlayers
         {
-            get => MenuManager.Instance.NumberOfPlayers;
+            get => MenuScreenManager.Instance.NumberOfPlayers;
             set
             {
-                int minNumberOfPlayers = MenuManager.Instance.NumberOfTeams * GameManager.GameManager.Instance.gameSettings.minNumberOfPlayersPerTeam;
-                int maxNumberOfPlayers = Mathf.Min(MenuManager.Instance.NumberOfTeams * GameManager.GameManager.Instance.gameSettings.maxNumberOfPlayersPerTeam, GameManager.GameManager.Instance.gameSettings.maxNumberOfPlayersTotal);
+                int minNumberOfPlayers = MenuScreenManager.Instance.NumberOfTeams * GameManager.GameManager.Instance.gameSettings.minNumberOfPlayersPerTeam;
+                int maxNumberOfPlayers = Mathf.Min(MenuScreenManager.Instance.NumberOfTeams * GameManager.GameManager.Instance.gameSettings.maxNumberOfPlayersPerTeam, GameManager.GameManager.Instance.gameSettings.maxNumberOfPlayersTotal);
 
-                MenuManager.Instance.NumberOfPlayers = Mathf.Clamp(value, minNumberOfPlayers, maxNumberOfPlayers);
+                MenuScreenManager.Instance.NumberOfPlayers = Mathf.Clamp(value, minNumberOfPlayers, maxNumberOfPlayers);
 
                 // Enable Both Buttons Initially
                 decrementPlayers.interactable = true;
                 incrementPlayers.interactable = true;
 
                 // If min num of teams, disable - button
-                if (MenuManager.Instance.NumberOfPlayers <= minNumberOfPlayers)
+                if (MenuScreenManager.Instance.NumberOfPlayers <= minNumberOfPlayers)
                 {
                     decrementPlayers.interactable = false;
                 }
                 // If max num of teams, disable + button        
-                if (MenuManager.Instance.NumberOfPlayers >= maxNumberOfPlayers)
+                if (MenuScreenManager.Instance.NumberOfPlayers >= maxNumberOfPlayers)
                 {
                     incrementPlayers.interactable = false;
                 }
 
                 // Update Display
-                numberOfPlayersText.text = MenuManager.Instance.NumberOfPlayers.ToString();
+                numberOfPlayersText.text = MenuScreenManager.Instance.NumberOfPlayers.ToString();
             }
         }
 
+        public void ShowLoading(bool show)
+        {
+            this.loadingScreen.SetActive(show);
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -108,7 +111,7 @@ namespace BoFUN.Menu
             decrementTeams.onClick.AddListener(() => { if (focused) NumberOfTeams--; });
             incrementPlayers.onClick.AddListener(() => { if (focused) NumberOfPlayers++; });
             decrementPlayers.onClick.AddListener(() => { if (focused) NumberOfPlayers--; });
-            next.onClick.AddListener(() => { if (focused) MenuManager.Instance.NextPage(); });
+            next.onClick.AddListener(() => { if (focused) MenuScreenManager.Instance.NextPage(); });
 
 
             // Update number of teams and players displays;

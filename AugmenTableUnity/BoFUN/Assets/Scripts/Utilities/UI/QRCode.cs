@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using BoFUN.Utilities;
-
+using TMPro;
 
 namespace BoFUN.UI
 {
     public class QRCode : MonoBehaviour
     {
         public Image QRCodeImage;
+        public TMP_Text infoText;
 
         private Texture2D m_Texture;
         private Sprite m_Sprite;
@@ -26,17 +27,29 @@ namespace BoFUN.UI
             }
         }
 
-        public static QRCode Create(string text)
+        public void SetScannable(bool scannable)
+        {
+            QRCodeImage.enabled = scannable;
+            infoText.enabled = scannable;
+        }
+
+        public static QRCode Create(string encodedText)
         {
             GameObject go = Instantiate(Resources.Load("UI/Prefabs/QRCode") as GameObject);
 
             if(go.TryGetComponent(out QRCode manager))
             {
-                manager.Text = text;
+                manager.Text = encodedText;
             }
 
             return manager;
         }
+
+        public void OnDestroy()
+        {
+            Destroy(gameObject);
+        }
+
 
     }
 }

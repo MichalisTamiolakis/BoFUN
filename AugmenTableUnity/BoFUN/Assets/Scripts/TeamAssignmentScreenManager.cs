@@ -9,9 +9,9 @@ using System;
 
 namespace BoFUN.Menu
 {
-    public class TeamAssignmentManager : MonoBehaviour
+    public class TeamAssignmentScreenManager : MonoBehaviour
     {
-        public static TeamAssignmentManager Instance
+        public static TeamAssignmentScreenManager Instance
         {
             get;
             private set;
@@ -50,6 +50,8 @@ namespace BoFUN.Menu
 
 
         private Dictionary<Team, TeamCard> spawnedTeamCards = new Dictionary<Team, TeamCard>();
+        Dictionary<int, QRCode> seatsToQRs = new Dictionary<int, QRCode>();
+
 
         public void ShowScreen(bool show)
         {
@@ -57,18 +59,71 @@ namespace BoFUN.Menu
 
             if (show)
             {
-                StartCoroutine(CheckForUpdates());
+                Repaint();
             }
             else
             {
-                StopCoroutine(CheckForUpdates());
+                Clear();
+            }
+        }
+        public void ShowLoading(bool enabled)
+        {
+            loading.SetActive(enabled);
+        }
+        
+
+        /// <summary>
+        /// Removes all cards from the screen and enables loading
+        /// </summary>
+        public void Clear()
+        {
+            // Remove all team cards
+            foreach (TeamCard tc in spawnedTeamCards.Values)
+            {
+                Destroy(tc);
+            }
+            spawnedTeamCards.Clear();
+        }
+
+        public void Repaint()
+        {
+            PaintQRCodes();
+
+
+            RepaintTeamCards();
+
+            // Enable/Disable buttons
+            UpdateButtonStates();
+
+        }
+        
+        
+        // Sockets
+        public void Start()
+        {
+            // Set up all socket realtime updates
+            SocketEventHandler.Instance.seatOccupiedEvent.AddListener(DisableSeatQR);
+        }
+
+        public void DisableSeatQR(int seatNo)
+        {
+            if(seatsToQRs.TryGetValue(seatNo, out QRCode code))
+            {
+                code.SetScannable(false);
             }
         }
 
-        Dictionary<int, QRCode> seatsToQRs = new Dictionary<int, QRCode>();
-
-        public void GenerateQRCodes()
+        // ========== Private Functions ==========
+        
+        public void PaintQRCodes()
         {
+            //Remove any previous qr codes
+            foreach(QRCode code in seatsToQRs.Values)
+            {
+                Destroy(code);
+            }
+            seatsToQRs.Clear();
+
             int qrCodesRemaining = GameManager.GameManager.Instance.gameCreationDescriptor.totalPlayers;
 
             int leftQRs = 1;
@@ -82,7 +137,7 @@ namespace BoFUN.Menu
             {
                 QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
                 code.transform.SetParent(QRCodesBottom, false);
-                seatsToQRs.Add(seat, code);
+                seatsToQRs[seat]= code;
                 seat++;
             }
 
@@ -91,7 +146,7 @@ namespace BoFUN.Menu
             {
                 QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
                 code.transform.SetParent(QRCodesRight, false);
-                seatsToQRs.Add(seat, code);
+                seatsToQRs[seat] = code;
                 seat++;
             }
 
@@ -100,7 +155,7 @@ namespace BoFUN.Menu
             {
                 QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
                 code.transform.SetParent(QRCodesTop, false);
-                seatsToQRs.Add(seat, code);
+                seatsToQRs[seat] = code;
                 seat++;
             }
 
@@ -109,111 +164,36 @@ namespace BoFUN.Menu
             {
                 QRCode code = QRCode.Create(GameManager.GameManager.Instance.networkSettings.frontendURL + "/" + GameManager.GameManager.Instance.networkSettings.frontEnd.GetJoinPagePath(seat));
                 code.transform.SetParent(QRCodesLeft, false);
-                seatsToQRs.Add(seat, code);
+                seatsToQRs[seat] = code;
                 seat++;
             }
-
         }
-
-        /// <summary>
-        /// Removes all cards from the screen and enables loading
-        /// </summary>
-        public void Clear()
-        {
-            // Remove all team cards
-            foreach (TeamCard tc in spawnedTeamCards.Values)
-            {
-                tc.Destroy();
-            }
-            spawnedTeamCards.Clear();
-        }
-
-        public void Repaint()
-        {
-            if (GameManager.GameManager.Instance.currentGame == null || GameManager.GameManager.Instance.currentGame.teams == null)
-            {
-                EnableLoading(true);
-                //Debug.Log("NoTeams");
-            }
-            else
-            {
-                EnableLoading(false);
-            }
-
-            RepaintTeamCards();
-
-            // Enable/Disable buttons
-            UpdateButtonStates();
-
-        }
-
-        // ========== Private Functions ==========
-        private IEnumerator CheckForUpdates()
-        {
-            while (true)
-            {
-                Repaint();
-
-                yield return new WaitForSeconds(.2f);
-            }
-
-        }
-
+        
         private void RepaintTeamCards()
         {
-            if (GameManager.GameManager.Instance.currentGame == null || GameManager.GameManager.Instance.currentGame.teams == null) // No cards now, remove all of them
+            // Remove old Cards
+            Clear();
+            // Spawn new cards
+            foreach (Team t in GameManager.GameManager.Instance.currentGame.teams)
             {
-                Clear();
-            }
-            else
-            {
-                // Remove old cards
-                List<Team> markToRemove = new List<Team>();
-                foreach (Team t in spawnedTeamCards.Keys)
+                if (!spawnedTeamCards.ContainsKey(t))
                 {
-                    if (!Array.Exists(GameManager.GameManager.Instance.currentGame.teams, e => e == t)) // Delete card
+                    GameObject card = Instantiate(teamCardPrefab);
+                    card.transform.SetParent(content, false);
+
+                    if (card.TryGetComponent(out TeamCard tc))
                     {
-                        markToRemove.Add(t);
+                        tc.AssociatedTeam = t;
                     }
-                }
-                foreach (Team t in markToRemove)
-                {
-                    spawnedTeamCards[t].Destroy();
-                    spawnedTeamCards.Remove(t);
-                }
-
-                // Spawn new cards
-                foreach (Team t in GameManager.GameManager.Instance.currentGame.teams)
-                {
-                    if (!spawnedTeamCards.ContainsKey(t))
+                    else
                     {
-                        GameObject card = Instantiate(teamCardPrefab);
-                        card.transform.SetParent(content, false);
-
-                        if (card.TryGetComponent(out TeamCard tc))
-                        {
-                            tc.associatedTeam = t;
-                        }
-                        else
-                        {
-                            DestroyImmediate(card);
-                        }
-
-                        spawnedTeamCards.Add(t, tc);
+                        DestroyImmediate(card);
                     }
-                }
 
-                // Repaint all cards
-                foreach (TeamCard tc in spawnedTeamCards.Values)
-                {
                     tc.Repaint();
+                    spawnedTeamCards.Add(t, tc);
                 }
             }
-        }
-
-        private void EnableLoading(bool enabled)
-        {
-            loading.SetActive(enabled);
         }
 
         private void UpdateButtonStates()
@@ -244,6 +224,10 @@ namespace BoFUN.Menu
                 {
                     canStartGame = false;
                 }
+            }
+            else
+            {
+                canStartGame = false;
             }
 
 

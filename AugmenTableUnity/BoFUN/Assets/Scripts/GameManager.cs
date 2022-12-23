@@ -39,30 +39,35 @@ namespace BoFUN.GameManager
         public Game currentGame; // The current active game;
 
 
-        private bool hasGameCreated = false;
+        public enum Screen
+        {
+            Idle = 0,
+            GameCreationScreen = 1,
+            TeamAssignmentScreen = 2,
+            Board = 3
+        }
+        private Screen currentScreen = Screen.GameCreationScreen;
+
 
         /// <summary>
         /// Sends Create Game Request to server to create a game with the gameDescriptor data
         /// </summary>
         public void CreateGame()
         {
-            hasGameCreated = true;
-
             //request.SetRequestHeader("appKey", "ABC");
             Debug.Log(gameCreationDescriptor.ToString());
             currentGame = null;
 
 
-            HideMenuAndTransitionToTeamJoin();
             StartCoroutine(DelayCreateGame());
         }
-
-
 
         // =================== HELPER FUNCTIONS ==================
         // NOTE: Only needed to showcase loading screen.
         private IEnumerator DelayCreateGame() 
         {
+            MenuScreenManager.Instance.ShowLoading(true);
+
             yield return new WaitForSeconds(2f);
 
             string jsonString = gameCreationDescriptor.toJSON();
@@ -74,26 +79,53 @@ namespace BoFUN.GameManager
                 {
                     currentGame = Game.CreateFromJSON(response);
                     Debug.Log("Game created: " + currentGame.ToString());
-                    TeamAssignmentManager.Instance.GenerateQRCodes();
+                    MenuScreenManager.Instance.ShowLoading(false);
+                    NextScreen();
                 }
                 else
                 {
                     Debug.LogError("Error: " + response);
+                    MenuScreenManager.Instance.ShowLoading(false);
                 }
             });
-
         }
 
+        public void NextScreen()
+        {
+            ShowScreen((Screen)Mathf.Min((int)currentScreen + 1, 3));
+        }
+
+        public void PreviousScreen()
+        {
+            ShowScreen((Screen)Mathf.Max((int)currentScreen - 1, 0));
+        }
 
         /// <summary>
-        /// Hides Initial Menu
+        /// 
         /// </summary>
-        private void HideMenuAndTransitionToTeamJoin()
+        private void ShowScreen(Screen screen)
         {
-            Menu.MenuManager.Instance.ShowMenu(false);
-            TeamAssignmentManager.Instance.ShowScreen(true);
-        }
 
+            MenuScreenManager.Instance.ShowScreen(false);
+            TeamAssignmentScreenManager.Instance.ShowScreen(false);
+            //BoardScreenManager.Instance.ShowScreen(false);
+
+            switch (screen)
+            {
+                case Screen.Idle:
+                    break;
+                case Screen.GameCreationScreen:
+                    MenuScreenManager.Instance.ShowScreen(true);
+                    break;
+                case Screen.TeamAssignmentScreen:
+                    TeamAssignmentScreenManager.Instance.ShowScreen(true);
+                    break;
+                case Screen.Board:
+                    break;
+            }
+
+            currentScreen = screen;
+        }
 
         // ======================= GAME LOGIC ====================
 
@@ -102,19 +134,12 @@ namespace BoFUN.GameManager
         /// </summary>
         public void StartGame()
         {
-            // Close all menus
-            TeamAssignmentManager.Instance.ShowScreen(false);
-
-            // Show game creation menu
-            Menu.MenuManager.Instance.ShowMenu(true);
+            ShowScreen(Screen.GameCreationScreen);
         }
 
         public void Start()
         {
             StartGame();
-            NetworkUtilities.Instance.SocketSubscribe("Test", (data) => {
-                Debug.Log("Works: " + data.eventName + " " + data.data);
-            });
         }
     }
 }

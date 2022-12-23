@@ -90,7 +90,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1586655052119731727}
   m_HandleRect: {fileID: 1586655052119731712}
   m_Direction: 2
-  m_Value: 0.9999996
+  m_Value: 1.0000001
   m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -819,15 +819,8 @@ MonoBehaviour:
   backgroundImageComponent: {fileID: 1586655053720788212}
   teamName: {fileID: 1586655052689077774}
   avatarImageComponent: {fileID: 1586655052383601739}
-  playerEntry: {fileID: 2698886612874405640, guid: 9b45b390e9a69804090b7dc987e72e49,
-    type: 3}
+  playerEntriesParent: {fileID: 1586655053155749264}
   waitingPlayers: {fileID: 7880221604821887124}
-  associatedTeam:
-    id: -1
-    name: 
-    image: 
-    members: 
-    color: 
 --- !u!1 &1586655053956470409
 GameObject:
   m_ObjectHideFlags: 0

@@ -63,10 +63,18 @@ public class NetworkSettings : ScriptableObject
     [System.Serializable]
     public struct Sockets {
         public string socketServerURL;
+        [Space(5)]
+        public string seatOccupiedEvent;
+        public string teamUpdatedEvent;
+        public string playerUpdatedEvent;
+
     }
     [Space(5)]
     public Sockets sockets = new Sockets {
-        socketServerURL = "ws:localhost:8080"
+        socketServerURL = "ws:localhost:8080",
+        seatOccupiedEvent = "SeatOccupied",
+        teamUpdatedEvent = "TeamUpdated",
+        playerUpdatedEvent = "PlayerUpdated"
     };
 
     [System.Serializable]

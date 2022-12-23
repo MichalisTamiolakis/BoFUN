@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using Newtonsoft.Json;
 
 namespace BoFUN.Entities
 {
@@ -13,6 +14,9 @@ namespace BoFUN.Entities
         public int[] members;
         public string color;
 
+        [NonSerialized]
+        //[JsonIgnore]
+        public UnityEvent<Team> onUpdate = new UnityEvent<Team>();
 
         /// <summary>
         /// Creates a Team Instance from a JSON string
@@ -22,6 +26,11 @@ namespace BoFUN.Entities
         public static Team CreateFromJSON(string jsonString)
         {
             return JsonUtility.FromJson<Team>(jsonString);
+        }
+
+        public static string ToJSON(Team t)
+        {
+            return JsonUtility.ToJson(t, true);
         }
 
         /// <summary>

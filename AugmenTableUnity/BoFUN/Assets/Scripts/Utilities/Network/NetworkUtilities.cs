@@ -126,26 +126,34 @@ namespace BoFUN.Utilities
             socket = new SocketIOUnity(uri, new SocketIOOptions
             {
                 Transport = SocketIOClient.Transport.TransportProtocol.WebSocket
-            });
-
-            socket.unityThreadScope = SocketIOUnity.UnityThreadScope.Update;
+            })
+            {
+                unityThreadScope = SocketIOUnity.UnityThreadScope.Update
+            };
 
             await socket.ConnectAsync();
 
             Debug.Log($"Socket connected on {uri}");
 
-
-
-
-            socket.On("server:event", (response) =>
+            //SocketIOResponse
+            socket.OnUnityThread("server:event", (response) =>
             {
-                SocketEvent ev = new SocketEvent(response.GetValue<string>(0), response.GetValue<string>(1));
-
-                if(eventSubscriptions.TryGetValue(ev.eventName, out UnityEvent<SocketEvent> ue))
+                try
                 {
-                    ue.Invoke(ev);
+                    SocketEvent ev = new SocketEvent(response);
+
+                    if (eventSubscriptions.TryGetValue(ev.GetEventName(), out UnityEvent<SocketEvent> ue))
+                    {
+                        ue.Invoke(ev);
+                    }
                 }
+                catch(Exception e)
+                {
+                    Debug.LogException(e);
+                }
+
             });
+
         }
 
 

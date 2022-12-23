@@ -1,36 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SocketIOClient;
 
 [System.Serializable]
-public class SocketEvent : MonoBehaviour
+public class SocketEvent
 {
-    public string eventName;
-    public string data;
+    SocketIOResponse socketEventResponse;
 
-    public SocketEvent(string eventName, string data)
+    public string GetEventName()
     {
-        this.eventName = eventName;
-        this.data = data;
+        return socketEventResponse.GetValue<string>(0);
     }
 
-    public void SetData(string data)
+    public T GetData<T>()
     {
-        this.data = data;
+        return socketEventResponse.GetValue<T>(1);
     }
 
-    public void SetData(object data)
+    public SocketEvent(SocketIOResponse response)
     {
-        this.data = JsonUtility.ToJson(data);
+        this.socketEventResponse = response;
     }
 
-    public static SocketEvent FromJsonString(string jsonString)
-    {
-        return JsonUtility.FromJson<SocketEvent>(jsonString);
-    }
-
-    public string toJsonString(bool prettyPrint=false)
-    {
-        return JsonUtility.ToJson(this, prettyPrint);
-    }
 }

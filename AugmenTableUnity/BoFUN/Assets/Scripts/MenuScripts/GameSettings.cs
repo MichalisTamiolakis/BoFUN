@@ -19,6 +19,8 @@ namespace BoFUN.Menu {
         public Button start;
         public Button previous;
 
+        public GameObject loadingScreen;
+
         [Space(10)]
         public int minTimePerRound = 30; // 30 Seconds Min
         public int maxTimePerRound = 300; // 5 Minutes Max
@@ -33,19 +35,19 @@ namespace BoFUN.Menu {
 
         public int TimePerRound
         {
-            get => MenuManager.Instance.TimePerRound;
+            get => MenuScreenManager.Instance.TimePerRound;
             set
             {
-                MenuManager.Instance.TimePerRound = Mathf.Clamp(value, minTimePerRound, maxTimePerRound);
+                MenuScreenManager.Instance.TimePerRound = Mathf.Clamp(value, minTimePerRound, maxTimePerRound);
 
                 // If min num of teams, disable - button
-                if (MenuManager.Instance.TimePerRound <= minTimePerRound)
+                if (MenuScreenManager.Instance.TimePerRound <= minTimePerRound)
                 {
                     timerDecreaseButton.interactable = false;
                     timerIncreaseButton.interactable = true;
                 }
                 // If max num of teams, disable + button        
-                else if (MenuManager.Instance.TimePerRound >= maxTimePerRound)
+                else if (MenuScreenManager.Instance.TimePerRound >= maxTimePerRound)
                 {
                     timerDecreaseButton.interactable = true;
                     timerIncreaseButton.interactable = false;
@@ -57,8 +59,8 @@ namespace BoFUN.Menu {
                     timerIncreaseButton.interactable = true;
                 }
 
-                int timeMinutes = MenuManager.Instance.TimePerRound / 60;
-                int timeSeconds = MenuManager.Instance.TimePerRound - timeMinutes * 60;
+                int timeMinutes = MenuScreenManager.Instance.TimePerRound / 60;
+                int timeSeconds = MenuScreenManager.Instance.TimePerRound - timeMinutes * 60;
 
                 timerText.text = $"{timeMinutes:0}:{timeSeconds:00}";
             }
@@ -66,32 +68,37 @@ namespace BoFUN.Menu {
 
         public bool TriviaOption
         {
-            get => MenuManager.Instance.TriviaOption;
+            get => MenuScreenManager.Instance.TriviaOption;
             set
             {
-                MenuManager.Instance.TriviaOption = value;
+                MenuScreenManager.Instance.TriviaOption = value;
                 CheckDisableStart();
             }
         }
 
         public bool PantomimeOption
         {
-            get => MenuManager.Instance.PantomimeOption;
+            get => MenuScreenManager.Instance.PantomimeOption;
             set
             {
-                MenuManager.Instance.PantomimeOption = value;
+                MenuScreenManager.Instance.PantomimeOption = value;
                 CheckDisableStart();
             }
         }
 
         public bool PictionaryOption
         {
-            get => MenuManager.Instance.PictionaryOption;
+            get => MenuScreenManager.Instance.PictionaryOption;
             set
             {
-                MenuManager.Instance.PictionaryOption = value;
+                MenuScreenManager.Instance.PictionaryOption = value;
                 CheckDisableStart();
             }
+        }
+
+        public void ShowLoading(bool show)
+        {
+            this.loadingScreen.SetActive(show);
         }
 
         /// <summary>
@@ -125,8 +132,8 @@ namespace BoFUN.Menu {
             pictionaryToggle.onToggle.AddListener((bool value) => { if (focused) PictionaryOption = value; });
             timerIncreaseButton.onClick.AddListener(()=> { if (focused) TimePerRound = TimePerRound + 15; });
             timerDecreaseButton.onClick.AddListener(() => { if (focused) TimePerRound = TimePerRound - 15; });
-            start.onClick.AddListener(() => { if (focused) MenuManager.Instance.CreateGame(); });
-            previous.onClick.AddListener(() => { if (focused) MenuManager.Instance.PreviousPage(); });
+            start.onClick.AddListener(() => { if (focused) MenuScreenManager.Instance.CreateGame(); });
+            previous.onClick.AddListener(() => { if (focused) MenuScreenManager.Instance.PreviousPage(); });
 
 
             // Initialize UI values

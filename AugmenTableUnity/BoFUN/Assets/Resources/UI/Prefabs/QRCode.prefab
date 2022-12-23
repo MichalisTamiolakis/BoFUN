@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QRCodeImage: {fileID: 7168741352610475245}
+  infoText: {fileID: 7168741353323001518}
 --- !u!1 &7168741352610475235
 GameObject:
   m_ObjectHideFlags: 0
