@@ -1,22 +1,22 @@
 <div class="myContainer">
-    <div class="playerStatistics">
+    <div class="playerStatistics" [ngClass] = "selectedColumn===0? 'selected' : ''">
         <div class="title">Player Statistics</div>
-        <div class="cards">
+        <div class="cards" #column0ScrollableContainer>
             <app-player-statistics-card *ngFor="let playerScores of playersScores" [playerScores]="playerScores"></app-player-statistics-card>
         </div>
         
     </div>
-    <div class="teamStatistics">
+    <div class="teamStatistics" [ngClass] = "selectedColumn===1? 'selected' : ''">
         <div class="title">Team Statistics</div>
-        <div class="cards">
+        <div class="cards" #column1ScrollableContainer>
             <app-team-statistics-card *ngFor="let teamScore of teamsScores" [teamScore]="teamScore"></app-team-statistics-card>
         </div>
         
         
     </div>
-    <div class="gameStatistics">
+    <div class="gameStatistics" [ngClass] = "selectedColumn===2? 'selected' : ''">
         <div class="title">Game Statistics</div>
-        <div>
+        <div #column2ScrollableContainer>
             <app-game-statistics-card [gamesScores]="gamesScores"></app-game-statistics-card>
         </div>
     </div>
