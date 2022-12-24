@@ -107,9 +107,9 @@ export class JoinTeamComponent implements OnInit {
       console.log(this.teams);
     });
     
-this.sockets.subscribe("server:event",(msg:any) => {
-  console.log("LALALA",msg)
-      this.teams = msg
+  this.sockets.subscribe("TeamUpdated", (msg: any) => {
+    console.log("LALALA",msg)
+      // this.teams = JSON.parse(msg)
     });
   }
 
