@@ -1,4 +1,5 @@
 export interface IPictionary{
     id:number;
-    task: string;
+    difficulty:number;
+    task:string;
 }

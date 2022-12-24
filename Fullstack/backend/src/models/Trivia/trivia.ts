@@ -1,6 +1,7 @@
 export interface ITrivia{
     id: number;
+    category:string;
     question: string;
-    options: Array<string>;
-    answer: number;
+    answers: Array<string>;
+    correctAnswer: number;
 }
