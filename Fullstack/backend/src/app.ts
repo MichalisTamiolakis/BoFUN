@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import fs from 'fs';
 import { MethodNotAllowed } from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
 import { Api } from './api';
@@ -10,6 +11,21 @@ import { MongoAdapter } from './database';
 import { config, getHostDomain } from './config/environment';
 import { DIContainer, SocketsService } from './services';
 import { Logger } from './api/shared/utils/logger';
+import { ITrivia, TriviaModel } from './models/Trivia/trivia';
+import { MiniGame } from './models/Round/round';
+import { IPictionary, PictionaryModel } from './models/Pictionary/pictionary';
+import { IPantomime, PantomimeModel } from './models/Pantomime/patomime';
+// import triviaQuestions from './assets/trivia/trivia.json';
+// import {} from './assets/trivia/trivia.json';
+
+const TRIVIA_QUESTIONS_PATH:string = "./assets/trivia/trivia";
+const PANTOMIME_QUESTIONS_PATH:string = "./assets/pantomime/pantomime.json";
+const PICTIONARY_QUESTIONS_PATH:string = "./assets/pictionary/pictionary.json";
+
+const triviaQuestions:Array<ITrivia> = require(TRIVIA_QUESTIONS_PATH);
+const pantomimeTasks:Array<IPantomime> = require(PANTOMIME_QUESTIONS_PATH);
+const pictionaryTasks:Array<IPictionary> = require(PICTIONARY_QUESTIONS_PATH);
+
 export class App {
     private logger: Logger = new Logger();
     private app!: express.Application;
@@ -23,6 +39,8 @@ export class App {
         try {
             // Setup and connect database
             await this.setupDatabase();
+
+            await this.populateQuestionDatabase();
 
             // Setup express and API routes
             this.app = await this.setupExpressApp();
@@ -121,6 +139,53 @@ export class App {
 
     // #endregion Private methods
     // ---------------------------------------
+    private async populateQuestionDatabase(force:boolean = false){
+
+        if(force){
+            TriviaModel.collection.drop();
+            PantomimeModel.collection.drop();
+            PictionaryModel.collection.drop();
+        }
+
+        // Trivia Collection
+        let populatedTrivia = await TriviaModel.findOne({}).exec();
+        if(!populatedTrivia){
+            triviaQuestions.forEach(element => {
+                TriviaModel.create({
+                    _id : element.id,
+                    category: element.category,
+                    question: element.question,
+                    answers: element.answers,
+                    correctAnswer: element.correctAnswer 
+                });
+            });
+        }
+
+        // Pantomime Collection
+        let populatedPantomime = await PantomimeModel.findOne({}).exec();
+        if(!populatedPantomime){
+            pantomimeTasks.forEach(element => {
+                PantomimeModel.create({
+                    _id : element.id,
+                    category : element.category,
+                    task: element.task
+                });
+            });
+        }
+
+        // Pictionary Collection
+        let populatedPictionary = await PictionaryModel.findOne({}).exec();
+        if(!populatedPictionary){
+            pictionaryTasks.forEach(element => {
+                PictionaryModel.create({
+                    _id : element.id,
+                    difficulty: element.difficulty,
+                    task : element.task
+                });
+            });
+        }
+    }
 
 
 }
+
