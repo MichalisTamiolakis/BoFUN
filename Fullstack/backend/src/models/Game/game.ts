@@ -135,7 +135,8 @@ export class Game{
             id: 0, 
             team: 1,
             player: 1,
-            miniGame: 0,
+            minigame: 0,
+            minigameJSON: "",
             victory: true,
             remainingTime: 20,
             started: true,
@@ -145,7 +146,8 @@ export class Game{
             id: 1, 
             team: 0,
             player: 0,
-            miniGame: 1,
+            minigame: 1,
+            minigameJSON: "",
             victory: true,
             remainingTime: 20,
             started: true,
@@ -155,7 +157,8 @@ export class Game{
             id: 2, 
             team: 1,
             player: 3,
-            miniGame: 2,
+            minigame: 2,
+            minigameJSON: "",
             victory: true,
             remainingTime: 20,
             started: true,
@@ -165,7 +168,8 @@ export class Game{
             id: 3, 
             team: 0,
             player: 2,
-            miniGame: 0,
+            minigame: 0,
+            minigameJSON: "",
             victory: true,
             remainingTime: 20,
             started: true,
@@ -175,7 +179,8 @@ export class Game{
             id: 4, 
             team: 1,
             player: 1,
-            miniGame: 1,
+            minigame: 1,
+            minigameJSON: "",
             victory: false,
             remainingTime: 20,
             started: false,
@@ -194,7 +199,7 @@ export class Game{
     }
 
     // Creates a new Round
-    newRound(miniGame:MiniGame):IRound | undefined{
+    async newRound(miniGame:MiniGame):Promise<IRound | undefined>{
         
         let nextTeam:ITeam | undefined = this.getNextTeam();
         if(!nextTeam){
@@ -207,11 +212,15 @@ export class Game{
             return undefined;
         }
         
+        const minigameModule = require('./minigame.module');
+        
+
         let newRound:IRound = {
             id : this.nextRoundId++,
             team : nextTeam.id,
             player: nextPlayerForTeam.id,
-            miniGame: miniGame,
+            minigame: miniGame,
+            minigameJSON: JSON.stringify(await minigameModule.getRandomMinigame(miniGame)),
             victory: false,
             remainingTime: this.duration,
             started: false,
@@ -345,6 +354,4 @@ export class Game{
             return this.getTeam(this.sequence[0]);
         }
     }
-
-
 }
