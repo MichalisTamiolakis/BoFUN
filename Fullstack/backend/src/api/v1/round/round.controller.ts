@@ -15,7 +15,8 @@ export class Round {
         .get("/get/:roundId", this.getRound())
         .get("/current", this.getCurrentRound())
         .post("/new/:miniGame", this.newRound())
-        .put("/editCurrent", this.editRound());
+        .put("/editCurrent", this.editRound())
+        .post("/current/start", this.startCurrentRound());
         
     return router;
     }
@@ -84,24 +85,37 @@ export class Round {
     }
 
     public editRound() {
-    return async (
-        req: Request,
-        res: Response,
-        next?: NextFunction
-    ): Promise<Response> => {
-        let currentRound: IRound | undefined = currentGame.getCurrentRound();
-        if (currentRound) {
-        currentRound.victory = req.body.victory;
-        currentRound.started = req.body.started;
-        currentRound.ended = req.body.ended;
-        return res.send(currentRound);
-        }
-        return res.sendStatus(404);
-    };
+        return async (
+            req: Request,
+            res: Response,
+            next?: NextFunction
+        ): Promise<Response> => {
+            let currentRound: IRound | undefined = currentGame.getCurrentRound();
+            if (currentRound) {
+            currentRound.victory = req.body.victory;
+            currentRound.started = req.body.started;
+            currentRound.ended = req.body.ended;
+            return res.send(currentRound);
+            }
+            return res.sendStatus(404);
+        };
     }
 
-    // initializeMinigameTasks = async(){
-    //     // Read from json
-    // }
+    public startCurrentRound(){
+        return async (
+            req: Request,
+            res: Response,
+            next?: NextFunction
+        ): Promise<Response> => {
+            let currentRound: IRound | undefined = currentGame.getCurrentRound();
+            if (currentRound) {
+                currentRound.started = true;
 
+                // TODO - Start Timer
+                
+                return res.send(currentRound);
+            }
+            return res.sendStatus(404);
+        };
+    }
 }
