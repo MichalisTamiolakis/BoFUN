@@ -1,3 +1,4 @@
+import { IdleComponent } from './pages/smartphone/idle/idle.component';
 import { TriviaHiddenQuestionComponent } from './pages/smartphone/trivia-hidden-question/trivia-hidden-question.component';
 import { PantomimeMobileComponent } from './pages/smartphone/pantomime-mobile/pantomime-mobile.component';
 import { ReviewTeamCardComponent } from './pages/smartphone/review-team-card/review-team-card.component';
@@ -41,6 +42,10 @@ const routes: Routes = [
       {path: "trivia/:playerId/hiddenQuestion", component: TriviaHiddenQuestionComponent},
       {path: "trivia/:playerId/answerQuestion", component: TriviaAnswerQuestionComponent},
     ]
+  },
+  {
+    path: "idle/:playerId",
+    component: IdleComponent,
   },
   { path: "**", redirectTo: "surroundwall", pathMatch: "full" },
 ];

@@ -32,7 +32,13 @@ export class TeamCardComponent implements OnInit {
     });
 
     this.sockets.subscribe('TeamUpdated', (data: any) => {
-      console.log("socket msg",data)
+      console.log("socket msg",JSON.parse(data))
+      let team =JSON.parse(data)
+      if(this.team.id === team.id){
+        this.teamService.getTeamPlayers(this.team.id).subscribe((result) => {
+          this.teamPlayers = result;
+        });
+      }
     });
   }
 

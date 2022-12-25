@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from 'src/app/global/models/player/player';
 import { Team } from 'src/app/global/models/team/team';
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 import { TeamService } from 'src/app/global/services/team.service';
 import { UserService } from 'src/app/global/services/user.service';
 
@@ -16,7 +17,7 @@ export class ReviewTeamCardComponent implements OnInit {
   team: any;
   players: any;
   constructor(private route: ActivatedRoute, private userService: UserService,
-    private teamService: TeamService, private router: Router) {}
+    private teamService: TeamService, private router: Router,private sockets: SocketsService) {}
 
   ngOnInit(): void {
     this.playerId = this.route.snapshot.paramMap.get('playerId');
@@ -30,6 +31,21 @@ export class ReviewTeamCardComponent implements OnInit {
         console.log("team",this.team,"players",this.players);
       })
     })
+
+
+    
+this.sockets.subscribe('TeamUpdated', (data: any) => {
+      console.log("socket msg",JSON.parse(data))
+      let team =JSON.parse(data)
+      if(this.team.id === team.id){
+        this.teamService.getTeam(this.team.id).subscribe((result) => {
+          this.team = result;
+        });
+        this.teamService.getTeamPlayers(this.team.id).subscribe((result) => {
+          this.players = result;
+        });
+      }
+    });
   }
 
   removePlayer(){

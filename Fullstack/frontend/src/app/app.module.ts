@@ -31,6 +31,7 @@ import { TeamStatisticsCardComponent } from './components/surround-wall/team-sta
 import { GameStatisticsCardComponent } from './components/surround-wall/game-statistics-card/game-statistics-card.component';
 import { ChartComponent } from './components/surround-wall/chart/chart.component';
 import { EndGameComponent } from './pages/surround-wall/end-game/end-game.component';
+import { IdleComponent } from './pages/smartphone/idle/idle.component';
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     TeamStatisticsCardComponent,
     GameStatisticsCardComponent,
     ChartComponent,
-    EndGameComponent
+    EndGameComponent,
+    IdleComponent
   ],
   imports: [
     SocketIoModule.forRoot(socketIoConfig),
