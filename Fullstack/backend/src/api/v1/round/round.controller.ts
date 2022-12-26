@@ -80,6 +80,7 @@ export class Round {
         );
 
         if (newRound) {
+          socketService.broadcast("NewRound", JSON.stringify(newRound));
             return res.send(newRound);
         }
 

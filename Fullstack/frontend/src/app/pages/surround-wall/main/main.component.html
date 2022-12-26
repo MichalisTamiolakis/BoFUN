@@ -26,8 +26,8 @@ margin-left: 50px;">
                 <td class="rest" *ngFor="let game of toArray(round);">
                     <div *ngIf="game.team!==-1" style="display: flex;align-items: center;justify-content: space-evenly;">
                         <div style="display: flex;align-items: center;width: 70%;">
-                            <span class="iconify pen" style="width: 20px;height:20px" [ngStyle]="icons[game.miniGame].style" [attr.data-icon]="icons[game.miniGame].class"></span>
-                        <div>{{getMiniGameName(game.miniGame)}}</div>
+                            <span class="iconify pen" style="width: 20px;height:20px" [ngStyle]="icons[game.minigame].style" [attr.data-icon]="icons[game.minigame].class"></span>
+                        <div>{{getMiniGameName(game.minigame)}}</div>
                         </div>
                         
                         <div style="width: 15px;

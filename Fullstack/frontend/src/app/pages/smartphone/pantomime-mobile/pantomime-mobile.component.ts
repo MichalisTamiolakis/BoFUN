@@ -1,6 +1,8 @@
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 import { RoundService } from './../../../global/services/round.service';
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/global/services/game.service';
+import { ActivatedRoute, Router } from '@angular/router';
 interface IObjectKeys {
   [key: string]: string | number | undefined;
 }
@@ -25,7 +27,9 @@ export class PantomimeMobileComponent implements OnInit {
   minutes: number = 0;
   seconds: number = 0;
   currentRound:any
-  constructor(private gameService: GameService,private roundService: RoundService) {}
+  playerId:number;
+  constructor(private route: ActivatedRoute,
+    private router: Router,private gameService: GameService,private roundService: RoundService,private sockets:SocketsService) {}
   public game: any;
   ngOnInit(): void {
     this.Math = Math;
@@ -36,9 +40,17 @@ export class PantomimeMobileComponent implements OnInit {
       this.seconds = result.duration - this.minutes * 60;
     });
 
-    this.roundService.getCurrentRound().subscribe((result:any)=>{
+    this.roundService.getCurrentRound().subscribe((result: any) => {
       this.currentRound = result;
-    })
+      let gameJson = JSON.parse(this.currentRound.minigameJSON);
+      this.gameInfo.topic = gameJson.task;
+      this.gameInfo.category = gameJson.category;
+    });
+
+    this.sockets.subscribe('NewRound', (msg: any) => {
+      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
+    });
   }
 
   onClick(){

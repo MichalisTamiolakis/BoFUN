@@ -5,7 +5,7 @@
         </div>
         <div class="question">{{gameInfo.question}}</div>
         <app-trivia-option *ngFor="let option of gameInfo.options; index as i" [text]="option" [index]="i" [options]="options"></app-trivia-option>
-        <div class="mobileButton" [ngStyle]="{background: optionIsSelected() ? 'linear-gradient(180deg, #4128F9 0%, #482FFF 100%)' : 'linear-gradient(0deg, #A498FF, #A498FF)',marginTop: '10%'}">
+        <div class="mobileButton" (click)="checkAnswer()" [ngStyle]="{background: optionIsSelected() ? 'linear-gradient(180deg, #4128F9 0%, #482FFF 100%)' : 'linear-gradient(0deg, #A498FF, #A498FF)',marginTop: '10%'}">
             Lock Answer
         </div>
     </div>

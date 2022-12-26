@@ -5,14 +5,14 @@
         </div>
     </div>
     <div class="description">
-        <div> <span class="bolder">Team 1</span>, it’s time to play <span class="bolder">Trivia</span>!
+        <div> <span class="bolder">{{teamName}}</span>, it’s time to play <span class="bolder">Trivia</span>!
         </div>
         <div style="margin-top: 7px;">Choose the correct answer. The clock is ticking...
         </div>
     </div>
     <div class="questionContainer">
         <div class="content">
-            <div class="question">From which Shakespeare play is the line 'Now is the winter of our discontent'?</div>
+            <div class="question">{{question}}</div>
             <div class="options">
                 <div class="top">
                     <div class="option left">
@@ -21,7 +21,7 @@
                                 A
                             </div>
                         </div>
-                        <div class="text">LALALA</div>
+                        <div class="text">{{answers[0]}}</div>
                     </div>
                     <div class="option right">
                         <div class="order">
@@ -29,7 +29,7 @@
                                 B
                             </div>
                         </div>
-                        <div class="text">LALALA</div>
+                        <div class="text">{{answers[1]}}</div>
                     </div>
                 </div>
                 <div class="bottom">
@@ -39,7 +39,7 @@
                                 C
                             </div>
                         </div>
-                        <div class="text">LALALA</div>
+                        <div class="text">{{answers[2]}}</div>
                     </div>
                     <div class="option right">
                         <div class="order">
@@ -47,7 +47,7 @@
                                 D
                             </div>
                         </div>
-                        <div class="text">LALALA</div>
+                        <div class="text">{{answers[3]}}</div>
                     </div>
                 </div>
             </div>

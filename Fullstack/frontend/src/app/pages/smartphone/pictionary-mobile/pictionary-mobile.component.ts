@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from 'src/app/global/services/game.service';
 import { RoundService } from 'src/app/global/services/round.service';
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 
 @Component({
   selector: 'app-pictionary-mobile',
@@ -16,7 +18,12 @@ export class PictionaryMobileComponent implements OnInit {
   minutes: number = 0;
   seconds: number = 0;
   currentRound: any;
+  playerId:number;
+  task:string='';
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+private sockets:SocketsService,
     private gameService: GameService,
     private roundService: RoundService
   ) {}
@@ -31,6 +38,12 @@ export class PictionaryMobileComponent implements OnInit {
     });
     this.roundService.getCurrentRound().subscribe((result: any) => {
       this.currentRound = result;
+      let gameJson = JSON.parse(this.currentRound.minigameJSON);
+      this.task = gameJson.task;
+    });
+    this.sockets.subscribe('NewRound', (msg: any) => {
+      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
     });
   }
 

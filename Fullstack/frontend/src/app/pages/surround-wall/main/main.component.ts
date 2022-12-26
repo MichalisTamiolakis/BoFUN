@@ -1,7 +1,9 @@
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 import { Component, OnInit } from '@angular/core';
 import { MiniGame, Round } from 'src/app/global/models/round/round';
 import { GameService } from 'src/app/global/services/game.service';
 import { TeamService } from 'src/app/global/services/team.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -9,7 +11,7 @@ import { TeamService } from 'src/app/global/services/team.service';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  currentTeamName:string = ''
+  currentTeamName: string = '';
   icons: any = [
     {
       class: 'fa6-solid:masks-theater',
@@ -138,14 +140,16 @@ export class MainComponent implements OnInit {
       remainingTime: 0,
       started: true,
       ended: true,
-    }
+    },
   ];
   groupedRounds: any = [];
   teamNames: Array<string> = [];
   emptyCells: any;
   constructor(
     private gameService: GameService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private sockets: SocketsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -162,13 +166,11 @@ export class MainComponent implements OnInit {
           });
       }
       let test = [];
-      this.rounds = this.game.rounds
-      var currentTeamId = this.rounds[this.rounds.length-1].team;
-      this.teamService
-          .getTeam(currentTeamId)
-          .subscribe((team: any) => {
-            this.currentTeamName = team.name
-          });
+      this.rounds = this.game.rounds;
+      var currentTeamId = this.rounds[this.rounds.length - 1].team;
+      this.teamService.getTeam(currentTeamId).subscribe((team: any) => {
+        this.currentTeamName = team.name;
+      });
       while (this.rounds.length > 0) {
         test.push(this.rounds.splice(0, this.game.teams.length));
       }
@@ -187,6 +189,18 @@ export class MainComponent implements OnInit {
       }
       this.groupedRounds = test;
       console.log('this.groupedRounds', this.groupedRounds);
+    });
+
+    this.sockets.subscribe('CurrentRoundStarted', (msg: any) => {
+      let round = JSON.parse(msg);
+      if (round.minigame === 0)
+        this.router.navigateByUrl('surroundwall/pantomime/');
+      else if (round.minigame === 1)
+        this.router.navigateByUrl('surroundwall/trivia/');
+      else if (round.minigame === 2)
+        this.router.navigateByUrl('surroundwall/pictionary/');
+
+      // this.teams = JSON.parse(msg)
     });
   }
 
