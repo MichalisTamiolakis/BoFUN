@@ -9,6 +9,7 @@
   margin-left: 20px;
   margin-right: 20px;
   align-items: center;
+  // justify-content: center;
 }
 
 .team-icon {
@@ -50,5 +51,32 @@
   flex-direction: column;
   align-items: center;
   color: black;
-  margin-top: 35px;
+  // margin-top: 35px;
+  margin-top: 50%;
+  // position: absolute;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  font-style: italic;
+  font-weight: 200;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.02em;
+  margin-left: 10%;
+  /* Beige */
+
+  color: #f9f8f2;
+  position: absolute;
+  top: 10px;
+  left: -10px;
+}
+textarea:focus, input:focus {
+    color: #f9f8f2;
+}
+
+textarea, input {
+  color: #f9f8f2;
 }

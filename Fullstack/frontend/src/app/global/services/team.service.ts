@@ -29,4 +29,9 @@ export class TeamService {
     return this.http
       .put(`${this.apiUrl}/BoFUN/game/assignPlayerToTeam/${playerId}`, {teamId: teamId,username:playerName});
   }
+
+  public editTeam(teamId:number,name:string,image:string) {
+    return this.http
+      .put(`${this.apiUrl}/BoFUN/game/editTeam/${teamId}`, {name,image});
+  }
 }

@@ -29,6 +29,7 @@ export class GameController {
       .get("/winnerTeam", this.getWinnerTeam())
       .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
       .put("/setPlayerName/:playerId", this.setNameToPlayer())
+      .put("/editTeam/:teamId", this.editTeam())
       .delete(
         "/removePlayer/:playerId/fromTeam/:teamId",
         this.removePlayerFromTeam()
@@ -195,7 +196,7 @@ export class GameController {
         // res.sendStatus(200);
 
         // const socketService = DIContainer.get(SocketsService);
-        socketService.broadcast("TeamUpdated", Number(req.body.teamId));
+        socketService.broadcast("TeamUpdated", JSON.stringify(chosenTeam));
         return res.send(currentGameModule.game);
       }
       return res.sendStatus(400);
@@ -236,6 +237,24 @@ export class GameController {
       let teams: Array<ITeam> = currentGameModule.game.teams;
       let team: any = teams.find(({ id }) => id === Number(req.params.teamId));
       if (team !== undefined) {
+        return res.send(team);
+      }
+      return res.sendStatus(400);
+    };
+  }
+
+  public editTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let teams: Array<ITeam> = currentGameModule.game.teams;
+      let team: any = teams.find(({ id }) => id === Number(req.params.teamId));
+      if (team !== undefined) {
+        team.name = req.body.name;
+        team.image = req.body.image;
+        socketService.broadcast("TeamUpdated", JSON.stringify(team));
         return res.send(team);
       }
       return res.sendStatus(400);
