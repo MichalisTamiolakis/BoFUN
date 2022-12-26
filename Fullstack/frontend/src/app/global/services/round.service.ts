@@ -17,8 +17,14 @@ export class RoundService {
       .get(`${this.apiUrl}/BoFUN/game/round/current`);
   }
 
-  public editCurrentRound(victory:boolean,started:boolean,ended:boolean){
+  public setResult(victory:boolean){
     return this.http
-      .put(`${this.apiUrl}/BoFUN/game/round/editCurrent`,{victory,started,ended});
+      .put(`${this.apiUrl}/BoFUN/game/round/setResult`,{victory});
+  }
+  
+
+  public startCurrentRound(){
+    return this.http
+      .post(`${this.apiUrl}/BoFUN/game/round/current/start`,{});
   }
 }

@@ -53,11 +53,20 @@ private sockets:SocketsService,
       this.gameInfo.question = gameJson.question;
       this.gameInfo.options = gameJson.answers;
       this.gameInfo.correctAnswer = gameJson.correctAnswer;
-      this.roundService.editCurrentRound(false, true,false).subscribe();
+      this.roundService.startCurrentRound().subscribe((res:any)=>{
+        this.currentRound = res;
+      });
     });
 
     this.sockets.subscribe('NewRound', (msg: any) => {
       this.router.navigateByUrl('idle/' + this.playerId);
+    });
+
+    this.sockets.subscribe('RoundTimerUpdated', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.currentRound = round;
+      this.minutes = Math.trunc(this.currentRound.remainingTime / 60);
+    this.seconds = this.currentRound.remainingTime - this.minutes * 60;
     });
   }
   optionIsSelected(){
@@ -71,9 +80,13 @@ private sockets:SocketsService,
     for (let i = 0; i < this.options.length; i++) {
       if(this.options[i]===true){
         if(i===this.gameInfo.correctAnswer){
-          this.roundService.editCurrentRound(true, true,true).subscribe();
+          this.roundService.setResult(true).subscribe((result:any)=>{
+            this.currentRound = result
+          });
         }
-        else this.roundService.editCurrentRound(false, true,true).subscribe();
+        else this.roundService.setResult(false).subscribe((result:any)=>{
+          this.currentRound = result
+        });
       }
     }
   }

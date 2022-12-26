@@ -7,7 +7,7 @@ import { DIContainer, SocketsService } from "../../../services";
 
 var currentGame: Game = require("../../../models/Game/currentGame.module").game;
 const socketService = DIContainer.get(SocketsService);
-
+var timer: string | number | NodeJS.Timer | undefined;
 
 export class Round {
     public applyRoutes(): Router {
@@ -18,7 +18,7 @@ export class Round {
         .get("/get/:roundId", this.getRound())
         .get("/current", this.getCurrentRound())
         .post("/new/:miniGame", this.newRound())
-        .put("/editCurrent", this.editRound())
+        .put("/setResult", this.setResult())
         .post("/current/start", this.startCurrentRound());
         
     return router;
@@ -105,6 +105,24 @@ export class Round {
         };
     }
 
+    public setResult() {
+      return async (
+          req: Request,
+          res: Response,
+          next?: NextFunction
+      ): Promise<Response> => {
+          let currentRound: IRound | undefined = currentGame.getCurrentRound();
+          if (currentRound) {
+          currentRound.victory = req.body.victory;
+          currentRound.ended = true;
+          clearInterval(timer);
+          socketService.broadcast("RoundEnded", JSON.stringify(currentRound));
+          return res.send(currentRound);
+          }
+          return res.sendStatus(404);
+      };
+  }
+
     public startCurrentRound(){
         return async (
             req: Request,
@@ -114,8 +132,8 @@ export class Round {
             let currentRound: IRound | undefined = currentGame.getCurrentRound();
             if (currentRound) {
                 
-                socketService.broadcast("CurrentRoundStarted", currentRound);
-
+                socketService.broadcast("CurrentRoundStarted", JSON.stringify(currentRound));
+                currentRound.started = true;
                 this.StartTimer(currentRound);
                 
                 return res.send(currentRound);
@@ -126,18 +144,19 @@ export class Round {
 
     private StartTimer(round:IRound){
         round.started = true;
-        let timer = setInterval(()=>{
+        timer = setInterval(()=>{
             if(round.ended || round.remainingTime<=0)
             {
+                round.victory = false;
                 round.ended = true;
-                socketService.broadcast("RoundEnded", round);
+                socketService.broadcast("RoundEnded", JSON.stringify(round));
                 clearInterval(timer);
 
                 return;
             }
             
             round.remainingTime -= 1;
-            socketService.broadcast("RoundTimerUpdated", round);
+            socketService.broadcast("RoundTimerUpdated", JSON.stringify(round));
 
         }, 1000);
     }

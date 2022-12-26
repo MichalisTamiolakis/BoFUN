@@ -2,30 +2,63 @@ import { TeamService } from 'src/app/global/services/team.service';
 import { RoundService } from 'src/app/global/services/round.service';
 import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trivia',
   templateUrl: './trivia.component.html',
-  styleUrls: ['./trivia.component.scss']
+  styleUrls: ['./trivia.component.scss'],
 })
 export class TriviaComponent implements OnInit {
-  question:string=''
-  answers:Array<string> = []
-  teamName:string = ''
-  constructor(private sockets: SocketsService, private roundService:RoundService,private teamService:TeamService) { }
+  round: any;
+  question: string = '';
+  answers: Array<string> = [];
+  teamName: string = '';
+  minutes: number = 0;
+  seconds: number = 0;
+  Math:any
+  constructor(
+    private sockets: SocketsService,
+    private roundService: RoundService,
+    private teamService: TeamService,private router: Router
+  ) {
+    this.Math = Math;
+  }
 
   ngOnInit(): void {
-    this.roundService.getCurrentRound().subscribe((result:any)=>{
-      let gameJson = JSON.parse(result.minigameJSON)
-      this.question = gameJson.question
-      this.answers = gameJson.answers
-      this.teamService.getTeam(result.team).subscribe((team:any)=>{
+    this.roundService.getCurrentRound().subscribe((result: any) => {
+      this.round = result;
+      this.minutes = Math.trunc(this.round.remainingTime / 60);
+      this.seconds = this.round.remainingTime - this.minutes * 60;
+      let gameJson = JSON.parse(result.minigameJSON);
+      this.question = gameJson.question;
+      this.answers = gameJson.answers;
+      this.teamService.getTeam(result.team).subscribe((team: any) => {
         this.teamName = team.name;
-      })
-    })
+      });
+    });
+    this.sockets.subscribe('RoundTimerUpdated', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.round = round;
+
+      this.minutes = Math.trunc(this.round.remainingTime / 60);
+      this.seconds = this.round.remainingTime - this.minutes * 60;
+    });
+
+    this.sockets.subscribe('RoundEnded', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.round = round;
+      
+this.sockets.subscribe('RoundEnded', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.round = round;
+      setTimeout(() => {
+        this.router.navigateByUrl('surroundwall/main');
+      }, 6000);
+    });
+    });
     // this.sockets.subscribe('NewRound', (msg: any) => {
     //   this.router.navigateByUrl('idle/' + this.playerId);
     // });
   }
-
 }

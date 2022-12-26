@@ -1,7 +1,9 @@
+import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Game } from 'src/app/global/models/game/game';
 import { MiniGame } from 'src/app/global/models/round/round';
+import { RoundService } from 'src/app/global/services/round.service';
 
 @Component({
   selector: 'app-surround-wall',
@@ -34,14 +36,26 @@ export class SurroundWallComponent implements OnInit {
   ];
   public current_date_str: string ="";
   public current_time_str: string = "";
-
+  public round:any;
   isPictionary:boolean = false;
-  constructor(private router: Router) {
+  constructor(private router: Router, private sockets:SocketsService,private roundService:RoundService) {
     this.isPictionary = (this.router.url.split('/')).includes('pictionary')
   }
 
   ngOnInit() {
-    console.log((this.router.url.split('/')).includes('pictionary'));
+    this.roundService.getCurrentRound().subscribe((result: any) => {
+      this.round = result;
+    });
+    this.sockets.subscribe('RoundEnded', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.round = round;
+    });
+    this.sockets.subscribe('NewRound', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.round = round;
+    });
+    this.isPictionary = (this.router.url.split('/')).includes('pictionary')
+    console.log(this.round);
     setInterval(() => {
       const current_date = new Date();
       this.current_time_str =

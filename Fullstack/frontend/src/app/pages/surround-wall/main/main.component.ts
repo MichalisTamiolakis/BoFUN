@@ -190,15 +190,15 @@ export class MainComponent implements OnInit {
       this.groupedRounds = test;
       console.log('this.groupedRounds', this.groupedRounds);
     });
-
     this.sockets.subscribe('CurrentRoundStarted', (msg: any) => {
       let round = JSON.parse(msg);
+      console.log("round.minigame==",round.minigame)
       if (round.minigame === 0)
-        this.router.navigateByUrl('surroundwall/pantomime/');
+        this.router.navigateByUrl('surroundwall/pantomime');
       else if (round.minigame === 1)
-        this.router.navigateByUrl('surroundwall/trivia/');
+        this.router.navigateByUrl('surroundwall/trivia');
       else if (round.minigame === 2)
-        this.router.navigateByUrl('surroundwall/pictionary/');
+        this.router.navigateByUrl('surroundwall/pictionary');
 
       // this.teams = JSON.parse(msg)
     });

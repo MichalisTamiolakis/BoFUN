@@ -45,6 +45,13 @@ private sockets:SocketsService,
       this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
       this.router.navigateByUrl('idle/' + this.playerId);
     });
+
+    this.sockets.subscribe('RoundTimerUpdated', (msg: any) => {
+      let round = JSON.parse(msg);
+      this.currentRound = round;
+      this.minutes = Math.trunc(this.currentRound.remainingTime / 60);
+    this.seconds = this.currentRound.remainingTime - this.minutes * 60;
+    });
   }
 
   onClick() {
@@ -53,19 +60,16 @@ private sockets:SocketsService,
     else this.endGame();
   }
 
-  startGame() {
-    this.roundService
-      .editCurrentRound(false, true, false)
-      .subscribe((result: any) => {
-        this.currentRound = result;
-      });
+  startGame(){
+    this.roundService.startCurrentRound().subscribe((result:any)=>{
+      this.currentRound = result
+      
+    });
   }
 
-  endGame() {
-    this.roundService
-      .editCurrentRound(true, true, true)
-      .subscribe((result: any) => {
-        this.currentRound = result;
-      });
+  endGame(){
+    this.roundService.setResult(true).subscribe((result:any)=>{
+      this.currentRound = result
+    });
   }
 }

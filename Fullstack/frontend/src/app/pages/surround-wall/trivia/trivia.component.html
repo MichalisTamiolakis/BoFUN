@@ -1,7 +1,7 @@
 <div class="myContainer">
     <div class="circle">
         <div class="timer">
-            01 : 00
+            0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}
         </div>
     </div>
     <div class="description">
@@ -54,4 +54,14 @@
         </div>
 
     </div>
+    
+    <div *ngIf="(round!==undefined && round!==null) && round.ended === true" [ngStyle]="{background: (round!==undefined && round!==null) && !round.victory ? 'linear-gradient(180deg, #db625e 0%, #e5716d 100%)' : 'linear-gradient(180deg, #317165 0%, #387C68 100%)'}"
+            [ngClass]="{'endGame': true, 'appear circleEnd': round.started === true }">
+            <div [ngClass]="{'endGameTitle': round.started === true}" [ngStyle]="{color: round.victory ? 'white' : 'black'}">
+                {{round.victory ? "You' ve won!" : "You' ve lost!"}}
+            </div>
+            <div *ngIf="round.remainingTime===0" [ngClass]="{'endGameSubTitle': round.started === true && round.ended === true}">
+                Time' s up
+            </div>
+        </div>
 </div>

@@ -1,9 +1,16 @@
-<div class="myNavbar" [ngStyle]="{background: isPictionary ? 'radial-gradient(50% 50% at 50% 50%, rgba(28, 32, 32, 0.95) 0%, rgba(43, 47, 47, 0.95) 100%)' : 'rgba(255, 255, 255, 0.05)'}">
+<div>
+   <div [ngClass]="{'black': (round!==undefined && round.ended === true) }">
+
+    </div> 
+    <div class="myNavbar" [ngStyle]="{background: (round!==undefined && round.minigame === 2 && round.ended === false) ? 'radial-gradient(50% 50% at 50% 50%, rgba(28, 32, 32, 0.95) 0%, rgba(43, 47, 47, 0.95) 100%)' : 'rgba(255, 255, 255, 0.05)'}">
     <img id="logo" src="assets/logo.png" alt="logo">
     <div id="current_date_time">
         <div id="current_time"><b>{{current_time_str}}</b></div>
         <div id="current_date"><b>{{current_date_str}}</b></div>
     </div>
+    
 </div>
+</div>
+
 
 <router-outlet></router-outlet>
