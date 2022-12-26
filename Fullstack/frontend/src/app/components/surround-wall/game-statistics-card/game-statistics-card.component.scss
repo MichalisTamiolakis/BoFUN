@@ -45,3 +45,29 @@
   .chart{
     margin-left: -35px;
   }
+
+  .teamInfo{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    margin-bottom: 8px;
+  }
+
+  .circle{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-left: 8px;
+  }
+
+  .team{
+    font-style: normal;
+font-weight: 400;
+font-size: 25px;
+line-height: 23px;
+display: flex;
+align-items: center;
+letter-spacing: -0.02em;
+
+color: #000000;
+  }

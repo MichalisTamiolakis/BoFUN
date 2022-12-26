@@ -5,7 +5,7 @@
         <div class="allCharts">
             <!-- <app-chart *ngFor="let miniGame of teamScore.miniGames" [miniGame]="miniGame"></app-chart> -->
             <div *ngFor="let miniGame of teamScore.miniGames">
-                <div>{{getMiniGameName(miniGame.miniGameId)}}</div>
+                <div class="title">{{getMiniGameName(miniGame.miniGameId)}}</div>
                 <div class="chart">
                     <apx-chart
                       [series]="miniGame.statistics"

@@ -1,5 +1,5 @@
 <div>
-   <div [ngClass]="{'black': (round!==undefined && round.ended === true) }">
+   <div [ngClass]="{'black': (round!==undefined && round.ended === true && winner === -1) }">
 
     </div> 
     <div class="myNavbar" [ngStyle]="{background: (round!==undefined && round.minigame === 2 && round.ended === false) ? 'radial-gradient(50% 50% at 50% 50%, rgba(28, 32, 32, 0.95) 0%, rgba(43, 47, 47, 0.95) 100%)' : 'rgba(255, 255, 255, 0.05)'}">

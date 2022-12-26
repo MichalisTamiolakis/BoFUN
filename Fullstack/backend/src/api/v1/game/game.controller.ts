@@ -4,6 +4,7 @@ import { Game } from "../../../models/Game/game";
 import { ITeam } from "../../../models/Team/team";
 import { IPlayer } from "../../../models/Player/player";
 import { DIContainer, SocketsService } from "../../../services";
+import { IRound } from "../../../models/Round/round";
 
 var currentGameModule = require("../../../models/Game/currentGame.module");
 var gameSettingsModule = require("../../../models/GameSettings/gameSettings.module");
@@ -15,7 +16,7 @@ export class GameController {
     const router = Router();
 
     router
-    
+
       .delete("/", this.destroyGame())
       .post("/create", this.createGame())
       .post("/createPlayer", this.createPlayer())
@@ -27,6 +28,7 @@ export class GameController {
       .get("/teamsScores", this.getTeamsScores())
       .get("/gamesScores", this.getGamesScores())
       .get("/winnerTeam", this.getWinnerTeam())
+      .get("/nextTeam", this.getNextTeam())
       .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
       .put("/setPlayerName/:playerId", this.setNameToPlayer())
       .put("/editTeam/:teamId", this.editTeam())
@@ -122,8 +124,6 @@ export class GameController {
         return res.send(newPlayer);
       }
 
-      
-
       return res.send(player);
     };
   }
@@ -147,7 +147,6 @@ export class GameController {
         chosenTeam.members.push(Number(req.params.playerId));
         // res.sendStatus(200);
 
-        
         // socketService.broadcast("TeamUpdated", [teams]);
         socketService.broadcast("TeamUpdated", JSON.stringify(chosenTeam));
         return res.send(currentGameModule.game);
@@ -217,6 +216,73 @@ export class GameController {
     };
   }
 
+  getCurrentRound(): IRound | undefined {
+    let rounds = currentGameModule.game.rounds;
+    if (rounds.length > 0) {
+      return rounds[rounds.length - 1];
+    }
+    return undefined;
+  }
+
+  public getNextTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let teams = currentGameModule.game.teams;
+      let players: Array<IPlayer> = currentGameModule.game.players;
+      let player = players.find(({ id }) => id === Number(req.params.playerId));
+      if (player !== undefined) {
+        player.teamId = req.body.teamId;
+        player.username = req.body.username;
+        socketService.broadcast("PlayerUpdated", JSON.stringify(player));
+      }
+      let currentRound: any = this.getCurrentRound();
+
+      if (currentGameModule.game.sequence.length <= 0 || teams.length <= 0)
+        return res.sendStatus(400);
+
+      if (currentRound !== undefined) {
+        // Find the team of the current round
+        let currentRoundTeam: ITeam | undefined = teams.find(
+          ({ id }: { id: number }) => id === currentRound.team
+        );
+
+        if (currentRoundTeam) {
+          for (let i = 0; i < currentGameModule.game.sequence.length; i++) {
+            if (currentGameModule.game.sequence[i] == currentRoundTeam.id) {
+              // Next team index
+              let nextTeamSequenceIndex: number = i + 1;
+              if (
+                nextTeamSequenceIndex >= currentGameModule.game.sequence.length
+              ) {
+                nextTeamSequenceIndex = 0;
+              }
+              let team = teams.find(
+                ({ id }: { id: number }) =>
+                  id === currentGameModule.game.sequence[nextTeamSequenceIndex]
+              );
+              return res.send(team);
+            }
+          }
+
+          console.log("Incorrect team id in current round");
+          return res.sendStatus(400);
+        } else {
+          console.log("Incorrect team id in current round");
+        }
+      } else {
+        // This is the first round
+        let team = teams.find(
+          ({ id }: { id: number }) => id === currentGameModule.game.sequence[0]
+        );
+        return res.send(team);
+      }
+      return res.sendStatus(400);
+    };
+  }
+
   public getTeams() {
     return async (
       req: Request,
@@ -261,6 +327,24 @@ export class GameController {
     };
   }
 
+  public setWinnerTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game.winningTeam = Number(req.params.teamId);
+      let team: any = currentGameModule.game.teams.find(
+        ({ id }: { id: number }) => id === Number(req.params.teamId)
+      );
+      if (team !== undefined) {
+        socketService.broadcast("GameOver", JSON.stringify(team));
+        return res.send(team);
+      }
+      return res.sendStatus(400);
+    };
+  }
+
   public getWinnerTeam() {
     return async (
       req: Request,
@@ -268,8 +352,11 @@ export class GameController {
       next?: NextFunction
     ): Promise<Response> => {
       let winningTeamId: number = currentGameModule.game.winningTeam;
-      let team: any =  currentGameModule.game.teams.find(({ id }:{ id :number }) => id === winningTeamId);
+      let team: any = currentGameModule.game.teams.find(
+        ({ id }: { id: number }) => id === winningTeamId
+      );
       if (team !== undefined) {
+        
         return res.send(team);
       }
       return res.sendStatus(400);
@@ -301,7 +388,9 @@ export class GameController {
           bestOverall: any[];
           miniGames: any[];
         } = {
-          teamName: currentGameModule.game.teams.find(({ id }:{ id:number }) => id === i).name,
+          teamName: currentGameModule.game.teams.find(
+            ({ id }: { id: number }) => id === i
+          ).name,
           bestOverall: [],
           miniGames: [],
         };
@@ -344,7 +433,7 @@ export class GameController {
                   round.player === player.id &&
                   round.team === teamsId[i] &&
                   round.victory &&
-                  round.miniGame === selectedMiniGames[miniGame]
+                  round.minigame === selectedMiniGames[miniGame]
                 );
               }
             );
@@ -366,15 +455,15 @@ export class GameController {
           teamResults.miniGames.push(miniGameEntry);
         }
         let maxScore = Math.max(...bestOverallCounters);
-          for (
-            let scoreIndex = 0;
-            scoreIndex < bestOverallCounters.length;
-            scoreIndex++
-          ) {
-            if (bestOverallCounters[scoreIndex] === maxScore) {
-              teamResults.bestOverall.push(players[scoreIndex]);
-            }
+        for (
+          let scoreIndex = 0;
+          scoreIndex < bestOverallCounters.length;
+          scoreIndex++
+        ) {
+          if (bestOverallCounters[scoreIndex] === maxScore) {
+            teamResults.bestOverall.push(players[scoreIndex]);
           }
+        }
         results.push(teamResults);
       }
       return res.send(results);
@@ -407,7 +496,11 @@ export class GameController {
           teamId: teamId,
           miniGames: [],
         };
-        for (let miniGameId = 0; miniGameId < selectedMiniGames.length; miniGameId++) {
+        for (
+          let miniGameId = 0;
+          miniGameId < selectedMiniGames.length;
+          miniGameId++
+        ) {
           var miniGame: {
             miniGameId: number;
             statistics: any[];
@@ -420,7 +513,7 @@ export class GameController {
               return (
                 round.team === teamsId[teamId] &&
                 round.victory &&
-                round.miniGame === selectedMiniGames[miniGameId]
+                round.minigame === selectedMiniGames[miniGameId]
               );
             }
           );
@@ -430,7 +523,7 @@ export class GameController {
               return (
                 round.team === teamsId[teamId] &&
                 !round.victory &&
-                round.miniGame === selectedMiniGames[miniGameId]
+                round.minigame === selectedMiniGames[miniGameId]
               );
             }
           );
@@ -456,13 +549,18 @@ export class GameController {
         }
       );
       console.log("teamsId", teamsId);
+      let selectedMiniGames: any = [];
+      //gather selected miniGames
+      if (currentGameModule.game.pantomime) selectedMiniGames.push(0);
+      if (currentGameModule.game.trivia) selectedMiniGames.push(1);
+      if (currentGameModule.game.pictionary) selectedMiniGames.push(2);
       var results: any = [];
-      for (let miniGameId = 0; miniGameId < 3; miniGameId++) {
+      for (let miniGameId = 0; miniGameId < selectedMiniGames.length; miniGameId++) {
         var miniGame: {
           miniGameId: number;
           statistics: Array<number>;
         } = {
-          miniGameId: miniGameId,
+          miniGameId: selectedMiniGames[miniGameId],
           statistics: [],
         };
         for (let teamId = 0; teamId < teamsId.length; teamId++) {
@@ -471,7 +569,7 @@ export class GameController {
               return (
                 round.team === teamsId[teamId] &&
                 round.victory &&
-                round.miniGame === miniGameId
+                round.minigame === selectedMiniGames[miniGameId]
               );
             }
           );
@@ -490,11 +588,10 @@ export class GameController {
       res: Response,
       next?: NextFunction
     ): Promise<Response> => {
-      let team:ITeam = currentGameModule.game.teams[0];
+      let team: ITeam = currentGameModule.game.teams[0];
       team.name = "IT WORKS";
       socketService.broadcast("TeamUpdated", JSON.stringify(team));
       return res.sendStatus(200);
     };
   }
-
 }

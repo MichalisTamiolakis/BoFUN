@@ -96,6 +96,10 @@ export class GameDisplayComponent implements OnInit {
         this.router.navigateByUrl('surroundwall/main');
       }, 6000);
     });
+
+    this.sockets.subscribe('GameOver', (msg: any) => {
+      this.router.navigateByUrl('surroundwall/endGame');
+    });
     
   }
 

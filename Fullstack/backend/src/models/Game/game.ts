@@ -77,7 +77,7 @@ export class Game{
     }
 
     setupDummyGame():void{
-        this.duration = 10;
+        this.duration = 1200;
         this.totalPlayers = 4;
         this.players = [
             {
@@ -128,7 +128,7 @@ export class Game{
         ];
         this.pantomime = true;
         this.pictionary = true;
-        this.trivia = true;
+        this.trivia = false;
         this.sequence = [1,0];
         this.winningTeam = 1;
         this.rounds = [{
@@ -183,9 +183,200 @@ export class Game{
             minigameJSON: "",
             victory: false,
             remainingTime: 20,
-            started: false,
+            started: true,
             ended: true,
-          },];
+          },
+        
+          {
+            id: 5, 
+            team: 1,
+            player: 1,
+            minigame: 0,
+            minigameJSON: "",
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 6, 
+            team: 0,
+            player: 0,
+            minigame: 1,
+            minigameJSON: "",
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 7, 
+            team: 1,
+            player: 3,
+            minigame: 2,
+            minigameJSON: "",
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 8, 
+            team: 0,
+            player: 2,
+            minigame: 0,
+            minigameJSON: "",
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 9, 
+            team: 1,
+            player: 1,
+            minigame: 1,
+            minigameJSON: "",
+            victory: false,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+        
+        //   {
+        //     id: 10, 
+        //     team: 1,
+        //     player: 1,
+        //     minigame: 0,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 11, 
+        //     team: 0,
+        //     player: 0,
+        //     minigame: 1,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 12, 
+        //     team: 1,
+        //     player: 3,
+        //     minigame: 2,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 13, 
+        //     team: 0,
+        //     player: 2,
+        //     minigame: 0,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 14, 
+        //     team: 1,
+        //     player: 1,
+        //     minigame: 1,
+        //     minigameJSON: "",
+        //     victory: false,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 15, 
+        //     team: 1,
+        //     player: 1,
+        //     minigame: 0,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 16, 
+        //     team: 0,
+        //     player: 0,
+        //     minigame: 1,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 17, 
+        //     team: 1,
+        //     player: 3,
+        //     minigame: 2,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 18, 
+        //     team: 0,
+        //     player: 2,
+        //     minigame: 0,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 19, 
+        //     team: 1,
+        //     player: 1,
+        //     minigame: 1,
+        //     minigameJSON: "",
+        //     victory: false,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        
+        //   {
+        //     id: 20, 
+        //     team: 1,
+        //     player: 1,
+        //     minigame: 0,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 21, 
+        //     team: 0,
+        //     player: 0,
+        //     minigame: 1,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        ];
     }
 
     startGame():void{

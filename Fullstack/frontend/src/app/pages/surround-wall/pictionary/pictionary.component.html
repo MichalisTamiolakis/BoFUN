@@ -10,6 +10,17 @@
             0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}
         </div>
     </div>
+    <div 
+    style="width: 80%;
+    height: 80%;
+    position: absolute;
+    top: 100px;
+    left: 20px;"
+
+    >
+        <img style="width: 100%;height: 100%;" src="{{url}}"
+>
+    </div>
     <div *ngIf="(round!==undefined && round!==null) && round.ended === true" [ngStyle]="{background: (round!==undefined && round!==null) && !round.victory ? 'linear-gradient(180deg, #db625e 0%, #e5716d 100%)' : 'linear-gradient(180deg, #317165 0%, #387C68 100%)'}"
             [ngClass]="{'endGame': true, 'appear circleEnd': round.started === true }">
             <div [ngClass]="{'endGameTitle': round.started === true}" [ngStyle]="{color: round.victory ? 'white' : 'black'}">

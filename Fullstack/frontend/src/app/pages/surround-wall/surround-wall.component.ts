@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Game } from 'src/app/global/models/game/game';
 import { MiniGame } from 'src/app/global/models/round/round';
 import { RoundService } from 'src/app/global/services/round.service';
+import { GameService } from 'src/app/global/services/game.service';
 
 @Component({
   selector: 'app-surround-wall',
@@ -38,11 +39,16 @@ export class SurroundWallComponent implements OnInit {
   public current_time_str: string = "";
   public round:any;
   isPictionary:boolean = false;
-  constructor(private router: Router, private sockets:SocketsService,private roundService:RoundService) {
+  winner:number = -1
+  constructor(private router: Router, private sockets:SocketsService,private roundService:RoundService, private gameService: GameService) {
     this.isPictionary = (this.router.url.split('/')).includes('pictionary')
   }
 
   ngOnInit() {
+    this.gameService.getWinnerTeam().subscribe((result: any) => {
+      console.log("win",result)
+      this.winner = result.id;
+    });
     this.roundService.getCurrentRound().subscribe((result: any) => {
       this.round = result;
     });
@@ -53,6 +59,10 @@ export class SurroundWallComponent implements OnInit {
     this.sockets.subscribe('NewRound', (msg: any) => {
       let round = JSON.parse(msg);
       this.round = round;
+    });
+    this.sockets.subscribe('GameOver', (msg: any) => {
+      let team = JSON.parse(msg);
+      this.winner = team.id
     });
     this.isPictionary = (this.router.url.split('/')).includes('pictionary')
     console.log(this.round);

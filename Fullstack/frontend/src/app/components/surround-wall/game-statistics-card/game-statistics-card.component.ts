@@ -8,6 +8,7 @@ import {
   ApexDataLabels,
   ApexLegend,
 } from 'ng-apexcharts';
+import { MiniGame } from 'src/app/global/models/round/round';
 type ChartOptions = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
@@ -25,47 +26,55 @@ type ChartOptions = {
 export class GameStatisticsCardComponent implements OnInit {
   chartOptions: ChartOptions | any;
   colors:any
+  teams:any
   @Input('gamesScores') gamesScores: any
   constructor(private teamService:TeamService) {
-    this.chartOptions = {
-      series: [4, 6],
-      labels: ['won', 'lost'],
-      chart: {
-        width: 230,
-        type: 'donut',
-      },
-      dataLabels: {
-        enabled: true,
-      },
-      fill: {
-        type: 'gradient',
-        colors: this.colors,
-      },
-      legend: {
-        formatter: function (val: any, opts: any) {
-          return val + ' - ' + opts.w.globals.series[opts.seriesIndex];
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
-    };
+    
   }
 
   ngOnInit(): void {
+    
     this.teamService.getTeams().subscribe((result:any)=>{
+      this.teams = result;
       this.colors= result.map((team:any)=> team.color)
-      // console.log(colors)
+      console.log(this.colors)
+      this.chartOptions = {
+        series: [4, 6],
+        labels: ['won', 'lost'],
+        chart: {
+          width: 230,
+          type: 'donut',
+        },
+        dataLabels: {
+          enabled: true,
+        },
+        fill: {
+          type: 'gradient',
+          colors: this.colors,
+        },
+        legend: {
+          formatter: function (val: any, opts: any) {
+            return val + ' - ' + opts.w.globals.series[opts.seriesIndex];
+          },
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: 'bottom',
+              },
+            },
+          },
+        ],
+      };
     })
+  }
+
+  getMiniGameName(id: number) {
+    return Object.values(MiniGame)[id].toString();
   }
 }

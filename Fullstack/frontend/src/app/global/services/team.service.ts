@@ -25,6 +25,11 @@ export class TeamService {
       .get(`${this.apiUrl}/BoFUN/game/team/${teamId}`);
   }
 
+  public getNextTeam() {
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/nextTeam`);
+  }
+
   public assignPlayerToTeam(playerId:number,teamId:number,playerName:string) {
     return this.http
       .put(`${this.apiUrl}/BoFUN/game/assignPlayerToTeam/${playerId}`, {teamId: teamId,username:playerName});

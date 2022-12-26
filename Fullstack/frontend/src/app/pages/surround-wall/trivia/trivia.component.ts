@@ -57,6 +57,10 @@ this.sockets.subscribe('RoundEnded', (msg: any) => {
       }, 6000);
     });
     });
+
+    this.sockets.subscribe('GameOver', (msg: any) => {
+      this.router.navigateByUrl('surroundwall/endGame');
+    });
     // this.sockets.subscribe('NewRound', (msg: any) => {
     //   this.router.navigateByUrl('idle/' + this.playerId);
     // });

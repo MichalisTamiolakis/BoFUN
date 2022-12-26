@@ -2,35 +2,42 @@
     <div class="content">
         <div class="left">
             <div class="pictionary">
-                <div class="teamName">Pictionary</div>
+                <div class="teamName">{{getMiniGameName(gamesScores[0].miniGameId)}}</div>
                 <div class="line"></div>
                 <div class="chart">
-                    <apx-chart [series]="gamesScores[2].statistics" [chart]="chartOptions.chart"
+                    <apx-chart *ngIf="chartOptions!==undefined" [series]="gamesScores[0].statistics" [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels" [fill]="chartOptions.fill" [dataLabels]="chartOptions.dataLabels"
                         [responsive]="chartOptions.responsive"></apx-chart>
                 </div>
             </div>
-            <div class="pantomime">
-                <div class="teamName">Pantomime</div>
+            <div *ngIf="gamesScores.length===3" class="pantomime">
+                <div class="teamName">{{getMiniGameName(gamesScores[2].miniGameId)}}</div>
                 <div class="line"></div>
                 <div class="chart">
-                    <apx-chart [series]="gamesScores[0].statistics" [chart]="chartOptions.chart"
+                    <apx-chart *ngIf="chartOptions!==undefined" [series]="gamesScores[2].statistics" [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels" [fill]="chartOptions.fill" [dataLabels]="chartOptions.dataLabels"
                         [responsive]="chartOptions.responsive"></apx-chart>
                 </div>
             </div>
         </div>
         <div class="right">
-            <div class="trivia">
-                <div class="teamName">Trivia</div>
+            <div *ngIf="gamesScores.length>1" class="trivia">
+                <div class="teamName">{{getMiniGameName(gamesScores[1].miniGameId)}}</div>
                 <div class="line"></div>
                 <div class="chart">
-                    <apx-chart [series]="gamesScores[1].statistics" [chart]="chartOptions.chart"
+                    <apx-chart *ngIf="chartOptions!==undefined" [series]="gamesScores[1].statistics" [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels" [fill]="chartOptions.fill" [dataLabels]="chartOptions.dataLabels"
                         [responsive]="chartOptions.responsive"></apx-chart>
                 </div>
             </div>
         </div>
-
+        <div style="position: absolute;
+        bottom: 30px;
+        right: 100px;">
+            <div *ngFor="let team of teams" class="teamInfo">
+                <div class="team">{{team.name}}</div>
+                <div class="circle" [ngStyle]="{background: team.color}"></div>
+            </div>
+        </div>
     </div>
 </div>

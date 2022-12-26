@@ -1,5 +1,5 @@
 import { SocketsService } from 'src/app/global/services/sockets/sockets.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import { MiniGame, Round } from 'src/app/global/models/round/round';
 import { GameService } from 'src/app/global/services/game.service';
 import { TeamService } from 'src/app/global/services/team.service';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
+  @ViewChild('tableContainer') private myScrollContainer: ElementRef;
   currentTeamName: string = '';
   icons: any = [
     {
@@ -36,115 +37,12 @@ export class MainComponent implements OnInit {
     },
   ];
 
-  game: any = {
-    duration: 120,
-    totalPlayers: 8,
-    players: [],
-    teams: [
-      {
-        id: 0,
-        name: 'Team 1',
-        image: '',
-        members: [],
-        color: '#F2CA68',
-      },
-      {
-        id: 1,
-        name: 'Team 2',
-        image: '',
-        members: [],
-        color: '#A663CC',
-      },
-      {
-        id: 2,
-        name: 'Team 3',
-        image: '',
-        members: [],
-        color: '#6BBF59',
-      },
-      {
-        id: 3,
-        name: 'Team 4',
-        image: '',
-        members: [],
-        color: '#6096BA',
-      },
-    ],
-    pantomime: true,
-    pictionary: true,
-    trivia: true,
-    sequence: [],
-    winningTeam: -1,
-    rounds: [],
-  };
-  rounds: any = [
-    {
-      team: 1, //which team is playing
-      player: 1, // which player is playing
-      miniGame: 0,
-      victory: true,
-      remainingTime: 0,
-      started: true,
-      ended: true,
-    },
-    {
-      team: 3, //which team is playing
-      player: 2, // which player is playing
-      miniGame: 2,
-      victory: false,
-      remainingTime: 150,
-      started: true,
-      ended: true,
-    },
-    {
-      team: 2, //which team is playing
-      player: 2, // which player is playing
-      miniGame: 1,
-      victory: false,
-      remainingTime: 150,
-      started: false,
-      ended: false,
-    },
-    {
-      team: 1, //which team is playing
-      player: 1, // which player is playing
-      miniGame: 0,
-      victory: true,
-      remainingTime: 0,
-      started: true,
-      ended: true,
-    },
-    {
-      team: 3, //which team is playing
-      player: 2, // which player is playing
-      miniGame: 2,
-      victory: false,
-      remainingTime: 150,
-      started: true,
-      ended: true,
-    },
-    {
-      team: 2, //which team is playing
-      player: 2, // which player is playing
-      miniGame: 1,
-      victory: false,
-      remainingTime: 150,
-      started: false,
-      ended: false,
-    },
-    {
-      team: 1, //which team is playing
-      player: 1, // which player is playing
-      miniGame: 0,
-      victory: true,
-      remainingTime: 0,
-      started: true,
-      ended: true,
-    },
-  ];
+  game: any;
+  rounds: any;
   groupedRounds: any = [];
   teamNames: Array<string> = [];
   emptyCells: any;
+  nextTeamName:string = '';
   constructor(
     private gameService: GameService,
     private teamService: TeamService,
@@ -153,6 +51,9 @@ export class MainComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.teamService.getNextTeam().subscribe((res:any)=>{
+      this.nextTeamName = res.name;
+    })
     this.gameService.getGame().subscribe(async (result) => {
       this.game = result;
       // this.teamName
@@ -188,7 +89,16 @@ export class MainComponent implements OnInit {
         });
       }
       this.groupedRounds = test;
-      console.log('this.groupedRounds', this.groupedRounds);
+      let elem = document.getElementById("table");
+    let elem2 = document.getElementById("table-container");
+    elem2.scrollTo(0, elem.offsetHeight);
+    try {
+      setTimeout(()=>{
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      },500)
+      
+  } catch(err) { }
+      console.log('this.groupedRounds', this.groupedRounds,elem.offsetHeight);
     });
     this.sockets.subscribe('CurrentRoundStarted', (msg: any) => {
       let round = JSON.parse(msg);
@@ -202,6 +112,12 @@ export class MainComponent implements OnInit {
 
       // this.teams = JSON.parse(msg)
     });
+
+    this.sockets.subscribe('GameOver', (msg: any) => {
+      this.router.navigateByUrl('surroundwall/endGame');
+    });
+
+    
   }
 
   getMiniGameName(id: number) {

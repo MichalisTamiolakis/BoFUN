@@ -9,12 +9,12 @@ margin-left: 50px;z-index: 2000;
     {{currentTeamName}}, it's your turn to play!
 </div> 
 <div class='nextPlayer'>
-    Next up is “BoFunners”...
+    Next up is “{{nextTeamName}}”...
 </div>
 </div>
 
-    <div class="table-container" [ngStyle]="{width:120 + 200*game.teams.length + 'px'}">
-        <table>
+    <div id="table-container" #tableContainer [ngStyle]="{width:game!==undefined ? (120 + 200*game.teams.length + 'px') : '100px'}">
+        <table id="table">
             <thead>
                 <tr>
                     <th class="roundHeader"></th>
