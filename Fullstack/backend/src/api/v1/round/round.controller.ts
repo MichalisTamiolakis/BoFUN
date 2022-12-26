@@ -116,9 +116,6 @@ export class Round {
                 
                 socketService.broadcast("CurrentRoundStarted", currentRound);
 
-                // TODO - Start Timer
-
-                // socketService.broadcast("TeamUpdated", JSON.stringify(chosenTeam));
                 this.StartTimer(currentRound);
                 
                 return res.send(currentRound);
@@ -133,15 +130,15 @@ export class Round {
             if(round.ended || round.remainingTime<=0)
             {
                 round.ended = true;
+                socketService.broadcast("RoundEnded", round);
                 clearInterval(timer);
+
                 return;
             }
             
             round.remainingTime -= 1;
-            socketService.broadcast("CurrentRoundTimerUpdated", round.remainingTime);
+            socketService.broadcast("RoundTimerUpdated", round);
 
         }, 1000);
-
-        // else return Promise.delay(1000).then(() => a());
     }
 }

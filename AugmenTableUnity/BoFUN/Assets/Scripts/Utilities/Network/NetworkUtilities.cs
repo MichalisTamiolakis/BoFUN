@@ -219,7 +219,7 @@ namespace BoFUN.Utilities
 
         public void OnDestroy()
         {
-            if (socket.Connected)
+            if (socket!=null && socket.Connected)
             {
                 socket.Disconnect();
             }
