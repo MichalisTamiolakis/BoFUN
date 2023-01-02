@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class DiceThrower : MonoBehaviour
 {
-    public bool allowDiceRoll = true;
+    //public bool allowDiceRoll = true;
 
     public Camera boardCamera;
 
@@ -25,11 +25,47 @@ public class DiceThrower : MonoBehaviour
     public BoxCollider leftCollider;
     public BoxCollider rightCollider;
 
-    private UnityEvent<int> onDiceRollFinished;
+    private System.Action<int> onDiceRollFinished;
 
     Bounds playArea;
     float halfBoardHeight;
     float halfBoardWidth;
+
+    private bool m_AllowDiceRoll = true;
+    public bool AllowDiceRoll
+    {
+        get => m_AllowDiceRoll;
+        set
+        {
+            foreach(Dice d in dice)
+            {
+                d.allowDiceRoll = value;
+            }
+
+            m_AllowDiceRoll = value;
+        }
+    }
+
+    // Public Methods
+    /// <summary>
+    /// Positions the dices
+    /// </summary>
+    /// <param name="onDiceRolledCallback"></param>
+    public void ResetAndWaitDiceRoll(System.Action<int> onDiceRolledCallback)
+    {
+        ResetDices();
+        onDiceRollFinished = onDiceRolledCallback;
+    }
+
+    public void ShowDice(bool show)
+    {
+        foreach(Dice d in dice)
+        {
+            d.SetVisible(show);
+        }
+    }
+
+    // Private Methods
     void Start()
     {
         float diceSize = 1f;
@@ -105,17 +141,6 @@ public class DiceThrower : MonoBehaviour
 
     }
 
-    // Public Methods
-    /// <summary>
-    /// Positions the dices
-    /// </summary>
-    /// <param name="onDiceRolledCallback"></param>
-    public void InitializeDice(UnityEvent<int> onDiceRolledCallback)
-    {
-        ResetDices();
-        onDiceRollFinished = onDiceRolledCallback;
-    }
-
     bool awaitingResult = false;
 
     private void OnDiceStartRoll(int diceIndex)
@@ -128,16 +153,15 @@ public class DiceThrower : MonoBehaviour
 
             dice[i].SetVisible(false);
         }
-        Debug.Log("Start Roll" + diceIndex);
+        //Debug.Log("Start Roll" + diceIndex);
         awaitingResult = true;
     }
-
 
     private void OnDiceEndRoll(int result)
     {
         if (awaitingResult)
         {
-            Debug.Log("Result end " + result);
+            //Debug.Log("Result end " + result);
             onDiceRollFinished?.Invoke(result);
             awaitingResult = false;
         }

@@ -33,6 +33,7 @@ namespace BoFUN.Menu
 
 
         public GameObject TeamJoinScreen;
+        public Camera UICamera;
         public Transform content;
         public GameObject loading;
         [Space(5)]
@@ -55,6 +56,7 @@ namespace BoFUN.Menu
 
         public void ShowScreen(bool show)
         {
+            UICamera.enabled = show;
             TeamJoinScreen.SetActive(show);
 
             if (show)
@@ -103,6 +105,7 @@ namespace BoFUN.Menu
         {
             // Set up all socket realtime updates
             SocketEventHandler.Instance.seatOccupiedEvent.AddListener(DisableSeatQR);
+            SocketEventHandler.Instance.teamUpdatedEvent.AddListener((Team t) => { UpdateButtonStates(); });
         }
 
         public void DisableSeatQR(int seatNo)

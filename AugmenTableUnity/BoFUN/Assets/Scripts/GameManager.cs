@@ -108,7 +108,7 @@ namespace BoFUN.GameManager
 
             MenuScreenManager.Instance.ShowScreen(false);
             TeamAssignmentScreenManager.Instance.ShowScreen(false);
-            //BoardScreenManager.Instance.ShowScreen(false);
+            BoardScreenManager.Instance.ShowScreen(false);
 
             switch (screen)
             {
@@ -121,6 +121,7 @@ namespace BoFUN.GameManager
                     TeamAssignmentScreenManager.Instance.ShowScreen(true);
                     break;
                 case Screen.Board:
+                    BoardScreenManager.Instance.ShowScreen(true);
                     break;
             }
 
