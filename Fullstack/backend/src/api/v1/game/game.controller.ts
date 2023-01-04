@@ -136,7 +136,7 @@ export class GameController {
       if (player === undefined) {
         let newPlayer: IPlayer = {
           id: req.body.positionId,
-          username: "",
+          username: "New Player",
           teamId: -1,
           image: "",
           positionId: req.body.positionId,
