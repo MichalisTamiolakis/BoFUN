@@ -49,7 +49,10 @@ public class BoardScreenManager : MonoBehaviour
         public List<Step> steps;
         public DiceThrower diceThrower;
         public List<TMP_Text> teamInfo;
-        public GameObject blackFade;
+        
+        [Space(5)]
+        public PopUpInfo popUpInfo;
+        public Sprite[] minigameInfoBackgrounds;
     }
 
     [Serializable]
@@ -96,6 +99,7 @@ public class BoardScreenManager : MonoBehaviour
     private Dictionary<Team, TeamPositionIndicator> teamPositionIndicators = new Dictionary<Team, TeamPositionIndicator>();
 
     private Team nextTeam = null;
+    private int lastDiceRollNumber = 0;
 
     // ========= Public Methods =========
 
@@ -113,7 +117,7 @@ public class BoardScreenManager : MonoBehaviour
                 else
                 {
                     // Hide mouse
-                    Cursor.visible = false;
+                    //Cursor.visible = false; // TODO Enable command 
 
                     ResetBoard();
                 }
@@ -148,13 +152,14 @@ public class BoardScreenManager : MonoBehaviour
         // Set all teams to 0 position
         SpawnTeamIndicators();
 
-        // Initialize dice thrower
-        boardScreenOptions.diceThrower.AllowDiceRoll = true;
-        boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
-
         // Get Next Playing Team
         GetNextPlayingTeam();
 
+
+        // Initialize dice thrower
+        boardScreenOptions.diceThrower.AllowDiceRoll = true;
+        boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
+        
         // Show board screen
         ShowStateScreen();
     }
@@ -340,10 +345,16 @@ public class BoardScreenManager : MonoBehaviour
                 {
                     Round newRound = Round.CreateFromJSON(result);
 
+                    // Remove CurrentRoundOnUpdate listener from previous round
+                    GameManager.Instance.currentGame.GetCurrentRound()?.onUpdate.RemoveListener(CurrentRoundOnUpdate);
+
                     // Add round to the game
                     Array.Resize(ref GameManager.Instance.currentGame.rounds, GameManager.Instance.currentGame.rounds.Length + 1);
                     GameManager.Instance.currentGame.rounds[GameManager.Instance.currentGame.rounds.Length - 1] = newRound;
 
+                    lastDiceRollNumber = diceRollNumber;
+
+                    newRound.onUpdate.AddListener(CurrentRoundOnUpdate);
 
                     // Show player information text
                     ShowNextPlayerInformationText();
@@ -360,8 +371,35 @@ public class BoardScreenManager : MonoBehaviour
 
     private void ShowNextPlayerInformationText()
     {
-        // Play animation for text and background black fade
-        //boardScreenOptions.blackFade.
+        // Get current round
+        Round currentRound = GameManager.Instance.currentGame.GetCurrentRound();
+        Debug.Log("Searching for player : " + currentRound.player);
+        Player currentPlayer = GameManager.Instance.currentGame.GetPlayer(currentRound.player);
+
+        Debug.Log($"{currentPlayer.username} is playing {currentRound.minigame}");
+
+        // Show Next Player and Game Information
+        boardScreenOptions.popUpInfo.ShowNotification($"{currentRound.minigame}", $"<b>{currentPlayer.username}</b>, open your phone to begin", boardScreenOptions.minigameInfoBackgrounds[(int)currentRound.minigame], .5f, null);
+
+
+        // TODO Wait from smartphone response that the game has started        
+
+    }
+
+    private void CurrentRoundOnUpdate(Round currentRound)
+    {
+        if (currentRound.ended)
+        {
+            // TODO:
+            // 1) Close open minigame screen
+        }
+        else if (currentRound.started)
+        {
+            // 1) Hide next player and game information
+            boardScreenOptions.popUpInfo.HideNotification(0, null);
+            // TODO:
+            // 2) Transition to the minigame screen and Initialize/Reset it
+        }
     }
 
     private List<List<TeamPositionIndicator>> teamIndicatorsInSteps = new List<List<TeamPositionIndicator>>();

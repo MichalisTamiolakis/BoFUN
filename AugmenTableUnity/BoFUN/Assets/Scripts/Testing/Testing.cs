@@ -38,13 +38,13 @@ public class Testing : MonoBehaviour
     {
         // Assign players to teams
 
-        NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/0", "{\"teamId\": 0}", (res, data) =>
+        NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/0", "{\"teamId\": 0, \"username\": \"P2\"}", (res, data) =>
         {
-            NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/1", "{\"teamId\": 0}", (res, data) =>
+            NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/1", "{\"teamId\": 0, \"username\": \"P2\"}", (res, data) =>
             {
-                NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/2", "{\"teamId\": 1}", (res, data) =>
+                NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/2", "{\"teamId\": 1, \"username\": \"P3\"}", (res, data) =>
                 {
-                    NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/3", "{\"teamId\": 1}", (res, data) =>
+                    NetworkUtilities.Instance.Put("http://localhost:8080/BoFUN/game/assignPlayerToTeam/3", "{\"teamId\": 1, \"username\": \"P4\"}", (res, data) =>
                     {
                         Debug.Log("Finished Test Scenario");
                     });
