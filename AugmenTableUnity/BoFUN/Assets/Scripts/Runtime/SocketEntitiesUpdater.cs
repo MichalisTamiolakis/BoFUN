@@ -73,6 +73,9 @@ public class SocketEntitiesUpdater : MonoBehaviour
 
     private void HandleRoundUpdateEvent(Round r)
     {
+        if (GameManager.Instance.currentGame == null)
+            return;
+
         Round oldRound = GameManager.Instance.currentGame.GetRound(r.id);
         if (oldRound != null)
         {

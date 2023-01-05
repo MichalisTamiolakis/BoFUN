@@ -6,6 +6,7 @@ using BoFUN.GameManager;
 using BoFUN.Utilities;
 using System;
 using TMPro;
+using BoFUN.Board.MiniGames;
 
 public class BoardScreenManager : MonoBehaviour
 {
@@ -59,19 +60,21 @@ public class BoardScreenManager : MonoBehaviour
     public struct TriviaScreenOptions
     {
         public GameObject screen;
-        //public 
+        public TriviaScreenController controller;
     }
 
     [Serializable]
     public struct PantomimeScreenOptions
     {
         public GameObject screen;
+        public PantomimeScreenController controller;
     }
 
     [Serializable]
     public struct PictionaryScreenOptions
     {
         public GameObject screen;
+        public PictionaryScreenController controller;
     }
 
     public BoardScreenOptions boardScreenOptions = new BoardScreenOptions
@@ -256,6 +259,9 @@ public class BoardScreenManager : MonoBehaviour
 
     private void ShowPictionary()
     {
+        // Initialize with current round
+        this.pictionaryScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound());
+
         this.UICamera.enabled = true;
         this.boardCamera.enabled = false;
 
@@ -269,6 +275,9 @@ public class BoardScreenManager : MonoBehaviour
 
     private void ShowPantomime()
     {
+        // Initialize with current round
+        this.pantomimeScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound());
+        
         this.UICamera.enabled = true;
         this.boardCamera.enabled = false;
 
@@ -282,6 +291,10 @@ public class BoardScreenManager : MonoBehaviour
 
     private void ShowTrivia()
     {
+        // Initialize with current round
+        this.triviaScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound());
+
+
         this.UICamera.enabled = true;
         this.boardCamera.enabled = false;
 
@@ -388,18 +401,50 @@ public class BoardScreenManager : MonoBehaviour
 
     private void CurrentRoundOnUpdate(Round currentRound)
     {
-        if (currentRound.ended)
+        if (currentRound.ended && boardState != State.Board)
         {
-            // TODO:
             // 1) Close open minigame screen
+            boardState = State.Board;
+            ShowStateScreen();
+
+            Team t = GameManager.Instance.currentGame.GetTeam(currentRound.team);
+            int teamPosition = teamPositionIndicators[t].positionInBoard;
+            int newTeamPosition = teamPosition + lastDiceRollNumber;
+            // 2) Move team Indicator if victory
+            if (currentRound.victory)
+            {
+                // Has the game finished?
+                if(newTeamPosition > boardScreenOptions.steps.Count - 1)
+                {
+                    // Move the team to the last step and send finish game to server
+                    //MoveTeamIndicator
+                }
+                // Game still on, simply move team to their next step
+                else
+                {
+
+                }
+            }
+
         }
-        else if (currentRound.started)
+        else if (currentRound.started && boardState == State.Board)
         {
             // 1) Hide next player and game information
             boardScreenOptions.popUpInfo.HideNotification(0, null);
             // TODO:
             // 2) Transition to the minigame screen and Initialize/Reset it
+            boardState = (State)((int)currentRound.minigame);
+            ShowStateScreen();
         }
+    }
+
+    /// <summary>
+    /// Plays end game animation and goes to the 
+    /// </summary>
+    /// <param name="winner"></param>
+    private void PlayEndGameAnimation(Team winner)
+    {
+
     }
 
     private List<List<TeamPositionIndicator>> teamIndicatorsInSteps = new List<List<TeamPositionIndicator>>();
