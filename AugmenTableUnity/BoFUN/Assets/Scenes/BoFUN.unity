@@ -1495,8 +1495,8 @@ Transform:
   - {fileID: 448461753}
   - {fileID: 1155785916}
   - {fileID: 1126523300}
-  - {fileID: 436116321}
   - {fileID: 1858736943}
+  - {fileID: 436116321}
   - {fileID: 1838113559}
   - {fileID: 45940623}
   - {fileID: 1468569161}
@@ -4006,7 +4006,7 @@ GameObject:
   - component: {fileID: 436116322}
   - component: {fileID: 436116324}
   m_Layer: 0
-  m_Name: Step (10)
+  m_Name: Step (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4025,7 +4025,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 185298287}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!23 &436116322
 MeshRenderer:
@@ -6259,9 +6259,9 @@ MonoBehaviour:
   m_fontSize: 34
   m_fontSizeBase: 34
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 34
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -6372,6 +6372,37 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &616173175
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 616173176}
+  m_Layer: 0
+  m_Name: TeamIndicators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &616173176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616173175}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1913021225}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619644760
 GameObject:
   m_ObjectHideFlags: 0
@@ -7782,7 +7813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 980.00226}
+  m_AnchoredPosition: {x: 0, y: 980.0024}
   m_SizeDelta: {x: -545, y: -715}
   m_Pivot: {x: 0.5, y: 0.000000044703484}
 --- !u!114 &747968281
@@ -8009,7 +8040,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -36.149}
+  m_AnchoredPosition: {x: 0, y: -36.149048}
   m_SizeDelta: {x: 0, y: -72.298}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &780988114
@@ -8278,7 +8309,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 980.00226}
+  m_AnchoredPosition: {x: 0, y: 980.0024}
   m_SizeDelta: {x: -545, y: -715}
   m_Pivot: {x: 0.5, y: 0.000000044703484}
 --- !u!114 &799032487
@@ -9151,7 +9182,7 @@ Canvas:
   m_GameObject: {fileID: 903426129}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 2142231782}
   m_PlaneDistance: 5
   m_PixelPerfect: 0
@@ -14419,7 +14450,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431593810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0016479492}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14428,10 +14459,10 @@ RectTransform:
   m_Father: {fileID: 903426130}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: -250}
-  m_SizeDelta: {x: 1080, y: 250}
+  m_SizeDelta: {x: -840, y: 250}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1431593812
 MonoBehaviour:
@@ -17403,8 +17434,8 @@ MonoBehaviour:
     - {fileID: 448461756}
     - {fileID: 1155785919}
     - {fileID: 1126523303}
-    - {fileID: 436116324}
     - {fileID: 1858736946}
+    - {fileID: 436116324}
     - {fileID: 1838113562}
     - {fileID: 45940626}
     - {fileID: 1468569164}
@@ -17417,6 +17448,7 @@ MonoBehaviour:
     - {fileID: 1549025361}
     - {fileID: 1717513840}
     - {fileID: 1931306759}
+    teamIndicatorsParent: {fileID: 616173176}
     popUpInfo: {fileID: 903426131}
     minigameInfoBackgrounds:
     - {fileID: 21300000, guid: 7a4f97c3332eaf9469285df2fdb0b3a9, type: 3}
@@ -17750,21 +17782,21 @@ MonoBehaviour:
     - text: {fileID: 1132151765}
       numberingImage: {fileID: 1361146068}
       numberingText: {fileID: 186579870}
-  - titleText: {fileID: 872625700}
-    questionText: {fileID: 1779421401}
+  - titleText: {fileID: 1700029746}
+    questionText: {fileID: 602860613}
     answers:
-    - text: {fileID: 216590961}
-      numberingImage: {fileID: 189800802}
-      numberingText: {fileID: 1398341881}
-    - text: {fileID: 1927634436}
-      numberingImage: {fileID: 1451346440}
-      numberingText: {fileID: 1875248386}
-    - text: {fileID: 98845193}
-      numberingImage: {fileID: 589808439}
-      numberingText: {fileID: 2044365630}
-    - text: {fileID: 1132151765}
-      numberingImage: {fileID: 1361146068}
-      numberingText: {fileID: 186579870}
+    - text: {fileID: 6724650}
+      numberingImage: {fileID: 917755181}
+      numberingText: {fileID: 2106808545}
+    - text: {fileID: 718936550}
+      numberingImage: {fileID: 415595300}
+      numberingText: {fileID: 913057617}
+    - text: {fileID: 84286407}
+      numberingImage: {fileID: 1604487489}
+      numberingText: {fileID: 917075001}
+    - text: {fileID: 1340489686}
+      numberingImage: {fileID: 1265417585}
+      numberingText: {fileID: 887429603}
   timers:
   - {fileID: 1953402570}
   - {fileID: 2140745158}
@@ -17883,7 +17915,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: From which shakespear play is the line 'Now is the winter of our dicontent'
+  m_text: From which shakespeare play is the line 'Now is the winter of our discontent'
     ?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c4de0897aeb06f64d9b57e02c5496b20, type: 2}
@@ -17915,9 +17947,9 @@ MonoBehaviour:
   m_fontSize: 34
   m_fontSizeBase: 34
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 34
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -17989,7 +18021,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799950758}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17998,10 +18030,10 @@ RectTransform:
   m_Father: {fileID: 903426130}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 250}
-  m_SizeDelta: {x: 1080, y: 250}
+  m_SizeDelta: {x: -840, y: 250}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1799950760
 MonoBehaviour:
@@ -19167,7 +19199,7 @@ GameObject:
   - component: {fileID: 1858736944}
   - component: {fileID: 1858736946}
   m_Layer: 0
-  m_Name: Step (11)
+  m_Name: Step (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19186,7 +19218,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 185298287}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!23 &1858736944
 MeshRenderer:
@@ -19580,6 +19612,7 @@ Transform:
   - {fileID: 74413250}
   - {fileID: 1936027455}
   - {fileID: 903426130}
+  - {fileID: 616173176}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}

@@ -50,6 +50,7 @@ public class BoardScreenManager : MonoBehaviour
         public List<Step> steps;
         public DiceThrower diceThrower;
         public List<TMP_Text> teamInfo;
+        public Transform teamIndicatorsParent;
         
         [Space(5)]
         public PopUpInfo popUpInfo;
@@ -156,13 +157,15 @@ public class BoardScreenManager : MonoBehaviour
         SpawnTeamIndicators();
 
         // Get Next Playing Team
-        GetNextPlayingTeam();
-
-
-        // Initialize dice thrower
-        boardScreenOptions.diceThrower.AllowDiceRoll = true;
-        boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
+        GetNextPlayingTeam(()=> {
+            // Show next playing team
+            ShowNextPlayingTeamInformationText();
+            // Initialize dice thrower
+            boardScreenOptions.diceThrower.AllowDiceRoll = true;
+            boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
         
+        });
+
         // Show board screen
         ShowStateScreen();
     }
@@ -179,11 +182,6 @@ public class BoardScreenManager : MonoBehaviour
     {
         // Remove any old indicators
         DestroyTeamIndicators();
-
-        //Vector3 offsetStart = new Vector3(0, 0, -.3f);
-        //Vector3 offsetEnd = new Vector3(0, 0, .3f);
-        //Vector3 offsetDirection = (offsetEnd - offsetStart).normalized;
-        //float offsetPerTeam = (offsetEnd - offsetStart).magnitude / GameManager.Instance.currentGame.teams.Length;
 
         for (int i = 0; i < GameManager.Instance.currentGame.teams.Length; i++)
         {
@@ -206,6 +204,7 @@ public class BoardScreenManager : MonoBehaviour
         foreach (var indicator in teamPositionIndicators.Values)
         {
             indicator.transform.position = getIndicatorInStepPosition(indicator);
+            indicator.transform.parent = boardScreenOptions.teamIndicatorsParent;
         }
     }
 
@@ -306,7 +305,7 @@ public class BoardScreenManager : MonoBehaviour
         this.pictionaryScreenOptions.screen.SetActive(false);
     }
 
-    private void GetNextPlayingTeam()
+    private void GetNextPlayingTeam(System.Action onRequestCompleted)
     {
         NetworkUtilities.Instance.Get(GameManager.Instance.networkSettings.serverURL + "/" + GameManager.Instance.networkSettings.gameAPI.getNextTeamPath, "",
             (bool success, string response) => {
@@ -316,8 +315,7 @@ public class BoardScreenManager : MonoBehaviour
 
                     nextTeam = GameManager.Instance.currentGame.GetTeam(teamResult.id);
 
-                    // Show next playing team
-                    ShowNextPlayingTeamInformationText();
+                    onRequestCompleted?.Invoke();
                 }
                 else
                 {
@@ -413,17 +411,56 @@ public class BoardScreenManager : MonoBehaviour
             // 2) Move team Indicator if victory
             if (currentRound.victory)
             {
+                // TODO
                 // Has the game finished?
-                if(newTeamPosition > boardScreenOptions.steps.Count - 1)
+                if(newTeamPosition >= boardScreenOptions.steps.Count - 1)
                 {
                     // Move the team to the last step and send finish game to server
-                    //MoveTeamIndicator
+                    MoveTeamIndicator(t, boardScreenOptions.steps.Count - 1, () =>
+                    {
+                        NetworkUtilities.Instance.Post($"{GameManager.Instance.networkSettings.serverURL}/{GameManager.Instance.networkSettings.gameAPI.endGamePath}", "", null);
+
+                        // TODO Show finish game animation/screen
+                        Debug.Log("Game Finished");
+
+                        // Start new game
+                        GameManager.Instance.StartGame();
+                    });
                 }
                 // Game still on, simply move team to their next step
                 else
                 {
+                    // 1) Move team indicator
+                    MoveTeamIndicator(t, newTeamPosition, () =>
+                    {
+                        // 2) Get and show next playing team
+                        GetNextPlayingTeam(() =>
+                        {
+                            // Show next playing team
+                            ShowNextPlayingTeamInformationText();
+
+                            // 2) Reset Dice Thrower
+                            // Initialize dice thrower
+                            boardScreenOptions.diceThrower.AllowDiceRoll = true;
+                            boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
+                        });
+                    });
 
                 }
+            }
+            else // Simply reinitialize the dice and get next playing team
+            {
+                // 2) Get and show next playing team
+                GetNextPlayingTeam(() =>
+                {
+                    // Show next playing team
+                    ShowNextPlayingTeamInformationText();
+
+                    // 2) Reset Dice Thrower
+                    // Initialize dice thrower
+                    boardScreenOptions.diceThrower.AllowDiceRoll = true;
+                    boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
+                });
             }
 
         }
@@ -431,7 +468,6 @@ public class BoardScreenManager : MonoBehaviour
         {
             // 1) Hide next player and game information
             boardScreenOptions.popUpInfo.HideNotification(0, null);
-            // TODO:
             // 2) Transition to the minigame screen and Initialize/Reset it
             boardState = (State)((int)currentRound.minigame);
             ShowStateScreen();

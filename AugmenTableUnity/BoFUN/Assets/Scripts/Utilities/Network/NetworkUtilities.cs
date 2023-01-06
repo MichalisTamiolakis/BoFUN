@@ -107,12 +107,12 @@ namespace BoFUN.Utilities
             if (req.result != UnityWebRequest.Result.Success)
             {
                 Debug.Log(req.error);
-                onResponse(false, req.error);
+                onResponse?.Invoke(false, req.error);
             }
             else
             {
                 string jsonResponse = req.downloadHandler.text;
-                onResponse(true, jsonResponse);
+                onResponse?.Invoke(true, jsonResponse);
             }
 
             req.Dispose();

@@ -59,6 +59,7 @@ namespace BoFUN.Board.MiniGames {
             foreach (Timer t in timers)
             {
                 t.TotalTimeInSeconds = GameManager.GameManager.Instance.currentGame.duration;
+                t.RemainingTimeInSeconds = t.TotalTimeInSeconds;
             }
         }
 
