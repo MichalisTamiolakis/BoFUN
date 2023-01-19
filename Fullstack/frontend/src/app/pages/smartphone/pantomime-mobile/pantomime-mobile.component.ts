@@ -45,6 +45,7 @@ export class PantomimeMobileComponent implements OnInit {
       let gameJson = JSON.parse(this.currentRound.minigameJSON);
       this.gameInfo.topic = gameJson.task;
       this.gameInfo.category = gameJson.category;
+      console.log("this.currentRound=",this.currentRound)
     });
 
     // this.sockets.subscribe('NewRound', (msg: any) => {

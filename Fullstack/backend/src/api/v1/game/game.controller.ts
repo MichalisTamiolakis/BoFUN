@@ -117,7 +117,7 @@ export class GameController {
       next?: NextFunction
     ): Promise<Response> => {
       currentGameModule.game.hasGameEnded = true;
-
+      socketService.broadcast("GameOver", JSON.stringify({}));
       return res.sendStatus(200);
     };
   }
