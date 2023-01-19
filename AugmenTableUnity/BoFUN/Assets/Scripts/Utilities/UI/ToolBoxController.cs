@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -17,14 +18,14 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     private int k_ColorDotSize = 28;
 
-    private int k_MinSizeDot = 5;
+    private int k_MinSizeDot = 6;
     private int k_MaxSizeDot = 28;
 
     private Vector3 offset;
     private RectTransform rectTransform;
     private RectTransform parentRect;
 
-
+    //[System.Serializable]
     struct SelectionDot
     {
         public GameObject gameObject;
@@ -45,23 +46,18 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
         {
             m_SelectedColor = Mathf.Clamp(value, 0, colorDots.Length - 1);
 
-            Debug.Log($"Selecting{m_SelectedColor}");
 
             // Go to all other dots and remove outline
             for(int i=0; i< colorDots.Length; i++)
             {
-                //if (i == m_SelectedColor)
-                //{
-                //    colorDots[i].outline.enabled = true;
-                //}
-                //else
-                //{
-                //    if(i> colorDots.Length)
-                //    {
-                //        Debug.Log("I LARGER");
-                //    }
-                //    colorDots[i].outline.enabled = false;
-                //}
+                if (i == m_SelectedColor)
+                {
+                    colorDots[i].outline.enabled = true;
+                }
+                else
+                {
+                    colorDots[i].outline.enabled = false;
+                }
             }
 
             targetDrawer.drawColor = availableColors[m_SelectedColor];
@@ -122,21 +118,30 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
             {
                 this.SelectedColor = index;
             });
+            colorDots[i] = dot;
         }
 
         // Add sizes
+        int minSize = availableSizes.Min();
+        int maxSize = availableSizes.Max();
+
+
         sizeDots = new SelectionDot[availableSizes.Length];
         for (int i = 0; i < availableSizes.Length; i++)
         {
             int size = availableSizes[i];
 
-            SelectionDot dot = SpawnSelectionDot(size, sizeRow);
+            float lerpValue = Mathf.InverseLerp(minSize, maxSize, size);
+
+            SelectionDot dot = SpawnSelectionDot(Mathf.CeilToInt(Mathf.Lerp(k_MinSizeDot, k_MaxSizeDot, lerpValue)), sizeRow);
             dot.centerImage.color = Color.black;
             int index = i;
             dot.btn.onClick.AddListener(() =>
             {
                 this.SelectedSize = index;
             });
+
+            sizeDots[i] = dot;
         }
 
 
@@ -162,6 +167,7 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
         {
             Debug.LogError("Could not find outline", this);
         }
+        sd.outline.enabled = false;
         sd.gameObject.transform.Find("Selection").gameObject.TryGetComponent(out sd.btn);
 
         return sd;
