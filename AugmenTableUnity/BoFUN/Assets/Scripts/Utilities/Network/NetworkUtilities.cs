@@ -36,78 +36,83 @@ namespace BoFUN.Utilities
         /// <summary>
         /// Does a POST request in the given uri
         /// </summary>
-        /// <param name="uri">The URI to perform the POST to</param>
+        /// <param name="url">The URI to perform the POST to</param>
         /// <param name="jsonString">The json string to send</param>
         /// <param name="onResponse">The callback to call when the request has finished.
         /// The bool passed will represent the response state and the string the response text.
         /// If the request has failed the string will contain the error</param>
         /// <returns>The web request made</returns>
-        public UnityWebRequest Post(string uri, string jsonString, System.Action<bool, string> onResponse)
+        public UnityWebRequest Post(string url, string jsonString, Action<bool, string> onResponse)
         {
-            UnityWebRequest request = new UnityWebRequest(uri, "POST");
+            UnityWebRequest request = new UnityWebRequest(url, "POST");
             request.SetRequestHeader("Content-Type", "application/json");
             byte[] jsonStringToBytes = new System.Text.UTF8Encoding().GetBytes(jsonString);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonStringToBytes);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
 
-            StartCoroutine(OnPostResponse(request, onResponse));
+            StartCoroutine(OnRequestResponse(request, onResponse));
 
             return request;
         }
 
-        private static IEnumerator OnPostResponse(UnityWebRequest req, System.Action<bool, string> onResponse)
+        public UnityWebRequest Post(string url, WWWForm form, Action<bool, string> onResponse)
         {
-            yield return req.SendWebRequest();
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
 
-            if (req.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(req.error);
-                onResponse(false, req.error);
-            }
-            else
-            {
-                string jsonResponse = req.downloadHandler.text;
-                onResponse(true, jsonResponse);
-            }
+            StartCoroutine(OnRequestResponse(request, onResponse));
 
-            req.Dispose();
+            return request;
         }
+
 
         /// <summary>
         /// Does a GET request in the given uri
         /// </summary>
-        /// <param name="uri">The URI to perform the POST to</param>
+        /// <param name="url">The URI to perform the POST to</param>
         /// <param name="jsonString">The json string to send</param>
         /// <param name="onResponse">The callback to call when the request has finished.
         /// The bool passed will represent the response state and the string the response text.
         /// If the request has failed the string will contain the error</param>
         /// <returns>The web request made</returns>
-        public UnityWebRequest Get(string uri, string jsonString, System.Action<bool, string> onResponse)
+        public UnityWebRequest Get(string url, string jsonString, Action<bool, string> onResponse)
         {
-            UnityWebRequest request = new UnityWebRequest(uri, "GET");
+            UnityWebRequest request = new UnityWebRequest(url, "GET");
             request.SetRequestHeader("Content-Type", "application/json");
             byte[] jsonStringToBytes = new System.Text.UTF8Encoding().GetBytes(jsonString);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonStringToBytes);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
 
-            StartCoroutine(OnGetResponse(request, onResponse));
+            StartCoroutine(OnRequestResponse(request, onResponse));
 
             return request;
         }
 
-        private static IEnumerator OnGetResponse(UnityWebRequest req, System.Action<bool, string> onResponse)
+        public UnityWebRequest Put(string url, string jsonString, Action<bool, string> onResponse)
+        {
+            UnityWebRequest request = new UnityWebRequest(url, "PUT");
+            request.SetRequestHeader("Content-Type", "application/json");
+            byte[] jsonStringToBytes = new System.Text.UTF8Encoding().GetBytes(jsonString);
+            request.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonStringToBytes);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+
+            StartCoroutine(OnRequestResponse(request, onResponse));
+
+            return request;
+        }
+
+        private static IEnumerator OnRequestResponse(UnityWebRequest req, Action<bool, string> onResponse)
         {
             yield return req.SendWebRequest();
 
             if (req.result != UnityWebRequest.Result.Success)
             {
                 Debug.Log(req.error);
-                onResponse(false, req.error);
+                onResponse?.Invoke(false, req.error);
             }
             else
             {
                 string jsonResponse = req.downloadHandler.text;
-                onResponse(true, jsonResponse);
+                onResponse?.Invoke(true, jsonResponse);
             }
 
             req.Dispose();

@@ -62,5 +62,14 @@ namespace BoFUN.Entities
             }
             return null;
         }
+    
+        public Round GetCurrentRound()
+        {
+            if (this.rounds.Length <= 0)
+            {
+                return null;
+            }
+            return this.rounds[this.rounds.Length-1];
+        }
     }
 }

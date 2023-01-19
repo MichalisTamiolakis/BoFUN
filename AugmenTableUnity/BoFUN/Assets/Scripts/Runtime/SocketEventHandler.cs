@@ -33,6 +33,7 @@ public class SocketEventHandler : MonoBehaviour
     public UnityEvent<int> seatOccupiedEvent = new UnityEvent<int>();
     public UnityEvent<Team> teamUpdatedEvent = new UnityEvent<Team>();
     public UnityEvent<Player> playerUpdatedEvent = new UnityEvent<Player>();
+    public UnityEvent<Round> roundUpdatedEvent = new UnityEvent<Round>();
 
     private void Start()
     {
@@ -68,6 +69,17 @@ public class SocketEventHandler : MonoBehaviour
 
             playerUpdatedEvent.Invoke(newPlayerData);
 
+        });
+
+        // Round Updated
+        NetworkUtilities.Instance.SocketSubscribe(GameManager.Instance.networkSettings.sockets.roundUpdatedEvent, (SocketEvent e) => {
+            string jsonString = e.GetData<string>();
+
+            Debug.Log("SocketEvent: RoundUpdated:" + jsonString);
+
+            Round newRoundData = Round.CreateFromJSON(jsonString);
+
+            roundUpdatedEvent.Invoke(newRoundData);
         });
     }
 

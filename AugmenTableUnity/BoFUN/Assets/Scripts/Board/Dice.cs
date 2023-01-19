@@ -9,6 +9,8 @@ public class Dice : MonoBehaviour
     public float maxRollTorque = 1f;
     public float dragEndVelocityMultiplier = 1f;
     public float maxDragEndVelocity = 10f;
+    public bool allowDiceRoll = true;
+
 
     private Camera m_RenderingCamera;
     public Camera Camera
@@ -131,7 +133,7 @@ public class Dice : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (hasBeenRolled)
+        if (hasBeenRolled || !allowDiceRoll)
             return;
 
         Vector3 mousePos = m_RenderingCamera.ScreenToWorldPoint(Input.mousePosition);

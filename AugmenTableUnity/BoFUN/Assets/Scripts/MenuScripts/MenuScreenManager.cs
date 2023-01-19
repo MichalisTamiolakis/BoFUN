@@ -56,13 +56,14 @@ namespace BoFUN.Menu
 
         public int TimePerRound
         {
-            get => GameManager.GameManager.Instance.gameCreationDescriptor.timePerRound;
-            set => GameManager.GameManager.Instance.gameCreationDescriptor.timePerRound = value;
+            get => GameManager.GameManager.Instance.gameCreationDescriptor.duration;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.duration = value;
         }
 
         public GameObject menuWindow;
         public NumberOfPlayersAndTeamsSelection numberOfPlayersAndTeamsSelectionPanel;
         public GameSettings gameSettingsPanel;
+        public Camera UICamera;
         //public 
         //public GameObject
 
@@ -93,6 +94,7 @@ namespace BoFUN.Menu
         public void ShowScreen(bool show)
         {
             menuWindow.SetActive(show);
+            UICamera.enabled = show;
         }
 
         public void NextPage()

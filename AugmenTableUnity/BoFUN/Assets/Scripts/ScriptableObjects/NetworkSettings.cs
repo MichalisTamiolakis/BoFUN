@@ -1,3 +1,4 @@
+using BoFUN.Entities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,12 @@ public class NetworkSettings : ScriptableObject
         public string getGamePath;
         public string getAllTeamsPath;
         public string getTeamPath;
+        public string getNextTeamPath;
 
         // Post reqeusts
         public string createGamePath;
+        public string startGamePath;
+        public string endGamePath;
         public string createPlayerPath;
 
         // Put requests
@@ -47,17 +51,39 @@ public class NetworkSettings : ScriptableObject
             return deletePlayerFromTeamPath.Replace("$playerId", playerId.ToString()).Replace("$teamId", teamId.ToString());
         }
     }
+    
+    [System.Serializable]
+    public struct RoundAPI
+    {
+        // Post reqeusts
+        public string newRoundPath;
+
+        public string GetNewRoundPath(MiniGame miniGame)
+        {
+            return newRoundPath.Replace("$miniGame", ((int)miniGame).ToString());
+        }
+    }
+
     [Space(5)]
     [Header("Game API:")]
     public GameAPI gameAPI = new GameAPI { 
         getGamePath = "game",
-        getAllTeamsPath= "teams",
-        getTeamPath="/team/$teamId",
+        getAllTeamsPath= "game/teams",
+        getTeamPath="game/team/$teamId",
         createGamePath = "game/create",
+        startGamePath = "game/start",
+        endGamePath = "game/end",
         createPlayerPath="game/createPlayer",
-        assignPlayerToTeamPath= "assignPlayerToTeam/$playerId",
-        setPlayerNamePath= "setPlayerName/$playerId",
-        deletePlayerFromTeamPath= "removePlayer/$playerId/fromTeam/$teamId"
+        assignPlayerToTeamPath= "game/assignPlayerToTeam/$playerId",
+        setPlayerNamePath= "game/setPlayerName/$playerId",
+        deletePlayerFromTeamPath= "game/removePlayer/$playerId/fromTeam/$teamId",
+        getNextTeamPath = "game/nextTeam"
+    };
+
+    [Header("Round API:")]
+    public RoundAPI roundAPI = new RoundAPI
+    {
+        newRoundPath = "game/round/new/$miniGame"
     };
 
     [System.Serializable]
@@ -67,14 +93,15 @@ public class NetworkSettings : ScriptableObject
         public string seatOccupiedEvent;
         public string teamUpdatedEvent;
         public string playerUpdatedEvent;
-
+        public string roundUpdatedEvent;
     }
     [Space(5)]
     public Sockets sockets = new Sockets {
-        socketServerURL = "ws:localhost:8080",
+        socketServerURL = "http://localhost:8080",
         seatOccupiedEvent = "SeatOccupied",
         teamUpdatedEvent = "TeamUpdated",
-        playerUpdatedEvent = "PlayerUpdated"
+        playerUpdatedEvent = "PlayerUpdated",
+        roundUpdatedEvent = "RoundUpdated"
     };
 
     [System.Serializable]

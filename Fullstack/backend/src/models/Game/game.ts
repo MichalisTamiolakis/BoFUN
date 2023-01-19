@@ -500,9 +500,15 @@ export class Game{
         else{
 
             if(teamObj.members.length>0){
-                return this.getPlayer(teamObj.members[0]);
+                let player:IPlayer | undefined = this.getPlayer(teamObj.members[0]);
+
+                if(!player)
+                    console.log("Could not find the player with id: " + teamObj.members[0]);
+
+                return player;
             }
             else{
+                console.log("The team "+ teamObj.id +" has no members assigned.");
                 return undefined;
             }
         }

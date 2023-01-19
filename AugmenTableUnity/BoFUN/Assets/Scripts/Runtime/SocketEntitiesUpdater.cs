@@ -35,7 +35,7 @@ public class SocketEntitiesUpdater : MonoBehaviour
     {
         SocketEventHandler.Instance.teamUpdatedEvent.AddListener(HandleTeamUpdateEvent);
         SocketEventHandler.Instance.playerUpdatedEvent.AddListener(HandlePlayerUpdateEvent);
-        //SocketEventHandler.Instance.roundUpdated.AddListener(HandleTeamUpdateEvent);
+        SocketEventHandler.Instance.roundUpdatedEvent.AddListener(HandleRoundUpdateEvent);
 
     }
 
@@ -71,8 +71,22 @@ public class SocketEntitiesUpdater : MonoBehaviour
         }
     }
 
-    private void HandleRoundUpdateEvent()
+    private void HandleRoundUpdateEvent(Round r)
     {
+        if (GameManager.Instance.currentGame == null)
+            return;
 
+        Round oldRound = GameManager.Instance.currentGame.GetRound(r.id);
+        if (oldRound != null)
+        {
+            oldRound.UpdateFrom(r);
+            //Debug.Log("Inco")
+            oldRound.onUpdate.Invoke(oldRound);
+        }
+        else
+        {
+            Array.Resize(ref GameManager.Instance.currentGame.rounds, GameManager.Instance.currentGame.rounds.Length + 1);
+            GameManager.Instance.currentGame.rounds[GameManager.Instance.currentGame.rounds.Length - 1] = r;
+        }
     }
 }

@@ -37,8 +37,9 @@ export class GameController {
         this.removePlayerFromTeam()
       )
       .post("/create/dummyGame", this.createDummyGame())
-      .get("/sendEvent", this.sendEvent());
-
+      .get("/sendEvent", this.sendEvent())
+      .post("/start", this.gameStart())
+      .post("/end", this.gameEnd());
     return router;
   }
 
@@ -96,6 +97,30 @@ export class GameController {
     };
   }
 
+  public gameStart(){
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game.hasGameStarted = true;
+      console.log("GAME STARTED");
+      return res.sendStatus(200);
+    };
+  }
+
+  public gameEnd(){
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      currentGameModule.game.hasGameEnded = true;
+
+      return res.sendStatus(200);
+    };
+  }
+
   // Called from smartphone when a player scans the qr code and goes to the webpage
   public createPlayer() {
     return async (
@@ -111,7 +136,7 @@ export class GameController {
       if (player === undefined) {
         let newPlayer: IPlayer = {
           id: req.body.positionId,
-          username: "",
+          username: "New Player",
           teamId: -1,
           image: "",
           positionId: req.body.positionId,
@@ -230,56 +255,18 @@ export class GameController {
       res: Response,
       next?: NextFunction
     ): Promise<Response> => {
-      let teams = currentGameModule.game.teams;
-      let players: Array<IPlayer> = currentGameModule.game.players;
-      let player = players.find(({ id }) => id === Number(req.params.playerId));
-      if (player !== undefined) {
-        player.teamId = req.body.teamId;
-        player.username = req.body.username;
-        socketService.broadcast("PlayerUpdated", JSON.stringify(player));
-      }
-      let currentRound: any = this.getCurrentRound();
-
-      if (currentGameModule.game.sequence.length <= 0 || teams.length <= 0)
+      
+      let currentGame:Game = currentGameModule.game;
+      if(currentGame == undefined){
         return res.sendStatus(400);
-
-      if (currentRound !== undefined) {
-        // Find the team of the current round
-        let currentRoundTeam: ITeam | undefined = teams.find(
-          ({ id }: { id: number }) => id === currentRound.team
-        );
-
-        if (currentRoundTeam) {
-          for (let i = 0; i < currentGameModule.game.sequence.length; i++) {
-            if (currentGameModule.game.sequence[i] == currentRoundTeam.id) {
-              // Next team index
-              let nextTeamSequenceIndex: number = i + 1;
-              if (
-                nextTeamSequenceIndex >= currentGameModule.game.sequence.length
-              ) {
-                nextTeamSequenceIndex = 0;
-              }
-              let team = teams.find(
-                ({ id }: { id: number }) =>
-                  id === currentGameModule.game.sequence[nextTeamSequenceIndex]
-              );
-              return res.send(team);
-            }
-          }
-
-          console.log("Incorrect team id in current round");
-          return res.sendStatus(400);
-        } else {
-          console.log("Incorrect team id in current round");
-        }
-      } else {
-        // This is the first round
-        let team = teams.find(
-          ({ id }: { id: number }) => id === currentGameModule.game.sequence[0]
-        );
-        return res.send(team);
       }
-      return res.sendStatus(400);
+
+      let nextTeam:ITeam | undefined = currentGame.getNextTeam();
+
+      if(!nextTeam)
+        return res.sendStatus(400);
+        
+      return res.send(nextTeam);
     };
   }
 

@@ -5,7 +5,7 @@ import { ITeam } from "../../../models/Team/team";
 import { IRound, MiniGame } from "../../../models/Round/round";
 import { DIContainer, SocketsService } from "../../../services";
 
-var currentGame: Game = require("../../../models/Game/currentGame.module").game;
+var currentGameModule = require("../../../models/Game/currentGame.module");
 const socketService = DIContainer.get(SocketsService);
 var timer: string | number | NodeJS.Timer | undefined;
 
@@ -30,6 +30,7 @@ export class Round {
         res: Response,
         next?: NextFunction
     ): Promise<Response> => {
+        let currentGame:Game = currentGameModule.game;
         if (currentGame && currentGame.rounds) {
         return res.send(currentGame.rounds);
         }
@@ -44,6 +45,7 @@ export class Round {
         res: Response,
         next?: NextFunction
     ): Promise<Response> => {
+        let currentGame:Game = currentGameModule.game;
         let game: Game = currentGame;
 
         let result = undefined;
@@ -61,6 +63,7 @@ export class Round {
         res: Response,
         next?: NextFunction
     ): Promise<Response> => {
+        let currentGame:Game = currentGameModule.game;
         let currentRound: IRound | undefined = currentGame.getCurrentRound();
         if (currentRound) {
         return res.send(currentRound);
@@ -75,16 +78,19 @@ export class Round {
         res: Response,
         next?: NextFunction
     ): Promise<Response> => {
+        let currentGame:Game = currentGameModule.game;
         let newRound: IRound | undefined = await currentGame.newRound(
             Number(req.params.miniGame)
         );
 
         if (newRound) {
-          socketService.broadcast("NewRound", JSON.stringify(newRound));
+            socketService.broadcast("NewRound", JSON.stringify(newRound));
+
             return res.send(newRound);
         }
 
-        return res.sendStatus(404);
+        
+        return res.sendStatus(500);
     };
     }
 
@@ -94,11 +100,14 @@ export class Round {
             res: Response,
             next?: NextFunction
         ): Promise<Response> => {
+            let currentGame:Game = currentGameModule.game;
             let currentRound: IRound | undefined = currentGame.getCurrentRound();
             if (currentRound) {
             currentRound.victory = req.body.victory;
             currentRound.started = req.body.started;
             currentRound.ended = req.body.ended;
+            socketService.broadcast("RoundUpdated", JSON.stringify(currentRound));
+
             return res.send(currentRound);
             }
             return res.sendStatus(404);
@@ -111,15 +120,18 @@ export class Round {
           res: Response,
           next?: NextFunction
       ): Promise<Response> => {
-          let currentRound: IRound | undefined = currentGame.getCurrentRound();
-          if (currentRound) {
-          currentRound.victory = req.body.victory;
-          currentRound.ended = true;
-          clearInterval(timer);
-          socketService.broadcast("RoundEnded", JSON.stringify(currentRound));
-          return res.send(currentRound);
-          }
-          return res.sendStatus(404);
+            let currentGame:Game = currentGameModule.game;
+            let currentRound: IRound | undefined = currentGame.getCurrentRound();
+            if (currentRound) {
+                currentRound.victory = req.body.victory;
+                currentRound.ended = true;
+                clearInterval(timer);
+                socketService.broadcast("RoundEnded", JSON.stringify(currentRound));
+                socketService.broadcast("RoundUpdated", JSON.stringify(currentRound));
+                
+                return res.send(currentRound);
+            }
+            return res.sendStatus(404);
       };
   }
 
@@ -129,12 +141,15 @@ export class Round {
             res: Response,
             next?: NextFunction
         ): Promise<Response> => {
+            let currentGame:Game = currentGameModule.game;
             let currentRound: IRound | undefined = currentGame.getCurrentRound();
             if (currentRound) {
                 
                 socketService.broadcast("CurrentRoundStarted", JSON.stringify(currentRound));
                 currentRound.started = true;
                 this.StartTimer(currentRound);
+                socketService.broadcast("RoundUpdated", JSON.stringify(currentRound));
+
                 
                 return res.send(currentRound);
             }
@@ -152,11 +167,14 @@ export class Round {
                 socketService.broadcast("RoundEnded", JSON.stringify(round));
                 clearInterval(timer);
 
+                socketService.broadcast("RoundUpdated", JSON.stringify(round));
+
                 return;
             }
             
             round.remainingTime -= 1;
             socketService.broadcast("RoundTimerUpdated", JSON.stringify(round));
+            socketService.broadcast("RoundUpdated", JSON.stringify(round));
 
         }, 1000);
     }

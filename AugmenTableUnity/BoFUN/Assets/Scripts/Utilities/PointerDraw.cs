@@ -18,19 +18,25 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
     private PointerEventData previousMouseEventData;
 
 
-
-    // Start is called before the first frame update
-    void Start()
+    // Public Functions
+    public void EraseDrawing()
     {
         Color32[] colorsArray = texture.GetPixels32();
-
         // Initialize texture to default color
-        for(int i=0; i<colorsArray.Length; i++)
+        for (int i = 0; i < colorsArray.Length; i++)
         {
             colorsArray[i] = backgroundColor;
         }
         texture.SetPixels32(colorsArray);
         texture.Apply();
+    }
+
+
+    // Private Functions
+
+    void Start()
+    {
+        EraseDrawing();
     }
 
     private void StartDrawing(PointerEventData eventData)
@@ -146,7 +152,6 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         // Return the pixel color at the calculated coordinates
         return localCoordinates;
     }
-
 
     // Pointer events
 

@@ -9,7 +9,7 @@ namespace BoFUN.Entities
         public int id;
         public string category = "";
         public string question = "";
-        public List<string> answers = new List<string>();
+        public string[] answers;
         public int correctAnswer = -1;
 
         public static string ToJSON(Trivia t)
