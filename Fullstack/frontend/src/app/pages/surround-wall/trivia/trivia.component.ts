@@ -48,14 +48,9 @@ export class TriviaComponent implements OnInit {
     this.sockets.subscribe('RoundEnded', (msg: any) => {
       let round = JSON.parse(msg);
       this.round = round;
-      
-this.sockets.subscribe('RoundEnded', (msg: any) => {
-      let round = JSON.parse(msg);
-      this.round = round;
       setTimeout(() => {
         this.router.navigateByUrl('surroundwall/main');
       }, 6000);
-    });
     });
 
     this.sockets.subscribe('GameOver', (msg: any) => {
