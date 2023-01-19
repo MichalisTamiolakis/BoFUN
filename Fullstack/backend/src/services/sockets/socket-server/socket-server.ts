@@ -93,9 +93,15 @@ export class SocketServer {
   private onClientEvent(socket: io.Socket): void {
     socket.on('client:event', (data: any) => {
       this.logger.debug('client event');
-      this.io.emit(data.event, data.data);
+      this.io.emit('server:event', data.event, data.data);
     });
   }
+
+  
+  // broadcast(event: string, message: any) {
+  //   this.io.emit('server:event', event, message);
+  // }
+
   //#endregion Private methods
   // --------------------------------
 

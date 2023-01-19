@@ -551,4 +551,40 @@ export class Game{
             return this.getTeam(this.sequence[0]);
         }
     }
+
+    getVeryNextTeam():ITeam|undefined{
+        let currentRound:IRound|undefined = this.getCurrentRound();
+        
+        if(this.sequence.length <= 0 || this.teams.length <= 0)
+            return undefined;
+
+        if(currentRound){
+            // Find the team of the current round
+            let currentRoundTeam:ITeam | undefined = this.getTeam(currentRound.team);
+            
+            if(currentRoundTeam){
+                for(let i=0; i<this.sequence.length; i++){
+                    if(this.sequence[i] == currentRoundTeam.id){
+                        
+                        // Next team index
+                        let nextTeamSequenceIndex:number = (i+2)%this.sequence.length;
+                        // if(nextTeamSequenceIndex>=this.sequence.length){
+                        //     nextTeamSequenceIndex=0;
+                        // }
+                        return this.getTeam(this.sequence[nextTeamSequenceIndex]);
+                    }
+                }
+
+                console.log("Incorrect team id in current round");
+                return undefined;
+            }
+            else{
+                console.log("Incorrect team id in current round");
+            }
+
+        }
+        else{ // This is the first round
+            return this.getTeam(this.sequence[0]);
+        }
+    }
 }

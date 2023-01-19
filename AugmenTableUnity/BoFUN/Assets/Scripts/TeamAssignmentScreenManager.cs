@@ -129,10 +129,15 @@ namespace BoFUN.Menu
 
             int qrCodesRemaining = GameManager.GameManager.Instance.gameCreationDescriptor.totalPlayers;
 
-            int leftQRs = 1;
-            int rightQRs = 1;
-            int topQRs = qrCodesRemaining - leftQRs - rightQRs/2;
-            int bottomQRs = qrCodesRemaining - leftQRs - rightQRs - topQRs;
+            // Top And Bottom QRs
+            int topAndBottom = Mathf.FloorToInt(qrCodesRemaining * (3f / 5f));
+            int leftAndRight = Mathf.CeilToInt(qrCodesRemaining * (2f / 5f));
+
+            int bottomQRs = Mathf.CeilToInt(topAndBottom / 2f);
+            int topQRs = Mathf.FloorToInt(topAndBottom / 2f);
+
+            int rightQRs = Mathf.CeilToInt(leftAndRight / 2f);
+            int leftQRs = Mathf.FloorToInt(leftAndRight / 2f);
 
             int seat = 0;
             // Bottom
