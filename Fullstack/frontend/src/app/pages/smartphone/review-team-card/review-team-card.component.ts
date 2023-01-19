@@ -32,6 +32,10 @@ export class ReviewTeamCardComponent implements OnInit {
       })
     })
 
+    this.sockets.subscribe('GameStarted', (msg: any) => {
+      this.router.navigateByUrl('idle/' + this.playerId);
+    });
+
 
     
 this.sockets.subscribe('TeamUpdated', (data: any) => {
