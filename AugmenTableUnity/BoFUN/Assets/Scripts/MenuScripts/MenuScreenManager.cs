@@ -45,13 +45,13 @@ namespace BoFUN.Menu
         public bool PantomimeOption
         {
             get => GameManager.GameManager.Instance.gameCreationDescriptor.pantomime;
-            set => GameManager.GameManager.Instance.gameCreationDescriptor.pictionary = value;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.pantomime = value;
         }
 
         public bool PictionaryOption
         {
             get => GameManager.GameManager.Instance.gameCreationDescriptor.pictionary;
-            set => GameManager.GameManager.Instance.gameCreationDescriptor.pantomime = value;
+            set => GameManager.GameManager.Instance.gameCreationDescriptor.pictionary = value;
         }
 
         public int TimePerRound
