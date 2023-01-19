@@ -64,8 +64,6 @@ export class PantomimeMobileComponent implements OnInit {
     console.log("started",this.currentRound.started)
     if(!this.currentRound.started) this.startGame();
     else this.endGame();
-    this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
-      this.router.navigateByUrl('idle/' + this.playerId);
   }
 
   startGame(){
@@ -79,6 +77,8 @@ export class PantomimeMobileComponent implements OnInit {
     this.roundService.setResult(true).subscribe((result:any)=>{
       this.currentRound = result
       console.log("endGame",this.currentRound)
+      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
     });
   }
 

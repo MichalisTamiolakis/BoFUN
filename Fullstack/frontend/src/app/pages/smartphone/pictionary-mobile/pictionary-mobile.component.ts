@@ -58,8 +58,7 @@ private sockets:SocketsService,
     console.log('started', this.currentRound.started);
     if (!this.currentRound.started) this.startGame();
     else this.endGame();
-    this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
-      this.router.navigateByUrl('idle/' + this.playerId);
+    
   }
 
   startGame(){
@@ -72,6 +71,8 @@ private sockets:SocketsService,
   endGame(){
     this.roundService.setResult(true).subscribe((result:any)=>{
       this.currentRound = result
+      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
     });
   }
 }
