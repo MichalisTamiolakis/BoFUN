@@ -208,7 +208,7 @@ namespace BoFUN.Utilities
         {
             if (socket.Connected)
             {
-                socket.EmitStringAsJSON("client:event", "{\"{"+eventName+"}\": "+dataJsonString+"}");
+                socket.EmitStringAsJSONAsync("client:event", "{ \"event\":\"" + eventName + "\", \"data\": \""+dataJsonString+"\"}");
             }
             else
             {

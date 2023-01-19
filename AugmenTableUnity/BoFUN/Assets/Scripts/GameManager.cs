@@ -93,6 +93,7 @@ namespace BoFUN.GameManager
         public void NextScreen()
         {
             ShowScreen((Screen)Mathf.Min((int)currentScreen + 1, 3));
+
         }
 
         public void PreviousScreen()
@@ -141,6 +142,13 @@ namespace BoFUN.GameManager
         public void Start()
         {
             StartGame();
+            //Invoke("Test", 5f);
         }
+
+        //public void Test()
+        //{
+        //    Debug.Log("Invoked");
+        //    //NetworkUtilities.Instance.SocketPublish(networkSettings.sockets.pictionaryDrawingUpdatedEvent, "Test");
+        //}
     }
 }

@@ -87,7 +87,7 @@ namespace BoFUN.Board.MiniGames
             m_AssociatedRound.onUpdate.AddListener(OnRoundUpdated);
         }
     
-        private void SendDrawingToServer()
+        private void UploadDrawingToServer()
         {
             //pointerDraw.Imag
             string drawing = pointerDraw.GetDrawingBase64();
