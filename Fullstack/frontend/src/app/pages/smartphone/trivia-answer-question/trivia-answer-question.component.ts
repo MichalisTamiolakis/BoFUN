@@ -58,9 +58,9 @@ private sockets:SocketsService,
       });
     });
 
-    this.sockets.subscribe('NewRound', (msg: any) => {
-      this.router.navigateByUrl('idle/' + this.playerId);
-    });
+    // this.sockets.subscribe('NewRound', (msg: any) => {
+    //   this.router.navigateByUrl('idle/' + this.playerId);
+    // });
 
     this.sockets.subscribe('RoundTimerUpdated', (msg: any) => {
       let round = JSON.parse(msg);
@@ -82,10 +82,14 @@ private sockets:SocketsService,
         if(i===this.gameInfo.correctAnswer){
           this.roundService.setResult(true).subscribe((result:any)=>{
             this.currentRound = result
+            var playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
           });
         }
         else this.roundService.setResult(false).subscribe((result:any)=>{
           this.currentRound = result
+          var playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
         });
       }
     }

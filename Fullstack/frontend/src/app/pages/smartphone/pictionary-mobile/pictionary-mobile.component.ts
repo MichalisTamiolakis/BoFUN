@@ -41,10 +41,10 @@ private sockets:SocketsService,
       let gameJson = JSON.parse(this.currentRound.minigameJSON);
       this.task = gameJson.task;
     });
-    this.sockets.subscribe('NewRound', (msg: any) => {
-      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
-      this.router.navigateByUrl('idle/' + this.playerId);
-    });
+    // this.sockets.subscribe('NewRound', (msg: any) => {
+    //   this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+    //   this.router.navigateByUrl('idle/' + this.playerId);
+    // });
 
     this.sockets.subscribe('RoundTimerUpdated', (msg: any) => {
       let round = JSON.parse(msg);
@@ -58,6 +58,8 @@ private sockets:SocketsService,
     console.log('started', this.currentRound.started);
     if (!this.currentRound.started) this.startGame();
     else this.endGame();
+    this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
   }
 
   startGame(){

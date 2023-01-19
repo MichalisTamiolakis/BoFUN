@@ -47,10 +47,10 @@ export class PantomimeMobileComponent implements OnInit {
       this.gameInfo.category = gameJson.category;
     });
 
-    this.sockets.subscribe('NewRound', (msg: any) => {
-      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
-      this.router.navigateByUrl('idle/' + this.playerId);
-    });
+    // this.sockets.subscribe('NewRound', (msg: any) => {
+    //   this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+    //   this.router.navigateByUrl('idle/' + this.playerId);
+    // });
 
     this.sockets.subscribe('RoundTimerUpdated', (msg: any) => {
       let round = JSON.parse(msg);
@@ -64,6 +64,8 @@ export class PantomimeMobileComponent implements OnInit {
     console.log("started",this.currentRound.started)
     if(!this.currentRound.started) this.startGame();
     else this.endGame();
+    this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
   }
 
   startGame(){
