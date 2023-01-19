@@ -1,4 +1,5 @@
 ﻿using BoFUN.Entities;
+using BoFUN.Utilities;
 using TMPro;
 using UnityEngine;
 
@@ -20,13 +21,18 @@ namespace BoFUN.Board.MiniGames
 
             InitializeToolBox();
 
+            pointerDraw.enabled = true;
             pointerDraw.EraseDrawing(); // Clear previous drawing
 
             AddRoundUpdateListeners();
+
+            // Start sending picture to server
+            InvokeRepeating("SendDrawingToServer", 0.2f, 0.2f);
         }
 
-        // Private Helper Functions
 
+
+        // Private Helper Functions
         private void InitializeTimers()
         {
             // Initialize timers
@@ -55,6 +61,14 @@ namespace BoFUN.Board.MiniGames
                     t.RemainingTimeInSeconds = displayingRound.remainingTime;
                 }
             }
+
+            if (displayingRound.ended)
+            {
+                pointerDraw.enabled = false;
+
+                // Stop sending picture to socket
+                CancelInvoke();
+            }
         }
 
         private void RemoveRoundUpdateListeners()
@@ -71,6 +85,14 @@ namespace BoFUN.Board.MiniGames
                 return;
 
             m_AssociatedRound.onUpdate.AddListener(OnRoundUpdated);
+        }
+    
+        private void SendDrawingToServer()
+        {
+            //pointerDraw.Imag
+            string drawing = pointerDraw.GetDrawingBase64();
+
+            NetworkUtilities.Instance.SocketPublish(GameManager.GameManager.Instance.networkSettings.sockets.pictionaryDrawingUpdatedEvent, drawing);
         }
     }
 }

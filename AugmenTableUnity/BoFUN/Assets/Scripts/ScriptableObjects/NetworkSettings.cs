@@ -94,6 +94,7 @@ public class NetworkSettings : ScriptableObject
         public string teamUpdatedEvent;
         public string playerUpdatedEvent;
         public string roundUpdatedEvent;
+        public string pictionaryDrawingUpdatedEvent;
     }
     [Space(5)]
     public Sockets sockets = new Sockets {
@@ -101,7 +102,8 @@ public class NetworkSettings : ScriptableObject
         seatOccupiedEvent = "SeatOccupied",
         teamUpdatedEvent = "TeamUpdated",
         playerUpdatedEvent = "PlayerUpdated",
-        roundUpdatedEvent = "RoundUpdated"
+        roundUpdatedEvent = "RoundUpdated",
+        pictionaryDrawingUpdatedEvent = "PictionaryDrawingUpdated"
     };
 
     [System.Serializable]

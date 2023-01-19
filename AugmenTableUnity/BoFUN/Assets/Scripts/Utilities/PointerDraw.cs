@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler
 {
@@ -11,8 +12,10 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
     public Color backgroundColor = Color.white;
 
     public Color drawColor = Color.black;
+    public bool colorBlend = false;
     public int drawThickness = 5;
     public float updateDistance = .2f;
+
 
     private bool isDrawing = false;
     private PointerEventData previousMouseEventData;
@@ -31,6 +34,11 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         texture.Apply();
     }
 
+    public string GetDrawingBase64()
+    {
+        byte[] drawingData = texture.EncodeToPNG();
+        return Convert.ToBase64String(drawingData);
+    }
 
     // Private Functions
 
@@ -86,9 +94,8 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         }
     }
 
-    private void DrawLineOnSprite(Vector2 lineStart, Vector2 lineEnd, int thickness, Color color, float interpolationStep=.001f)
+    private void DrawLineOnSprite(Vector2 lineStart, Vector2 lineEnd, int thickness, Color color, float interpolationStep=.01f)
     {
-
         float interpolationValue = 0.0f;
 
         while (interpolationValue <= 1.0f)
@@ -125,7 +132,16 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
                 if (y >= texture.height || y < 0)
                     continue;
 
-                texture.SetPixel(x, y, color);//[y * texture.width + x] = color;
+                if (colorBlend)
+                {
+                    Color initialColor = texture.GetPixel(x, y);
+                    texture.SetPixel(x, y, initialColor * color);
+                }
+                else
+                {
+                    texture.SetPixel(x, y, color);
+                }
+
                 
             }
         }
