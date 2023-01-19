@@ -35,18 +35,23 @@ export class SurroundWallComponent implements OnInit {
     'November',
     'December',
   ];
-  public current_date_str: string ="";
-  public current_time_str: string = "";
-  public round:any;
-  isPictionary:boolean = false;
-  winner:number = -1
-  constructor(private router: Router, private sockets:SocketsService,private roundService:RoundService, private gameService: GameService) {
-    this.isPictionary = (this.router.url.split('/')).includes('pictionary')
+  public current_date_str: string = '';
+  public current_time_str: string = '';
+  public round: any;
+  isPictionary: boolean = false;
+  winner: number = -1;
+  constructor(
+    private router: Router,
+    private sockets: SocketsService,
+    private roundService: RoundService,
+    private gameService: GameService
+  ) {
+    this.isPictionary = this.router.url.split('/').includes('pictionary');
   }
 
   ngOnInit() {
     this.gameService.getWinnerTeam().subscribe((result: any) => {
-      console.log("win",result)
+      console.log('win', result);
       this.winner = result.id;
     });
     this.roundService.getCurrentRound().subscribe((result: any) => {
@@ -62,14 +67,16 @@ export class SurroundWallComponent implements OnInit {
     });
     this.sockets.subscribe('GameOver', (msg: any) => {
       let team = JSON.parse(msg);
-      this.winner = team.id
+      this.winner = team.id;
     });
-    this.isPictionary = (this.router.url.split('/')).includes('pictionary')
+    this.sockets.subscribe('GameStarted', (msg: any) => {
+      this.router.navigateByUrl('surroundwall/main');
+    });
+    this.isPictionary = this.router.url.split('/').includes('pictionary');
     console.log(this.round);
     setInterval(() => {
       const current_date = new Date();
-      this.current_time_str =
-        new Date().toLocaleTimeString();
+      this.current_time_str = new Date().toLocaleTimeString();
       this.current_date_str =
         this.days_of_the_week[current_date.getDay()] +
         ' ' +

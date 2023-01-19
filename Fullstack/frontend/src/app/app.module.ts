@@ -32,6 +32,7 @@ import { GameStatisticsCardComponent } from './components/surround-wall/game-sta
 import { ChartComponent } from './components/surround-wall/chart/chart.component';
 import { EndGameComponent } from './pages/surround-wall/end-game/end-game.component';
 import { IdleComponent } from './pages/smartphone/idle/idle.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ const socketIoConfig: SocketIoConfig = { url: environment.host, options: {} };
     HttpClientModule,
     FormsModule,
     NgApexchartsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

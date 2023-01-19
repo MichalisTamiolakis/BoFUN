@@ -105,6 +105,7 @@ export class GameController {
     ): Promise<Response> => {
       currentGameModule.game.hasGameStarted = true;
       console.log("GAME STARTED");
+      socketService.broadcast("GameStarted", JSON.stringify({}));
       return res.sendStatus(200);
     };
   }
