@@ -271,6 +271,27 @@ export class GameController {
     };
   }
 
+  // public getVeryNextTeam() {
+  //   return async (
+  //     req: Request,
+  //     res: Response,
+  //     next?: NextFunction
+  //   ): Promise<Response> => {
+      
+  //     let currentGame:Game = currentGameModule.game;
+  //     if(currentGame == undefined){
+  //       return res.sendStatus(400);
+  //     }
+
+  //     let nextTeam:ITeam | undefined = currentGame.getVeryNextTeam();
+
+  //     if(!nextTeam)
+  //       return res.sendStatus(400);
+        
+  //     return res.send(nextTeam);
+  //   };
+  // }
+
   public getTeams() {
     return async (
       req: Request,
