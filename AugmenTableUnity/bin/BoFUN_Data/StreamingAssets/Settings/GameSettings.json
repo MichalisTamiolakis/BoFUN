@@ -1,0 +1,7 @@
+{
+    "minNumberOfTeams": 2,
+    "maxNumberOfTeams": 4,
+    "minNumberOfPlayersPerTeam": 2,
+    "maxNumberOfPlayersPerTeam": 4,
+    "maxNumberOfPlayersTotal": 8
+}
