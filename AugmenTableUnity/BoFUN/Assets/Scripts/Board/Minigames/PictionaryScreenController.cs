@@ -49,6 +49,7 @@ namespace BoFUN.Board.MiniGames
         private void InitializeToolBox()
         {
             // TODO Position the toolbox
+            
         }
 
         private void OnRoundUpdated(Round displayingRound)

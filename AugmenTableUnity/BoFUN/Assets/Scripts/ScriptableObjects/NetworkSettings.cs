@@ -1,10 +1,9 @@
 using BoFUN.Entities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NetworkSettings", menuName = "BoFUN/NetworkSettings", order = 1)]
-public class NetworkSettings : ScriptableObject
+[System.Serializable]
+public class NetworkSettings
 {
     public string serverURL = "localhost:8080/BoFUN";
     public string frontendURL = "localhost:4200";
@@ -119,5 +118,8 @@ public class NetworkSettings : ScriptableObject
     [Space(5)]
     public FrontEnd frontEnd = new FrontEnd{ joinPagePath = "join/$seatId" };
 
-
+    public static NetworkSettings CreateFromJSON(string jsonString)
+    {
+        return JsonUtility.FromJson<NetworkSettings>(jsonString);
+    }
 }

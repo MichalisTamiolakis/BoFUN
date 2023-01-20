@@ -3195,6 +3195,50 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!1 &283446076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 283446077}
+  - component: {fileID: 283446078}
+  m_Layer: 0
+  m_Name: SpeechManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &283446077
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283446076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1296395150}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &283446078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283446076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c241784a3fe0e134dad205f981c88965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &286153932
 GameObject:
   m_ObjectHideFlags: 0
@@ -5699,8 +5743,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94437b0d289e760499d05720483353c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkSettings: {fileID: 11400000, guid: 01aa5df9042bb274886aca2fdf21a3d5, type: 2}
-  gameSettings: {fileID: 11400000, guid: 84c7724a8ec03e9468a9e215569c7646, type: 2}
+  networkSettings:
+    serverURL: localhost:8080/BoFUN
+    frontendURL: localhost:4200
+    gameAPI:
+      getGamePath: game
+      getAllTeamsPath: game/teams
+      getTeamPath: game/team/$teamId
+      getNextTeamPath: game/nextTeam
+      createGamePath: game/create
+      startGamePath: game/start
+      endGamePath: game/end
+      createPlayerPath: game/createPlayer
+      assignPlayerToTeamPath: game/assignPlayerToTeam/$playerId
+      setPlayerNamePath: game/setPlayerName/$playerId
+      deletePlayerFromTeamPath: game/removePlayer/$playerId/fromTeam/$teamId
+    roundAPI:
+      newRoundPath: game/round/new/$miniGame
+    sockets:
+      socketServerURL: http://localhost:8080
+      seatOccupiedEvent: SeatOccupied
+      teamUpdatedEvent: TeamUpdated
+      playerUpdatedEvent: PlayerUpdated
+      roundUpdatedEvent: RoundUpdated
+      pictionaryDrawingUpdatedEvent: PictionaryDrawingUpdated
+    frontEnd:
+      joinPagePath: join/$seatId
+  gameSettings:
+    minNumberOfTeams: 2
+    maxNumberOfTeams: 4
+    minNumberOfPlayersPerTeam: 2
+    maxNumberOfPlayersPerTeam: 4
+    maxNumberOfPlayersTotal: 8
   gameCreationDescriptor:
     totalPlayers: 4
     minPlayersPerTeam: 2
@@ -14441,6 +14515,7 @@ Transform:
   - {fileID: 382389238}
   - {fileID: 351014316}
   - {fileID: 1711815775}
+  - {fileID: 283446077}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
