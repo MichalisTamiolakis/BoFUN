@@ -158,5 +158,13 @@ namespace BoFUN.GameManager
         {
             StartGame();
         }
+
+        public void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+        }
     }
 }
