@@ -1,0 +1,31 @@
+{
+    "serverURL": "localhost:8080/BoFUN",
+    "frontendURL": "localhost:4200",
+    "gameAPI": {
+        "getGamePath": "game",
+        "getAllTeamsPath": "game/teams",
+        "getTeamPath": "game/team/$teamId",
+        "getNextTeamPath": "game/nextTeam",
+        "createGamePath": "game/create",
+        "startGamePath": "game/start",
+        "endGamePath": "game/end",
+        "createPlayerPath": "game/createPlayer",
+        "assignPlayerToTeamPath": "game/assignPlayerToTeam/$playerId",
+        "setPlayerNamePath": "game/setPlayerName/$playerId",
+        "deletePlayerFromTeamPath": "game/removePlayer/$playerId/fromTeam/$teamId"
+    },
+    "roundAPI": {
+        "newRoundPath": "game/round/new/$miniGame"
+    },
+    "sockets": {
+        "socketServerURL": "http://localhost:8080",
+        "seatOccupiedEvent": "SeatOccupied",
+        "teamUpdatedEvent": "TeamUpdated",
+        "playerUpdatedEvent": "PlayerUpdated",
+        "roundUpdatedEvent": "RoundUpdated",
+        "pictionaryDrawingUpdatedEvent": "PictionaryDrawingUpdated"
+    },
+    "frontEnd": {
+        "joinPagePath": "join/$seatId"
+    }
+}

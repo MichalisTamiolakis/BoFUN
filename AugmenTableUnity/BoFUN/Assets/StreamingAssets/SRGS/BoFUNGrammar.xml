@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar version="1.0" xml:lang="en-US" root="reminder" tag-format="semantics/1.0" xmlns="http://www.w3.org/2001/06/grammar">
+	
+	<rule id="reminder" scope="public">
+		<item>Ok Bo, create a game with </item>
+		<one-of>
+			<item>
+				<tag>out.teamNumber</tag>
+				<ruleref uri="#number"/>
+				<item>
+					<one-of>
+						<item>
+							team
+						</item>
+						<item>
+							teams
+						</item>
+					</one-of>
+				</item>
+			</item>
+			<item>
+				<tag>out.playerNumber</tag>
+				<ruleref uri="#number"/>
+				<item>
+					<one-of>
+						<item>
+							player
+						</item>
+						<item>
+							players
+						</item>
+					</one-of>
+				</item>
+			</item>
+		</one-of>
+		<item> and </item>
+		<one-of>
+			<item>
+				<ruleref uri="#number"/>
+				<item>
+					<one-of>
+						<item>
+							team
+						</item>
+						<item>
+							teams
+						</item>
+					</one-of>
+				</item>
+			</item>
+			<item>
+				<ruleref uri="#number"/>
+				<item>
+					<one-of>
+						<item>
+							player
+						</item>
+						<item>
+							players
+						</item>
+					</one-of>
+				</item>
+			</item>
+		</one-of>
+	</rule>
+	
+	
+	<rule id="number" scope="public">
+		<item>
+			<one-of>
+				<item>2</item>
+				<item>3</item>
+				<item>4</item>
+				<item>5</item>
+				<item>6</item>
+				<item>7</item>
+				<item>8</item>
+
+			</one-of>
+		</item>
+	</rule>
+	
+</grammar>

@@ -3,6 +3,7 @@ using UnityEngine;
 using BoFUN.Entities;
 using BoFUN.Utilities;
 using BoFUN.Menu;
+using System.IO;
 
 namespace BoFUN.GameManager
 {
@@ -27,6 +28,19 @@ namespace BoFUN.GameManager
                 Instance = this;
                 gameCreationDescriptor = new GameCreationDescriptor();
             }
+
+#if !UNITY_EDITOR
+            // Read data from file in assetsream
+            Debug.Log("Loading Settings from Streaming Assets...");
+            StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/Settings/NetworkSettings.json");
+            string jsonString = sr.ReadToEnd();
+            this.networkSettings = NetworkSettings.CreateFromJSON(jsonString);
+            sr.Close();
+            sr = new StreamReader(Application.streamingAssetsPath + "/Settings/GameSettings.json");
+            jsonString = sr.ReadToEnd();
+            this.gameSettings = GameSettings.CreateFromJSON(jsonString);
+            sr.Close();
+#endif
         }
 
         [Tooltip("The network URL and paths for communicating with the backend")]
@@ -139,16 +153,18 @@ namespace BoFUN.GameManager
             ShowScreen(Screen.GameCreationScreen);
         }
 
+
         public void Start()
         {
             StartGame();
-            //Invoke("Test", 5f);
         }
 
-        //public void Test()
-        //{
-        //    Debug.Log("Invoked");
-        //    //NetworkUtilities.Instance.SocketPublish(networkSettings.sockets.pictionaryDrawingUpdatedEvent, "Test");
-        //}
+        public void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+        }
     }
 }
