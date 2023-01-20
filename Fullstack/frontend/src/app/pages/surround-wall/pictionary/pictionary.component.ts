@@ -80,7 +80,7 @@ export class PictionaryComponent implements OnInit {
     private teamService: TeamService,
     private router: Router
   ) {
-    document.body.style.background = 'none';
+    document.body.style.background = '#F9F8F2';
     this.Math = Math;
     // this.minutes = Math.trunc(this.game.duration / 60);
     // this.seconds = this.game.duration - this.minutes * 60;

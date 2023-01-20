@@ -48,11 +48,17 @@ export class MainComponent implements OnInit {
     private teamService: TeamService,
     private sockets: SocketsService,
     private router: Router
-  ) {}
+  ) {
+    document.body.style.background = 'linear-gradient(354.41deg, #1C2020 5.35%, #2B2F2F 83.35%)';
+  }
 
   ngOnInit(): void {
     this.teamService.getNextTeam().subscribe((res: any) => {
       this.currentTeamName = res.name;
+    });
+    this.teamService.getVeryNextTeam().subscribe((res: any) => {
+      console.log("verNext=",res)
+      this.nextTeamName = res.name;
     });
     this.gameService.getGame().subscribe(async (result) => {
       this.game = result;
@@ -68,10 +74,6 @@ export class MainComponent implements OnInit {
       }
       let test = [];
       this.rounds = this.game.rounds;
-      var currentTeamId = this.rounds[this.rounds.length - 1].team;
-      this.teamService.getTeam(currentTeamId).subscribe((team: any) => {
-        this.currentTeamName = team.name;
-      });
       while (this.rounds.length > 0) {
         test.push(this.rounds.splice(0, this.game.teams.length));
       }
@@ -123,7 +125,7 @@ export class MainComponent implements OnInit {
     return Object.values(MiniGame)[id].toString();
   }
 
-  async getTeamName(id: number) {
+  getTeamName(id: number) {
     var name = this.teamService.getTeam(id).subscribe((team: any) => {
       this.teamNames.push(team.name);
       console.log(this.teamNames);

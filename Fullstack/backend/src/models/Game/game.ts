@@ -130,118 +130,30 @@ export class Game{
         this.pictionary = true;
         this.trivia = false;
         this.sequence = [1,0];
-        this.winningTeam = 1;
-        this.rounds = [{
-            id: 0, 
-            team: 1,
-            player: 1,
-            minigame: 0,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 1, 
-            team: 0,
-            player: 0,
-            minigame: 1,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 2, 
-            team: 1,
-            player: 3,
-            minigame: 2,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 3, 
-            team: 0,
-            player: 2,
-            minigame: 0,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 4, 
-            team: 1,
-            player: 1,
-            minigame: 1,
-            minigameJSON: "",
-            victory: false,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-        
-          {
-            id: 5, 
-            team: 1,
-            player: 1,
-            minigame: 0,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 6, 
-            team: 0,
-            player: 0,
-            minigame: 1,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 7, 
-            team: 1,
-            player: 3,
-            minigame: 2,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 8, 
-            team: 0,
-            player: 2,
-            minigame: 0,
-            minigameJSON: "",
-            victory: true,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
-          {
-            id: 9, 
-            team: 1,
-            player: 1,
-            minigame: 1,
-            minigameJSON: "",
-            victory: false,
-            remainingTime: 20,
-            started: true,
-            ended: true,
-          },
+        this.winningTeam = -1;
+        this.rounds = [
+        //     {
+        //     id: 0, 
+        //     team: 1,
+        //     player: 1,
+        //     minigame: 0,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   },
+        //   {
+        //     id: 1, 
+        //     team: 0,
+        //     player: 0,
+        //     minigame: 1,
+        //     minigameJSON: "",
+        //     victory: true,
+        //     remainingTime: 20,
+        //     started: true,
+        //     ended: true,
+        //   }
         
         //   {
         //     id: 10, 
@@ -584,7 +496,7 @@ export class Game{
 
         }
         else{ // This is the first round
-            return this.getTeam(this.sequence[0]);
+            return this.getTeam(this.sequence[1%this.sequence.length]);
         }
     }
 }
