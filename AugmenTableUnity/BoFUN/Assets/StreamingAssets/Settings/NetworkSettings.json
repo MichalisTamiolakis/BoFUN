@@ -1,6 +1,6 @@
 {
-    "serverURL": "localhost:8080/BoFUN",
-    "frontendURL": "localhost:4200",
+    "serverURL": "http://localhost:8080/BoFUN",
+    "frontendURL": "http://localhost:4200",
     "gameAPI": {
         "getGamePath": "game",
         "getAllTeamsPath": "game/teams",
@@ -26,6 +26,6 @@
         "pictionaryDrawingUpdatedEvent": "PictionaryDrawingUpdated"
     },
     "frontEnd": {
-        "joinPagePath": "join/$seatId"
+        "joinPagePath": "smartphone/join/$seatId"
     }
 }
