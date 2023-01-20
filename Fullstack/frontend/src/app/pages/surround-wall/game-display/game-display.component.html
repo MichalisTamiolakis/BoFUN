@@ -8,10 +8,10 @@
     <div class="center">
         
         <div
-            [ngClass]="{'outer-circle': true, 'loseTimer': round.ended === true, 'startGame': round.started === true }">
+            [ngClass]="{'outer-circle': true, 'loseTimer': round!==undefined && round.ended === true, 'startGame': round!==undefined && round.started === true }">
 
         </div>
-        <div [ngClass]="{'circle': true, 'loseTimer': round.started === true && round.ended === true}">
+        <div [ngClass]="{'circle': true, 'loseTimer': round!==undefined && round.started === true && round.ended === true}">
             <div class="timer">
                 0{{minutes}} : {{Math.trunc(seconds/10)===0 ? '0'+seconds : seconds}}
             </div>
@@ -27,7 +27,7 @@
             </div>
         </div> -->
 
-        <div *ngIf="round.ended === true" [ngStyle]="{background: !round.victory ? 'linear-gradient(180deg, #db625e 0%, #e5716d 100%)' : 'linear-gradient(180deg, #317165 0%, #387C68 100%)'}"
+        <div *ngIf="round!==undefined && round.ended === true" [ngStyle]="{background: !round.victory ? 'linear-gradient(180deg, #db625e 0%, #e5716d 100%)' : 'linear-gradient(180deg, #317165 0%, #387C68 100%)'}"
             [ngClass]="{'endGame': true, 'appear circleEnd': round.started === true }">
             <div [ngClass]="{'endGameTitle': round.started === true}" [ngStyle]="{color: round.victory ? 'white' : 'black'}">
                 {{round.victory ? "You' ve won!" : "You' ve lost!"}}

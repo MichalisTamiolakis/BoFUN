@@ -29,6 +29,7 @@ export class GameController {
       .get("/gamesScores", this.getGamesScores())
       .get("/winnerTeam", this.getWinnerTeam())
       .get("/nextTeam", this.getNextTeam())
+      .get("/veryNextTeam", this.getVeryNextTeam())
       .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
       .put("/setPlayerName/:playerId", this.setNameToPlayer())
       .put("/editTeam/:teamId", this.editTeam())
@@ -271,6 +272,27 @@ export class GameController {
     };
   }
 
+  public getVeryNextTeam() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      
+      let currentGame:Game = currentGameModule.game;
+      if(currentGame == undefined){
+        return res.sendStatus(400);
+      }
+
+      let nextTeam:ITeam | undefined = currentGame.getVeryNextTeam();
+
+      if(!nextTeam)
+        return res.sendStatus(400);
+        
+      return res.send(nextTeam);
+    };
+  }
+
   public getTeams() {
     return async (
       req: Request,
@@ -347,7 +369,7 @@ export class GameController {
         
         return res.send(team);
       }
-      return res.sendStatus(400);
+      return res.send({id:-1});
     };
   }
 
