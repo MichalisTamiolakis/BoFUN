@@ -39,7 +39,7 @@ export class Game{
             teams.push({
             id: i,
             name: "Team " + (i + 1),
-            image: "",
+            image: "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAF9SURBVHgBzVeLbcIwEH2gDpANyAjdAHeCdoOECWCDjsAIGaEjmA3oBmGD0AlaO3GClZ7PnxjBk56Q4nv3Yvt8OMCDsEIaCkONC+4Modgotoq/M7Zm7AMZcVDsCDMX9UtUWIBSUUYYzilNjmjTdoGpPfsy0DObKWtOVfVZ8RU8TorfilcMRScC4t+4gBr+GVSE7pCom+Bb4j2j9Zl3SJxtBx4F/MdOjMFrS7jl8/Z7ykHv98UTU1HGwiMqsRyCehhyNAT4FwvJkSTSR60gTPWzNjDHJsV4bAiV0WjWiGs4vfHKemNf1eZC7zkWV0hF5sB0Ml6shycMy+YTXplxAb+eFLn25Qi6qOYoMVwIXHneXUKq83wiHkfQRelEHRPMgGqflU8kreAG6bCXXM4H14Rgh1uFh+yrC/YtdBcqKnFrCi3i+rTA0OFStJO5vexfGK6vrpYpZvESC/9YavxviWeTWBJjuqj2yAh9BhvwF/ptaLLUTxiNjfn9Ad/Nngt/llkY0uRdHxgAAAAASUVORK5CYII=",
             members: [],
             color: chosenColor
             });

@@ -3211,7 +3211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &283446077
 Transform:
   m_ObjectHideFlags: 0
@@ -5744,8 +5744,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkSettings:
-    serverURL: localhost:8080/BoFUN
-    frontendURL: localhost:4200
+    serverURL: http://localhost:8080/BoFUN
+    frontendURL: http://localhost:4200
     gameAPI:
       getGamePath: game
       getAllTeamsPath: game/teams
@@ -5768,7 +5768,7 @@ MonoBehaviour:
       roundUpdatedEvent: RoundUpdated
       pictionaryDrawingUpdatedEvent: PictionaryDrawingUpdated
     frontEnd:
-      joinPagePath: join/$seatId
+      joinPagePath: smartphone/join/$seatId
   gameSettings:
     minNumberOfTeams: 2
     maxNumberOfTeams: 4
