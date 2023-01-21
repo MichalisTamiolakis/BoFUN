@@ -1,35 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar version="1.0" xml:lang="en-US" root="reminder" tag-format="semantics/1.0" xmlns="http://www.w3.org/2001/06/grammar">
+<grammar version="1.0" xml:lang="en-US" root="main" tag-format="semantics/1.0" xmlns="http://www.w3.org/2001/06/grammar">
 	
-	<rule id="reminder" scope="public">
+	<rule id="main" scope="public">
 		<item>Ok Bo, create a game with </item>
 		<one-of>
 			<item>
-				<tag>out.teamNumber</tag>
 				<ruleref uri="#number"/>
 				<item>
-					<one-of>
-						<item>
-							team
-						</item>
-						<item>
-							teams
-						</item>
-					</one-of>
+					teams
 				</item>
 			</item>
 			<item>
-				<tag>out.playerNumber</tag>
 				<ruleref uri="#number"/>
 				<item>
-					<one-of>
-						<item>
-							player
-						</item>
-						<item>
-							players
-						</item>
-					</one-of>
+					players
 				</item>
 			</item>
 		</one-of>
@@ -38,27 +22,13 @@
 			<item>
 				<ruleref uri="#number"/>
 				<item>
-					<one-of>
-						<item>
-							team
-						</item>
-						<item>
-							teams
-						</item>
-					</one-of>
+					teams
 				</item>
 			</item>
 			<item>
 				<ruleref uri="#number"/>
 				<item>
-					<one-of>
-						<item>
-							player
-						</item>
-						<item>
-							players
-						</item>
-					</one-of>
+					players
 				</item>
 			</item>
 		</one-of>

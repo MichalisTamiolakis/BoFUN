@@ -1,4 +1,5 @@
 using UnityEngine;
+using Crosstales.RTVoice;
 
 namespace BoFUN.Menu
 {
@@ -64,6 +65,7 @@ namespace BoFUN.Menu
         public NumberOfPlayersAndTeamsSelection numberOfPlayersAndTeamsSelectionPanel;
         public GameSettings gameSettingsPanel;
         public Camera UICamera;
+        public SpeechGameCreation speechController;
         //public 
         //public GameObject
 
@@ -86,15 +88,11 @@ namespace BoFUN.Menu
             gameSettingsPanel.Window.SetActive(true);
         }
 
-        void Update()
-        {
-
-        }
-
         public void ShowScreen(bool show)
         {
             menuWindow.SetActive(show);
             UICamera.enabled = show;
+            speechController?.StartListening();
         }
 
         public void NextPage()
@@ -151,8 +149,18 @@ namespace BoFUN.Menu
 
         public void CreateGame()
         {
+            // Game Created manually stop speech listening
+            speechController?.StopListening();
+
             Debug.Log("Creating Game...");
             GameManager.GameManager.Instance.CreateGame();
+
+        }
+
+        public void Repaint()
+        {
+            numberOfPlayersAndTeamsSelectionPanel.Repaint();
+            gameSettingsPanel.Repaint();
         }
 
     }

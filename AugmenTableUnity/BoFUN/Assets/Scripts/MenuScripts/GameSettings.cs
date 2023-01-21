@@ -21,10 +21,6 @@ namespace BoFUN.Menu {
 
         public GameObject loadingScreen;
 
-        [Space(10)]
-        public int minTimePerRound = 30; // 30 Seconds Min
-        public int maxTimePerRound = 300; // 5 Minutes Max
-
         [HideInInspector]
         public bool focused = false;
 
@@ -38,16 +34,16 @@ namespace BoFUN.Menu {
             get => MenuScreenManager.Instance.TimePerRound;
             set
             {
-                MenuScreenManager.Instance.TimePerRound = Mathf.Clamp(value, minTimePerRound, maxTimePerRound);
+                MenuScreenManager.Instance.TimePerRound = Mathf.Clamp(value, GameManager.GameManager.Instance.gameSettings.minRoundDurationSeconds, GameManager.GameManager.Instance.gameSettings.maxRoundDurationSeconds);
 
                 // If min num of teams, disable - button
-                if (MenuScreenManager.Instance.TimePerRound <= minTimePerRound)
+                if (MenuScreenManager.Instance.TimePerRound <= GameManager.GameManager.Instance.gameSettings.minRoundDurationSeconds)
                 {
                     timerDecreaseButton.interactable = false;
                     timerIncreaseButton.interactable = true;
                 }
                 // If max num of teams, disable + button        
-                else if (MenuScreenManager.Instance.TimePerRound >= maxTimePerRound)
+                else if (MenuScreenManager.Instance.TimePerRound >= GameManager.GameManager.Instance.gameSettings.maxRoundDurationSeconds)
                 {
                     timerDecreaseButton.interactable = true;
                     timerIncreaseButton.interactable = false;
@@ -96,6 +92,14 @@ namespace BoFUN.Menu {
             }
         }
 
+        public void Repaint()
+        {
+            TimePerRound = TimePerRound;
+            TriviaOption = TriviaOption;
+            PictionaryOption = PictionaryOption;
+            PantomimeOption = PantomimeOption;
+        }
+
         public void ShowLoading(bool show)
         {
             this.loadingScreen.SetActive(show);
@@ -117,6 +121,7 @@ namespace BoFUN.Menu {
 
         }
 
+
         void Start()
         {
             if(!triviaToggle || !pantomimeToggle || !pictionaryToggle || !timerIncreaseButton || !timerDecreaseButton || !timerText || !start || !previous)
@@ -130,8 +135,8 @@ namespace BoFUN.Menu {
             triviaToggle.onToggle.AddListener((bool value) => { if (focused) TriviaOption = value; });
             pantomimeToggle.onToggle.AddListener((bool value) => { if (focused) PantomimeOption = value; });
             pictionaryToggle.onToggle.AddListener((bool value) => { if (focused) PictionaryOption = value; });
-            timerIncreaseButton.onClick.AddListener(()=> { if (focused) TimePerRound = TimePerRound + 15; });
-            timerDecreaseButton.onClick.AddListener(() => { if (focused) TimePerRound = TimePerRound - 15; });
+            timerIncreaseButton.onClick.AddListener(()=> { if (focused) TimePerRound = TimePerRound-(TimePerRound%15) + 15; });
+            timerDecreaseButton.onClick.AddListener(() => { if (focused) TimePerRound = TimePerRound - (TimePerRound % 15) - 15; });
             start.onClick.AddListener(() => { if (focused) MenuScreenManager.Instance.CreateGame(); });
             previous.onClick.AddListener(() => { if (focused) MenuScreenManager.Instance.PreviousPage(); });
 
