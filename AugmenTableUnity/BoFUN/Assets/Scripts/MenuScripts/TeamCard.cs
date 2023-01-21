@@ -14,6 +14,7 @@ namespace BoFUN.Menu
         public Image backgroundImageComponent;
         public TMP_Text teamName;
         public Image avatarImageComponent;
+        public Outline avatarImageOutlineComponent;
         public Transform playerEntriesParent;
         public GameObject waitingPlayers;
 
@@ -54,25 +55,6 @@ namespace BoFUN.Menu
             Repaint();
         }
 
-        //public void AddPlayer(MenuPlayerDescriptor player)
-        //{
-        //    m_JoinedPlayers.Add(player);
-        //}
-
-        //public bool RemovePlayer(int playerId)
-        //{
-        //    //WebSocketSharp
-        //    for(int i=m_JoinedPlayers.Count-1; i>=0; i--)
-        //    {
-        //        if (m_JoinedPlayers[i].PlayerId == playerId)
-        //        {
-        //            m_JoinedPlayers.RemoveAt(i);
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
         // Start is called before the first frame update
         void Start()
         {
@@ -94,10 +76,15 @@ namespace BoFUN.Menu
             //Render name
             teamName.text = m_AssociatedTeam.name;
 
-            // Add background card color
+            // Add avatar and outline color
+            //avatarImageComponent
+            
+
+            // Add background card color and avatar outline color
             if (ColorUtility.TryParseHtmlString(m_AssociatedTeam.color, out Color teamColor))
             {
                 backgroundImageComponent.color = teamColor;
+                avatarImageOutlineComponent.effectColor = teamColor;
             }
 
             // Destroy old player entries
