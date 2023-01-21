@@ -235,12 +235,12 @@ namespace BoFUN.Menu {
     
         public void DisableRecognition(string _)
         {
-            m_Recognizer.Stop();
+            m_Recognizer?.Stop();
         }
 
         public void EnableRecognition(string _)
         {
-            m_Recognizer.Start();
+            m_Recognizer?.Start();
         }
     }
 }

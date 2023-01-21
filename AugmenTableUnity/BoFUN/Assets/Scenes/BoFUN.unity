@@ -5939,6 +5939,8 @@ MonoBehaviour:
     minNumberOfPlayersPerTeam: 2
     maxNumberOfPlayersPerTeam: 4
     maxNumberOfPlayersTotal: 8
+    minRoundDurationSeconds: 30
+    maxRoundDurationSeconds: 300
   gameCreationDescriptor:
     totalPlayers: 4
     minPlayersPerTeam: 2
@@ -9477,8 +9479,6 @@ MonoBehaviour:
   start: {fileID: 1185666222}
   previous: {fileID: 1957623294}
   loadingScreen: {fileID: 1602554995}
-  minTimePerRound: 30
-  maxTimePerRound: 300
   focused: 0
 --- !u!1 &774031560
 GameObject:
@@ -24592,7 +24592,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2142231783}
   - component: {fileID: 2142231782}
-  - component: {fileID: 2142231781}
   - component: {fileID: 2142231780}
   - component: {fileID: 2142231784}
   m_Layer: 0
@@ -24635,14 +24634,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &2142231781
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142231779}
-  m_Enabled: 1
 --- !u!20 &2142231782
 Camera:
   m_ObjectHideFlags: 0

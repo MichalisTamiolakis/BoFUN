@@ -1,5 +1,6 @@
 ﻿using BoFUN.Entities;
 using BoFUN.Utilities;
+using System.Web;
 using TMPro;
 using UnityEngine;
 
@@ -90,8 +91,9 @@ namespace BoFUN.Board.MiniGames
     
         private void UploadDrawingToServer()
         {
+
             //pointerDraw.Imag
-            string drawing = pointerDraw.GetDrawingBase64();
+            string drawing = HttpUtility.JavaScriptStringEncode(pointerDraw.GetDrawingSVG());
 
             NetworkUtilities.Instance.SocketPublish(GameManager.GameManager.Instance.networkSettings.sockets.pictionaryDrawingUpdatedEvent, drawing);
         }

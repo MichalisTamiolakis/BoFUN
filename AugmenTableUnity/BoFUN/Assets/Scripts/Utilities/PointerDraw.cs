@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using BoFUN.Utilities;
 
 public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler
 {
@@ -20,6 +21,8 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
     private bool isDrawing = false;
     private PointerEventData previousMouseEventData;
 
+    private SVGImageGnerator m_SVGImageGenerator;
+
 
     // Public Functions
     public void EraseDrawing()
@@ -32,18 +35,27 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         }
         texture.SetPixels32(colorsArray);
         texture.Apply();
+
+        m_SVGImageGenerator.Clear();
     }
 
-    public string GetDrawingBase64()
+    public string GetDrawingPNGBase64()
     {
         byte[] drawingData = texture.EncodeToPNG();
         return Convert.ToBase64String(drawingData);
+    }
+
+    public string GetDrawingSVG()
+    {
+        return m_SVGImageGenerator.GetSVGString();
     }
 
     // Private Functions
 
     void Start()
     {
+        m_SVGImageGenerator = new SVGImageGnerator(texture.width, texture.height);
+        m_SVGImageGenerator.SetBackgroundColor(backgroundColor);
         EraseDrawing();
     }
 
