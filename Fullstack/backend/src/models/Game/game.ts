@@ -77,7 +77,7 @@ export class Game{
     }
 
     setupDummyGame():void{
-        this.duration = 1200;
+        this.duration = 60;
         this.totalPlayers = 4;
         this.players = [
             {

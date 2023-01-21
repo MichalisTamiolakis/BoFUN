@@ -84,38 +84,48 @@ export class JoinTeamComponent implements OnInit {
   playerName: string = '';
   missingName: boolean = false;
   namePass: boolean = false;
+  url:string = '';
+  image:boolean =false;
   // joinClicked: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private teamService: TeamService, private router: Router,private sockets: SocketsService
+    private teamService: TeamService,
+    private router: Router,
+    private sockets: SocketsService
   ) {}
- 
-  
+
   ngOnInit(): void {
     this.positionId = this.route.snapshot.paramMap.get('positionId');
     if (this.positionId !== null) {
       this.userService
         .create(Number.parseInt(this.positionId))
-        .subscribe((result:any) => {
-          console.log("player",result)
-          this.playerName = result.username
+        .subscribe((result: any) => {
+          console.log('player', result);
+          this.playerName = result.username;
+          this.url = result.image
+          this.image = true
         });
     }
     this.teamService.getTeams().subscribe((result) => {
       this.teams = result;
       console.log(this.teams);
     });
-    
-  this.sockets.subscribe("TeamUpdated", (msg: any) => {
-    console.log("LALALA",msg)
+
+    this.sockets.subscribe('TeamUpdated', (msg: any) => {
+      console.log('LALALA', msg);
+      // this.teams = JSON.parse(msg)
+    });
+    this.sockets.subscribe('PlayerUpdated', (msg: any) => {
+      console.log('PlayerUpdated', msg);
+      this.image = true
       // this.teams = JSON.parse(msg)
     });
   }
 
   joinTeam(teamId: number) {
     console.log('username', this.playerName);
-    if (this.playerName !== '' && this.missingName===false)
+    if (this.playerName !== '' && this.missingName === false)
       this.teamService
         .assignPlayerToTeam(
           Number.parseInt(this.positionId),
@@ -123,22 +133,44 @@ export class JoinTeamComponent implements OnInit {
           this.playerName
         )
         .subscribe((result) => {
-          this.router.navigateByUrl("smartphone/reviewTeam/" + teamId + "/player/"+this.positionId);
+          this.router.navigateByUrl(
+            'smartphone/reviewTeam/' + teamId + '/player/' + this.positionId
+          );
         });
-    else this.missingName = true
+    else this.missingName = true;
   }
 
   keyPress(event: KeyboardEvent) {
     const pattern = /[a-zA-Z0-9]/;
     const inputChar = String.fromCharCode(event.charCode);
-    console.log("inputChar",inputChar)
+    console.log('inputChar', inputChar);
     if (!pattern.test(inputChar)) {
-        // invalid character, prevent input
-        this.missingName=true;
-        // event.preventDefault();
+      // invalid character, prevent input
+      this.missingName = true;
+      // event.preventDefault();
+    } else this.missingName = false;
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file !== undefined) {
+      const reader = new FileReader();
+      console.log('file', file);
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64 = reader.result as string;
+        this.userService.setAvatar(this.positionId,base64.split(',')[1]).subscribe((msg:any)=>{
+          console.log("msg",msg)
+          // var player = JSON.parse(msg)
+          this.url = msg.image
+          this.image = true
+          console.log('this.url', this.url);
+        })
+        console.log('base64', base64);
+        // do something with the base64 encoded string
+      };
     }
-    else this.missingName=false;
-}
+  }
 
   // setPlayerName(event: any) {
   //   this.userService

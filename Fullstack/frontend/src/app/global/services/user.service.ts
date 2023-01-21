@@ -23,6 +23,11 @@ export class UserService {
       .put(`${this.apiUrl}/BoFUN/game/setPlayerName/${playerId}`, {username: username});
   }
 
+  public setAvatar(playerId:number,image:string) {
+    return this.http
+      .put(`${this.apiUrl}/BoFUN/game/setPlayerAvater/${playerId}`, {image: image});
+  }
+
   public removePlayerFromTeam(playerId:number,teamId:number){
     return this.http
       .delete(`${this.apiUrl}/BoFUN/game/removePlayer/${playerId}/fromTeam/${teamId}`);

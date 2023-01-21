@@ -32,6 +32,7 @@ export class GameController {
       .get("/veryNextTeam", this.getVeryNextTeam())
       .put("/assignPlayerToTeam/:playerId", this.assignPlayerToTeam())
       .put("/setPlayerName/:playerId", this.setNameToPlayer())
+      .put("/setPlayerAvater/:playerId", this.setAvatarToPlayer())
       .put("/editTeam/:teamId", this.editTeam())
       .delete(
         "/removePlayer/:playerId/fromTeam/:teamId",
@@ -82,6 +83,7 @@ export class GameController {
       next?: NextFunction
     ): Promise<Response> => {
       currentGameModule.game.setupDummyGame();
+      socketService.broadcast("GameStarted", JSON.stringify({}));
       return res.send(currentGameModule.game);
     };
   }
@@ -177,6 +179,23 @@ export class GameController {
         // socketService.broadcast("TeamUpdated", [teams]);
         socketService.broadcast("TeamUpdated", JSON.stringify(chosenTeam));
         return res.send(currentGameModule.game);
+      }
+      return res.sendStatus(400);
+    };
+  }
+
+  public setAvatarToPlayer() {
+    return async (
+      req: Request,
+      res: Response,
+      next?: NextFunction
+    ): Promise<Response> => {
+      let players: Array<IPlayer> = currentGameModule.game.players;
+      let player = players.find(({ id }) => id === Number(req.params.playerId));
+      if (player !== undefined) {
+        player.image = req.body.image;
+        socketService.broadcast("PlayerUpdated", JSON.stringify(player));
+        return res.send(player);
       }
       return res.sendStatus(400);
     };
