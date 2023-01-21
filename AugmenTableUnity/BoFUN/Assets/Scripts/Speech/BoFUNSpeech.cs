@@ -38,7 +38,6 @@ public class BoFUNSpeech : MonoBehaviour
         builder.AppendFormat("\tDuration: {0} seconds{1}", args.phraseDuration.TotalSeconds, Environment.NewLine);
         Debug.Log(builder.ToString());
 
-        bool hasSemantics = args.semanticMeanings != null;
         if (args.semanticMeanings != null)
         {
             foreach (SemanticMeaning sm in args.semanticMeanings)
@@ -49,5 +48,8 @@ public class BoFUNSpeech : MonoBehaviour
                 //semantics.Add(newSm);
             }
         }
+
+        // Find number of players and number of teams
+
     }
 }
