@@ -8,10 +8,12 @@
     </div>
     <div class="players">
         <div class="player-info" *ngFor="let player of teamPlayers">
-            <span *ngIf="player.image===''" style="width: 20px;
+            <!-- <span *ngIf="player.image===''" style="width: 20px;
         height: 20px;color:black;margin-right:5px" class="iconify user-avatar"
                 data-icon="carbon:user-avatar-filled"></span>
-            <img *ngIf="player.image!==''" src="{player.image}" alt="">
+            <img *ngIf="player.image!==''" src="{player.image}" alt=""> -->
+            <img style="width: 20px;
+            height: 20px;color:black;margin-right:5px;border-radius: 50%;"  src="{{'data:image/png;base64,'+player.image}}" alt="">
             <div>{{player.username}}</div>
         </div>
     </div>

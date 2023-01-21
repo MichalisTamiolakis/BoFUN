@@ -7,9 +7,11 @@
                 Best Overall:
             </div>
             <div class="player" *ngFor="let player of playerScores.bestOverall">
-                <span style="width: 23px;
+                <!-- <span style="width: 23px;
         height: 23px;color:black;margin-right:5px" class="iconify user-avatar"
-                data-icon="carbon:user-avatar-filled"></span>
+                data-icon="carbon:user-avatar-filled"></span> -->
+                <img style="width: 23px;
+                height: 23px;margin-right:5px;border-radius: 50%;"  src="{{'data:image/png;base64,'+player.image}}" alt="">
                 <div class="playerName">{{player.username}}</div>
             </div>
 
@@ -19,9 +21,11 @@
                 Best at {{getMiniGameName(miniGame.miniGameId)}}:
             </div>
             <div class="player" *ngFor="let player of miniGame.bestPlayers">
-                <span style="width: 23px;
+                <!-- <span style="width: 23px;
         height: 23px;color:black;margin-right:5px" class="iconify user-avatar"
-                data-icon="carbon:user-avatar-filled"></span>
+                data-icon="carbon:user-avatar-filled"></span> -->
+                <img style="width: 23px;
+                height: 23px;margin-right:5px;border-radius: 50%;"  src="{{'data:image/png;base64,'+player.image}}" alt="">
                 <div class="playerName">{{player.username}}</div>
             </div>
 

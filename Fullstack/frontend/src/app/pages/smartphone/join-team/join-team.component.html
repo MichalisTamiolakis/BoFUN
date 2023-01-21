@@ -2,9 +2,9 @@
     <div class="personal-settings">
         <div class="user-icon">
             <div class="icon" style="display: flex;height:60px;justify-content: center;">
-                <span [ngStyle]="{display: this.url==='' ? 'block' : 'none'}" class="iconify user-avatar" style="color: rgba(255, 255, 255, 0.1);"
-                    data-icon="carbon:user-avatar-filled"></span>
-                <img *ngIf="url" style="border-radius: 50%;width: 60px;"  src="{{url}}" alt="">
+                <!-- <span [ngStyle]="{display: this.url==='' ? 'block' : 'none'}" class="iconify user-avatar" style="color: rgba(255, 255, 255, 0.1);"
+                    data-icon="carbon:user-avatar-filled"></span> -->
+                <img style="border-radius: 50%;width: 60px;"  src="{{'data:image/png;base64,'+url}}" alt="">
             </div>
             <div class="edit-avatar">
                 <div style="font-family: 'Work Sans';
