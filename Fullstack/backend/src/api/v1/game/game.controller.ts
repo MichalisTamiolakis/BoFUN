@@ -140,7 +140,7 @@ export class GameController {
           id: req.body.positionId,
           username: "New Player",
           teamId: -1,
-          image: "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAF9SURBVHgBzVeLbcIwEH2gDpANyAjdAHeCdoOECWCDjsAIGaEjmA3oBmGD0AlaO3GClZ7PnxjBk56Q4nv3Yvt8OMCDsEIaCkONC+4Modgotoq/M7Zm7AMZcVDsCDMX9UtUWIBSUUYYzilNjmjTdoGpPfsy0DObKWtOVfVZ8RU8TorfilcMRScC4t+4gBr+GVSE7pCom+Bb4j2j9Zl3SJxtBx4F/MdOjMFrS7jl8/Z7ykHv98UTU1HGwiMqsRyCehhyNAT4FwvJkSTSR60gTPWzNjDHJsV4bAiV0WjWiGs4vfHKemNf1eZC7zkWV0hF5sB0Ml6shycMy+YTXplxAb+eFLn25Qi6qOYoMVwIXHneXUKq83wiHkfQRelEHRPMgGqflU8kreAG6bCXXM4H14Rgh1uFh+yrC/YtdBcqKnFrCi3i+rTA0OFStJO5vexfGK6vrpYpZvESC/9YavxviWeTWBJjuqj2yAh9BhvwF/ptaLLUTxiNjfn9Ad/Nngt/llkY0uRdHxgAAAAASUVORK5CYII=",
+          image: "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAI5SURBVHgB1Zcxc9owGIZf0q5w3RnibrAxwRiXYy9sLJzpDtfOMMPRGfa0/AH6A4D4jgkY2omDCTowJ4EfQPQJOxHCkm1Ckstz9yZGtvSiT/o+C+CNiOA0PjkiVnhhTKZrpiXTTtLSuZfHGfnBdOthphJ9CQvPwGC6CWEo68YZI7Tp8hmm4uyNgJ5nM9Wae+3qv0wpaEin00gmk4hGo5hMJlw+2ExfdA+U4TODVqu1WywWB6rVakFmbolGHyTjHp7y84h6vY5isXjUnkqlEIvFMBqNoMFk+ul+iEizvVb1ooGn06nqNjabDbLZLLbbLTRQuG26uBAar3Q9EomE7jb/YvF4HD48hls0NnU91us1zoDpZWzAx1i3e+n+fD6HD4ZsbCAAzWbTcw2prVQqISCX9CciGC+D9KJ1rFQqPJcJikKn0wmzFAbTf9eYUugWrwP3dEN9h1d4rzL+uRcfhUYb+1xWQilFaaMiQOn0NP6tMrYsC9VqlddmHbTO7XYbvV5P9cgf90J+SdA6H5RMMqTNFIZGo4Futys3r5g+q4zLEMom7eDhcIiwKMpnGfuoci6kPr/g1FLCTZmw0D7I5XJiky2aehkT3+DscJ+Cr4Vm7bByxoSfMT1Ib5FVv9/nIQtTp8fjMfL5PAaDwcFY8nO6c7WB/Xqb9IFCVygUkMlkjnY3RWY2m/EKJqSUDSF6p1CGdAZjx54dW38utgHlkwZlxnecka/wP9BfBR3s1J8wxKXz/x77kvs+eABOhRS3vkNzrAAAAABJRU5ErkJggg==",
           positionId: req.body.positionId,
         };
         currentGameModule.game.players.push(newPlayer);
@@ -219,7 +219,7 @@ export class GameController {
             break;
           }
         }
-        
+
         socketService.broadcast("TeamUpdated", JSON.stringify(chosenTeam));
         return res.send(currentGameModule.game);
       }
