@@ -141,14 +141,15 @@ export class JoinTeamComponent implements OnInit {
   }
 
   keyPress(event: KeyboardEvent) {
-    const pattern = /[a-zA-Z0-9]/;
-    const inputChar = String.fromCharCode(event.charCode);
-    console.log('inputChar', inputChar);
-    if (!pattern.test(inputChar)) {
-      // invalid character, prevent input
-      this.missingName = true;
-      // event.preventDefault();
-    } else this.missingName = false;
+    this.missingName = false;
+    // const pattern = /[a-zA-Z0-9]/;
+    // const inputChar = String.fromCharCode(event.charCode);
+    // console.log('inputChar', inputChar);
+    // if (!pattern.test(inputChar)) {
+    //   // invalid character, prevent input
+    //   this.missingName = true;
+    //   // event.preventDefault();
+    // } else this.missingName = false;
   }
 
   onFileSelected(event: any) {
