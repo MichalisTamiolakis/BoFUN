@@ -5,6 +5,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  top:0;
+  background: linear-gradient(354.41deg, rgb(28, 32, 32) 5.35%, rgb(43, 47, 47) 83.35%);
 }
 .description {
   position: absolute;
@@ -15,7 +20,7 @@
   line-height: 28px;
   letter-spacing: -0.02em;
   left: 20px;
-  top: 13px;
+  top: 78px;
   width: 35%;
 }
 
@@ -32,6 +37,7 @@
   display: flex;
   position: absolute;
   width: 70%;
+  margin-top: 65px;
 }
 
 .content {
@@ -166,13 +172,13 @@ border-radius: 0px 0px 0px 30px;
 .circle {
     border-radius: 50%;
     background: linear-gradient(180deg, #4128f9 0%, #482fff 100%);
-    z-index: -1;
+    z-index: 0;
   
     position: absolute;
     width: 344px;
     height: 344px;
     left: 1681px;
-    top: -168px;
+    top: -103px;
   }
   
   .timer {
@@ -220,6 +226,7 @@ border-radius: 0px 0px 0px 30px;
   animation-fill-mode: forwards;
   animation-delay: 2s;
   position: relative;
+  text-align: center;
   }
   
   .appear {
@@ -242,7 +249,7 @@ border-radius: 0px 0px 0px 30px;
   align-items: center;
   flex-direction: column;
   font-size: 0px;
-  z-index: 100;
+  z-index: 1;
   }
   
   

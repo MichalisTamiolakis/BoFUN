@@ -3,6 +3,11 @@
   width: 100%;
   position: relative;
   display: flex;
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  top:0;
+  background: linear-gradient(354.41deg, rgb(28, 32, 32) 5.35%, rgb(43, 47, 47) 83.35%);
 }
 
 .center {
@@ -10,6 +15,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 65px;
+
 }
 
 .description {
@@ -21,7 +28,7 @@
   line-height: 28px;
   letter-spacing: -0.02em;
   left: 20px;
-  top: 13px;
+  top: 84px;
   width: 35%;
 }
 

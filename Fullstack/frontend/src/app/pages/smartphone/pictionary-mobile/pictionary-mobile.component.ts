@@ -52,6 +52,11 @@ private sockets:SocketsService,
       this.minutes = Math.trunc(this.currentRound.remainingTime / 60);
     this.seconds = this.currentRound.remainingTime - this.minutes * 60;
     });
+
+    this.sockets.subscribe('RoundEnded', (msg: any) => {
+      this.playerId = Number(this.route.snapshot.paramMap.get('playerId'));
+      this.router.navigateByUrl('idle/' + this.playerId);
+    });
   }
 
   onClick() {

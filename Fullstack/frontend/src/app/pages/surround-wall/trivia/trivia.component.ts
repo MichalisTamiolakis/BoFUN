@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class TriviaComponent implements OnInit {
   round: any;
+  correct:string='';
   question: string = '';
   answers: Array<string> = [];
   teamName: string = '';
@@ -33,6 +34,7 @@ export class TriviaComponent implements OnInit {
       let gameJson = JSON.parse(result.minigameJSON);
       this.question = gameJson.question;
       this.answers = gameJson.answers;
+      this.correct = this.answers[gameJson.correctAnswer]
       this.teamService.getTeam(result.team).subscribe((team: any) => {
         this.teamName = team.name;
       });

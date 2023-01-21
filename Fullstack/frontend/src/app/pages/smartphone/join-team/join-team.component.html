@@ -1,9 +1,10 @@
 <div class="myContainer mobile-container">
     <div class="personal-settings">
         <div class="user-icon">
-            <div class="icon" style="display: flex;height:60px;">
-                <span class="iconify user-avatar" style="color: rgba(255, 255, 255, 0.1);"
+            <div class="icon" style="display: flex;height:60px;justify-content: center;">
+                <span [ngStyle]="{display: this.url==='' ? 'block' : 'none'}" class="iconify user-avatar" style="color: rgba(255, 255, 255, 0.1);"
                     data-icon="carbon:user-avatar-filled"></span>
+                <img *ngIf="url" style="border-radius: 50%;width: 60px;"  src="{{url}}" alt="">
             </div>
             <div class="edit-avatar">
                 <div style="font-family: 'Work Sans';
@@ -16,15 +17,20 @@
                 text-align: center;
                 letter-spacing: -0.02em;
                 ">Choose Avatar</div>
-
+                <input style="position: absolute;
+                width: 40%;
+                opacity: 0;" type="file" (change)="onFileSelected($event)">
                 <div style="display: flex;width:15px;height:15px;margin-left: 5px;">
                     <span class="iconify pen" data-icon="fa-solid:pen"></span>
+
                 </div>
             </div>
         </div>
-        <input (keypress)="keyPress($event)" required minlength="4" maxlength="15" [ngStyle]="{outline: missingName ? '2px solid red' : 'none'}" [(ngModel)]="playerName" style="width: 70%;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        <input (keypress)="keyPress($event)" required minlength="4" maxlength="15"
+            [ngStyle]="{outline: missingName ? '2px solid red' : 'none'}" [(ngModel)]="playerName" style="width: 70%;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 30px;
-        height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname..." [ngModel]="playerName">
+        height: 40px;background: rgba(255, 255, 255, 0.1);margin-top: 5%;" type="text" placeholder="Enter nickname..."
+            [ngModel]="playerName">
     </div>
     <div class="join-title">Join a team</div>
     <div class="cards">

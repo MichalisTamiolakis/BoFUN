@@ -5,6 +5,10 @@
   display: flex;
   justify-content: center;
     align-items: center;
+    overflow: hidden;
+    position: absolute;
+    height: 100%;
+    top:0;
 }
 .description {
   position: absolute;
@@ -15,7 +19,7 @@
   line-height: 28px;
   letter-spacing: -0.02em;
   left: 20px;
-  top: 13px;
+  top: 78px;
   width: 35%;
   color: black;
   z-index: -2;
@@ -33,7 +37,7 @@
   width: 344px;
   height: 344px;
   left: 1661px;
-  top: -138px;
+  top: -73px;
 }
 
 .timer {

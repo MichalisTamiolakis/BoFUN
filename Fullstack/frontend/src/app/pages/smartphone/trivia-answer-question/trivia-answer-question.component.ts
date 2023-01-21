@@ -68,6 +68,10 @@ private sockets:SocketsService,
       this.minutes = Math.trunc(this.currentRound.remainingTime / 60);
     this.seconds = this.currentRound.remainingTime - this.minutes * 60;
     });
+
+    this.sockets.subscribe('RoundEnded', (msg: any) => {
+      this.router.navigateByUrl('idle/' + this.playerId);
+    });
   }
   optionIsSelected(){
     for (let i = 0; i < this.options.length; i++) {
