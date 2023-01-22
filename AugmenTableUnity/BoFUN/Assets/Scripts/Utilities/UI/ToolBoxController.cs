@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
+public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerDownHandler
 {
     public Color[] availableColors = { };
     public int[] availableSizes = { };
@@ -196,4 +196,8 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
         rectTransform.anchoredPosition3D = newPos;
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // Just here to stop event propagation
+    }
 }
