@@ -19,13 +19,13 @@ export class PictionaryComponent implements OnInit {
   currentRound: any;
   teamName: string = '';
   round: any;
-  pictureSVG: string = '<svg></svg>';
+  pictureSVG: string = "";
   constructor(
     private sockets: SocketsService,
     private roundService: RoundService,
     private teamService: TeamService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer
   ) {
     document.body.style.background = '#F9F8F2';
     this.Math = Math;
@@ -34,8 +34,6 @@ export class PictionaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.sanitizer.bypassSecurityTrustHtml(this.pictureSVG);
 
     this.roundService.getCurrentRound().subscribe((result: any) => {
       this.round = result;
@@ -70,7 +68,7 @@ export class PictionaryComponent implements OnInit {
     this.sockets.subscribe('PictionaryDrawingUpdated', (msg: any) => {
       
       this.pictureSVG = msg;
-      console.log("msg", this.pictureSVG)
+      
     });
   }
 

@@ -169,7 +169,7 @@ namespace BoFUN.Menu {
                 }
                 else
                 {
-                    VoiceReply($"The given time per round of {minutes} minutes and {seconds} seconds is not valid. The minimum allowed duration is {minTimeMinutes} minutes and {minTimeSeconds} seconds while, the maximum allowed duration is {maxTimeMinutes} and {maxTimeSeconds}. Please repeat the command with a valid time per round.");
+                    VoiceReply($"The given time per round of {minutes} minutes and {seconds} seconds is not valid. The minimum allowed duration is {minTimeMinutes} minutes and {minTimeSeconds} seconds while, the maximum allowed duration is {maxTimeMinutes} minutes and {maxTimeSeconds} seconds. Please repeat the command with a valid time per round.");
                 }
             }
         }

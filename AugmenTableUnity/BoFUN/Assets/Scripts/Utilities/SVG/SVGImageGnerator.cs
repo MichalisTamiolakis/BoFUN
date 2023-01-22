@@ -8,20 +8,13 @@ namespace BoFUN.Utilities
     [System.Serializable]
     public class SVGImageGnerator
     {
-        [SerializeField]
         StringBuilder m_StringBuilder = new StringBuilder();
-        [SerializeField]
         private int m_Width;
-        [SerializeField]
         private int m_Height;
-        [SerializeField]
         private bool m_Overflow;
 
-        [SerializeField]
         private int m_StrokeWidth = 2;
-        [SerializeField]
         private string m_StrokeColor = "black";
-        [SerializeField]
         private string m_BackgroundColor = "white";
 
         public SVGImageGnerator(int width, int height, bool overflow = false)
@@ -38,23 +31,22 @@ namespace BoFUN.Utilities
 
         public void Clear()
         {
-            Debug.Log("Clear");
-            m_StringBuilder?.Clear();
+            m_StringBuilder.Clear();
         }
 
         public void SetBackgroundColor(Color color)
         {
-            m_BackgroundColor = ColorUtility.ToHtmlStringRGBA(color);
+            m_BackgroundColor = $"#{ColorUtility.ToHtmlStringRGBA(color)}";
         }
 
         public void SetStrokeColor(Color color)
         {
-            m_StrokeColor = ColorUtility.ToHtmlStringRGBA(color);
+            m_StrokeColor = $"#{ColorUtility.ToHtmlStringRGBA(color)}";
         }
 
         public void Line(Vector2 from, Vector2 to)
         {
-            m_StringBuilder.AppendFormat("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{3}\" stroke=\"#{4}\" stroke-width=\"{5}\"/>", Mathf.RoundToInt(from.x), Mathf.RoundToInt(from.y), Mathf.RoundToInt(to.x), Mathf.RoundToInt(to.y), m_StrokeColor, m_StrokeWidth);
+            m_StringBuilder.AppendFormat("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{3}\" stroke=\"{4}\" stroke-width=\"{5}\"/>", Mathf.RoundToInt(from.x), Mathf.RoundToInt(from.y), Mathf.RoundToInt(to.x), Mathf.RoundToInt(to.y), m_StrokeColor, m_StrokeWidth);
         }
 
         public void PolyLine(in List<Vector2> points)
@@ -66,13 +58,11 @@ namespace BoFUN.Utilities
         public string GetSVGString()
         {
             // Add on start of svg definitions
-            StringBuilder result = new StringBuilder("");
-            result.AppendFormat("<svg width=\"{0}\" height=\"{1}\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"  overflow=\"{2}\">", m_Width, m_Height, m_Overflow ? "visible" : "hidden");
-            result.AppendFormat("<rect width=\"{0}\" height=\"{1}\" fill=\"#{2}\"/>", m_Width, m_Height, m_BackgroundColor); // Background
+            StringBuilder result = new StringBuilder();
+            //result.AppendFormat("<svg width=\"{0}\" height=\"{1}\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"  overflow=\"{2}\">", m_Width, m_Height, m_Overflow ? "visible" : "hidden");
+            result.AppendFormat("<rect width=\"{0}\" height=\"{1}\" fill=\"{2}\"/>", m_Width, m_Height, m_BackgroundColor); // Background
             result.Append(m_StringBuilder); // Actual lines
-            result.Append("</svg>");
-
-            Debug.Log(result);
+            //result.Append("</svg>");
 
             return result.ToString();
         }

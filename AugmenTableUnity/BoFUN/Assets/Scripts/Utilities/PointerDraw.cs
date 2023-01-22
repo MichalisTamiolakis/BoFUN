@@ -10,19 +10,66 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
 {
     public Image targetImage;
     public Texture2D texture;
-    public Color backgroundColor = Color.white;
 
-    public Color drawColor = Color.black;
+    [SerializeField]
+    private Color m_BackgroundColor = Color.white;
+    [SerializeField]
+    private Color m_DrawColor = Color.black;
+    [SerializeField]
+    private int m_DrawThickness = 5;
+
+    public Color BackgroundColor
+    {
+        get => m_BackgroundColor;
+        set
+        {
+            m_BackgroundColor = value;
+            SVGImage.SetBackgroundColor(value);
+        }
+    }
+
+    public Color DrawColor 
+    {
+        get => m_DrawColor;
+        set
+        {
+            m_DrawColor = value;
+            SVGImage.SetStrokeColor(value);
+        }
+    }
+
+    public int DrawThickness {
+        get => m_DrawThickness;
+        set
+        {
+            m_DrawThickness = Mathf.Max(1, value);
+            SVGImage.SetStrokeWidth(m_DrawThickness);
+        }
+    
+    }
+
     public bool colorBlend = false;
-    public int drawThickness = 5;
     public float updateDistance = .2f;
 
+
+    // Private members
+    private SVGImageGnerator m_SVGImageGenerator;
+    private SVGImageGnerator SVGImage
+    {
+        get
+        {
+            if (m_SVGImageGenerator == null)
+            {
+                m_SVGImageGenerator = new SVGImageGnerator(texture.width, texture.height);
+            }
+            return m_SVGImageGenerator;
+        }
+    }
 
     private bool isDrawing = false;
     private PointerEventData previousMouseEventData;
 
-    private SVGImageGnerator m_SVGImageGenerator;
-
+   
 
     // Public Functions
     public void EraseDrawing()
@@ -31,31 +78,37 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         // Initialize texture to default color
         for (int i = 0; i < colorsArray.Length; i++)
         {
-            colorsArray[i] = backgroundColor;
+            colorsArray[i] = BackgroundColor;
         }
         texture.SetPixels32(colorsArray);
         texture.Apply();
 
-        m_SVGImageGenerator.Clear();
+        // Clear SVG
+        SVGImage.Clear();
     }
-
+    
+    [ContextMenu("Print PNG Image Base 64")]
     public string GetDrawingPNGBase64()
     {
         byte[] drawingData = texture.EncodeToPNG();
         return Convert.ToBase64String(drawingData);
     }
 
+    [ContextMenu("Print SVG Image")]
     public string GetDrawingSVG()
     {
-        return m_SVGImageGenerator.GetSVGString();
+        return SVGImage.GetSVGString();
     }
 
     // Private Functions
 
     void Start()
     {
-        m_SVGImageGenerator = new SVGImageGnerator(texture.width, texture.height);
-        m_SVGImageGenerator.SetBackgroundColor(backgroundColor);
+        // Initialize SVG Image
+        DrawColor = DrawColor;
+        DrawThickness = DrawThickness;
+        BackgroundColor = BackgroundColor;
+
         EraseDrawing();
     }
 
@@ -65,7 +118,6 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         previousMouseEventData = new PointerEventData(EventSystem.current);
         previousMouseEventData.position = eventData.position;
         previousMouseEventData.pointerId = eventData.pointerId;
-
     }
 
     private void StopDrawing(PointerEventData eventData)
@@ -98,7 +150,7 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
             Vector2 textureEndPosition = new Vector2(Mathf.Lerp(0, texture.width, currentMouseEventDataLocalPosition.x), Mathf.Lerp(0, texture.height, currentMouseEventDataLocalPosition.y));
 
 
-            DrawLineOnSprite(textureStartPosition, textureEndPosition, drawThickness, drawColor, 1f/distance);
+            DrawLineOnSprite(textureStartPosition, textureEndPosition, DrawThickness, DrawColor, 1f/distance);
 
             previousMouseEventData = new PointerEventData(EventSystem.current);
             previousMouseEventData.position = currentEventData.position;
@@ -118,6 +170,11 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
         }
 
         texture.Apply();
+
+
+        lineStart.y = texture.height - lineStart.y;
+        lineEnd.y = texture.height - lineEnd.y;
+        SVGImage.Line(lineStart, lineEnd);
     }
 
     /// <summary>
@@ -201,5 +258,13 @@ public class PointerDraw : MonoBehaviour, IPointerExitHandler, IPointerDownHandl
     public void OnPointerMove(PointerEventData eventData)
     {
         CheckDraw(eventData);
+    }
+
+    public void Reset()
+    {
+        ColorUtility.TryParseHtmlString("#F9F8F2", out m_BackgroundColor);
+        m_DrawColor = Color.black;
+        m_DrawThickness = 5;
+        colorBlend = false;
     }
 }
