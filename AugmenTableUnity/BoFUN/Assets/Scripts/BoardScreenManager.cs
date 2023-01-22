@@ -328,7 +328,7 @@ public class BoardScreenManager : MonoBehaviour
 
         foreach(TMP_Text t in boardScreenOptions.teamInfo)
         {
-            t.text = $"{nextTeam.name} plays";
+            t.text = $"<color={nextTeam.color}>{nextTeam.name}</color> plays";
         }
     }
 
