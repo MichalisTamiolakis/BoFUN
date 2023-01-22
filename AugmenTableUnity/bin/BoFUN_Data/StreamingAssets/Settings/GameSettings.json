@@ -5,5 +5,7 @@
     "maxNumberOfPlayersPerTeam": 4,
     "maxNumberOfPlayersTotal": 8,
     "minRoundDurationSeconds" : 30,
-    "maxRoundDurationSeconds": 300
+    "maxRoundDurationSeconds": 300,
+    "confettiOnCorrectAnswer" : true,
+    "confettinOnGameFinished" : true 
 }

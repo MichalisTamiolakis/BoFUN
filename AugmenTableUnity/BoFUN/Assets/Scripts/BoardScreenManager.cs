@@ -120,10 +120,6 @@ public class BoardScreenManager : MonoBehaviour
                 }
                 else
                 {
-#if !UNITY_EDITOR
-                    // Hide mouse
-                    //Cursor.visible = false; // TODO
-#endif
                     ResetBoard();
                 }
             });

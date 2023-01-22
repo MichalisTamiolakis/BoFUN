@@ -150,6 +150,10 @@ namespace BoFUN.GameManager
         /// </summary>
         public void StartGame()
         {
+#if !UNITY_EDITOR
+                    // Hide mouse
+                    Cursor.visible = false;
+#endif
             ShowScreen(Screen.GameCreationScreen);
         }
 
