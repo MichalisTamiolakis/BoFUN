@@ -204,7 +204,7 @@ public class BoardScreenManager : MonoBehaviour
 
         foreach (var indicator in teamPositionIndicators.Values)
         {
-            indicator.transform.position = getIndicatorInStepPosition(indicator);
+            indicator.transform.position = GetIndicatorInStepPosition(indicator);
             indicator.transform.parent = boardScreenOptions.teamIndicatorsParent;
         }
     }
@@ -366,7 +366,7 @@ public class BoardScreenManager : MonoBehaviour
 
                     lastDiceRollNumber = diceRollNumber;
 
-                    newRound.onUpdate.AddListener(CurrentRoundOnUpdate);
+                    newRound.onUpdate.AddListener(CurrentRoundOnUpdate); 
 
                     // Show player information text
                     ShowNextPlayerInformationText();
@@ -412,20 +412,16 @@ public class BoardScreenManager : MonoBehaviour
             // 2) Move team Indicator if victory
             if (currentRound.victory)
             {
-                // TODO
                 // Has the game finished?
                 if(newTeamPosition >= boardScreenOptions.steps.Count - 1)
                 {
                     // Move the team to the last step and send finish game to server
                     MoveTeamIndicator(t, boardScreenOptions.steps.Count - 1, () =>
                     {
-                        NetworkUtilities.Instance.Post($"{GameManager.Instance.networkSettings.serverURL}/{GameManager.Instance.networkSettings.gameAPI.endGamePath}", "", null);
-
-                        // TODO Show finish game animation/screen
                         Debug.Log("Game Finished");
 
-                        // Start new game
-                        GameManager.Instance.StartGame();
+                        GameEnded(t);
+
                     });
                 }
                 // Game still on, simply move team to their next step
@@ -476,12 +472,18 @@ public class BoardScreenManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Plays end game animation and goes to the 
+    /// Plays end game animation and goes back to the main menu
     /// </summary>
     /// <param name="winner"></param>
-    private void PlayEndGameAnimation(Team winner)
+    private void GameEnded(Team winner)
     {
+        // Send end of game
+        NetworkUtilities.Instance.Post($"{GameManager.Instance.networkSettings.serverURL}/{GameManager.Instance.networkSettings.gameAPI.endGamePath}", "", null);
+        
+        // TODO PLAY ANIMATION
 
+        // Start new game
+        GameManager.Instance.StartGame();
     }
 
     private List<List<TeamPositionIndicator>> teamIndicatorsInSteps = new List<List<TeamPositionIndicator>>();
@@ -517,7 +519,7 @@ public class BoardScreenManager : MonoBehaviour
                 rearrangePath.Add(currIndicator.transform.position);
                 rearrangePath.Add(currIndicator.transform.position);
 
-                Vector3 newPos = getIndicatorInStepPosition(currIndicator);
+                Vector3 newPos = GetIndicatorInStepPosition(currIndicator);
                 rearrangePath.Add(newPos);
                 rearrangePath.Add(newPos);
 
@@ -532,7 +534,7 @@ public class BoardScreenManager : MonoBehaviour
                 rearrangePath.Add(currIndicator.transform.position);
                 rearrangePath.Add(currIndicator.transform.position);
 
-                Vector3 newPos = getIndicatorInStepPosition(currIndicator);
+                Vector3 newPos = GetIndicatorInStepPosition(currIndicator);
                 rearrangePath.Add(newPos);
                 rearrangePath.Add(newPos);
 
@@ -540,7 +542,7 @@ public class BoardScreenManager : MonoBehaviour
             }
 
             // Add final steps
-            Vector3 finalPos = getIndicatorInStepPosition(indicator);
+            Vector3 finalPos = GetIndicatorInStepPosition(indicator);
             path.Add(finalPos);
             path.Add(finalPos);
 
@@ -554,7 +556,7 @@ public class BoardScreenManager : MonoBehaviour
     /// It calculates the teams that are on this step and retunrs the offset from the center a new team should be positioned
     /// </summary>
     /// <returns></returns>
-    private Vector3 getIndicatorInStepPosition(TeamPositionIndicator ind)
+    private Vector3 GetIndicatorInStepPosition(TeamPositionIndicator ind)
     {
         if (teamIndicatorsInSteps[ind.positionInBoard] != null)
         {
