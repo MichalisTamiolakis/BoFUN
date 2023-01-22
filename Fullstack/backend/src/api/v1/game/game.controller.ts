@@ -120,7 +120,7 @@ export class GameController {
       next?: NextFunction
     ): Promise<Response> => {
       currentGameModule.game.hasGameEnded = true;
-      // currentGameModule.game.winnerTeam = currentGameModule.game.rounds[currentGameModule.game.rounds.length-1].team;
+      currentGameModule.game.winningTeam = currentGameModule.game.rounds[currentGameModule.game.rounds.length-1].team;
       socketService.broadcast("GameOver", JSON.stringify({}));
       return res.sendStatus(200);
     };

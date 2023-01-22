@@ -14,6 +14,7 @@ export class EndGameComponent implements OnInit {
   ngOnInit(): void {
     this.gameService.getWinnerTeam().subscribe((result:any)=>{
       this.winnerTeam = result;
+      
       setTimeout(() => {
         this.router.navigateByUrl('surroundwall/statistics');
       }, 6000);

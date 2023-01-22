@@ -132,28 +132,28 @@ export class Game{
         this.sequence = [1,0];
         this.winningTeam = -1;
         this.rounds = [
-        //     {
-        //     id: 0, 
-        //     team: 1,
-        //     player: 1,
-        //     minigame: 0,
-        //     minigameJSON: "",
-        //     victory: true,
-        //     remainingTime: 20,
-        //     started: true,
-        //     ended: true,
-        //   },
-        //   {
-        //     id: 1, 
-        //     team: 0,
-        //     player: 0,
-        //     minigame: 1,
-        //     minigameJSON: "",
-        //     victory: true,
-        //     remainingTime: 20,
-        //     started: true,
-        //     ended: true,
-        //   }
+            {
+            id: 0, 
+            team: 1,
+            player: 1,
+            minigame: 0,
+            minigameJSON: "",
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          },
+          {
+            id: 1, 
+            team: 0,
+            player: 0,
+            minigame: 1,
+            minigameJSON: "",
+            victory: true,
+            remainingTime: 20,
+            started: true,
+            ended: true,
+          }
         
         //   {
         //     id: 10, 
