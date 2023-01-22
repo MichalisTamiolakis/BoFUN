@@ -1,5 +1,6 @@
 ﻿using BoFUN.Entities;
 using BoFUN.Utilities;
+using System;
 using System.Web;
 using TMPro;
 using UnityEngine;
@@ -12,12 +13,14 @@ namespace BoFUN.Board.MiniGames
         public Timer[] timers = new Timer[2];
 
         private Round m_AssociatedRound;
+        private Action<Round> onMinigameFinished;
 
         private LTDescr timerAnimation = null;
 
 
-        public void InitializeWithRound(Round r)
+        public void InitializeWithRound(Round r, Action<Round> onMinigameFinished)
         {
+            this.onMinigameFinished = onMinigameFinished;
             RemoveRoundUpdateListeners();
             m_AssociatedRound = r;
 
@@ -92,6 +95,29 @@ namespace BoFUN.Board.MiniGames
 
                 // Stop sending picture to socket
                 CancelInvoke();
+
+                RemoveRoundUpdateListeners();
+
+                // Show win lose notification
+                if (displayingRound.victory)
+                {
+                    string[] messages =
+                    {
+                        "Well done!",
+                        "Nice Job!",
+                        "Bravo!",
+                        "Keep it up!"
+                    };
+                    NotificationManager.Instance.ShowCorrectNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished(displayingRound));
+                }
+                else
+                {
+                    string[] messages =
+                    {
+                        "<b>You've lost!</b>\nTime's up."
+                    };
+                    NotificationManager.Instance.ShowErrorNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished(displayingRound));
+                }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using BoFUN.Entities;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,11 +36,13 @@ namespace BoFUN.Board.MiniGames
 
         private Round m_AssociatedRound;
         private Trivia m_Task;
+        private Action<Round> onMinigameFinished;
 
         private LTDescr timerAnimation = null;
 
-        public void InitializeWithRound(Round r)
+        public void InitializeWithRound(Round r, Action<Round> onMinigameFinished)
         {
+            this.onMinigameFinished = onMinigameFinished;
             RemoveRoundUpdateListeners();
             m_AssociatedRound = r;
 
@@ -121,6 +124,11 @@ namespace BoFUN.Board.MiniGames
                 LeanTween.cancel(timerAnimation.id);
                 timerAnimation = null;
                 UpdateTimers(displayingRound.remainingTime);
+                RemoveRoundUpdateListeners();
+
+                // Show win/lose animation
+                onMinigameFinished?.Invoke(displayingRound);
+            
             }
         }
 

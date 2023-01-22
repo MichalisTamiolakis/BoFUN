@@ -260,7 +260,7 @@ public class BoardScreenManager : MonoBehaviour
     private void ShowPictionary()
     {
         // Initialize with current round
-        this.pictionaryScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound());
+        this.pictionaryScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound(), ReturnFromMinigame);
 
         this.UICamera.enabled = true;
         this.boardCamera.enabled = false;
@@ -276,7 +276,7 @@ public class BoardScreenManager : MonoBehaviour
     private void ShowPantomime()
     {
         // Initialize with current round
-        this.pantomimeScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound());
+        this.pantomimeScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound(), ReturnFromMinigame);
         
         this.UICamera.enabled = true;
         this.boardCamera.enabled = false;
@@ -292,7 +292,7 @@ public class BoardScreenManager : MonoBehaviour
     private void ShowTrivia()
     {
         // Initialize with current round
-        this.triviaScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound());
+        this.triviaScreenOptions.controller.InitializeWithRound(GameManager.Instance.currentGame.GetCurrentRound(), ReturnFromMinigame);
 
 
         this.UICamera.enabled = true;
@@ -393,81 +393,85 @@ public class BoardScreenManager : MonoBehaviour
         // Show Next Player and Game Information
         boardScreenOptions.popUpInfo.ShowNotification($"{currentRound.minigame}", $"<b>{currentPlayer.username}</b>, open your phone to begin", boardScreenOptions.minigameInfoBackgrounds[(int)currentRound.minigame], .5f, null);
 
-
-        // TODO Wait from smartphone response that the game has started        
-
     }
 
     private void CurrentRoundOnUpdate(Round currentRound)
     {
-        if (currentRound.ended && boardState != State.Board)
-        {
-            // 1) Close open minigame screen
-            boardState = State.Board;
-            ShowStateScreen();
-
-            Team t = GameManager.Instance.currentGame.GetTeam(currentRound.team);
-            int teamPosition = teamPositionIndicators[t].positionInBoard;
-            int newTeamPosition = teamPosition + lastDiceRollNumber;
-            // 2) Move team Indicator if victory
-            if (currentRound.victory)
-            {
-                // Has the game finished?
-                if(newTeamPosition >= boardScreenOptions.steps.Count - 1)
-                {
-                    // Move the team to the last step and send finish game to server
-                    MoveTeamIndicator(t, boardScreenOptions.steps.Count - 1, () =>
-                    {
-                        Debug.Log("Game Finished");
-
-                        GameEnded(t);
-
-                    });
-                }
-                // Game still on, simply move team to their next step
-                else
-                {
-                    // 1) Move team indicator
-                    MoveTeamIndicator(t, newTeamPosition, () =>
-                    {
-                        // 2) Get and show next playing team
-                        GetNextPlayingTeam(() =>
-                        {
-                            // Show next playing team
-                            ShowNextPlayingTeamInformationText();
-
-                            // 2) Reset Dice Thrower
-                            // Initialize dice thrower
-                            boardScreenOptions.diceThrower.AllowDiceRoll = true;
-                            boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
-                        });
-                    });
-
-                }
-            }
-            else // Simply reinitialize the dice and get next playing team
-            {
-                // 2) Get and show next playing team
-                GetNextPlayingTeam(() =>
-                {
-                    // Show next playing team
-                    ShowNextPlayingTeamInformationText();
-
-                    // 2) Reset Dice Thrower
-                    // Initialize dice thrower
-                    boardScreenOptions.diceThrower.AllowDiceRoll = true;
-                    boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
-                });
-            }
-
-        }
-        else if (currentRound.started && boardState == State.Board)
+        //if (currentRound.ended && boardState != State.Board)
+        //{
+        //    ReturnFromMinigame(currentRound);
+        //}
+        if (currentRound.started && boardState == State.Board)
         {
             // 1) Hide next player and game information
             boardScreenOptions.popUpInfo.HideNotification(0, null);
             // 2) Transition to the minigame screen and Initialize/Reset it
             boardState = (State)((int)currentRound.minigame);
             ShowStateScreen();
+        }
+    }
+
+    private void ReturnFromMinigame(Round currentRound)
+    {
+
+        // 1) Close open minigame screen
+        boardState = State.Board;
+
+        // Show win/loose info        
+        ShowStateScreen();
+
+        Team t = GameManager.Instance.currentGame.GetTeam(currentRound.team);
+        int teamPosition = teamPositionIndicators[t].positionInBoard;
+        int newTeamPosition = teamPosition + lastDiceRollNumber;
+        // 2) Move team Indicator if victory
+        if (currentRound.victory)
+        {
+            // Has the game finished?
+            if (newTeamPosition >= boardScreenOptions.steps.Count - 1)
+            {
+                // Move the team to the last step and send finish game to server
+                MoveTeamIndicator(t, boardScreenOptions.steps.Count - 1, () =>
+                {
+                    Debug.Log("Game Finished");
+
+                    GameEnded(t);
+
+                });
+            }
+            // Game still on, simply move team to their next step
+            else
+            {
+                // 1) Move team indicator
+                MoveTeamIndicator(t, newTeamPosition, () =>
+                {
+                    // 2) Get and show next playing team
+                    GetNextPlayingTeam(() =>
+                    {
+                        // Show next playing team
+                        ShowNextPlayingTeamInformationText();
+
+                        // 2) Reset Dice Thrower
+                        // Initialize dice thrower
+                        boardScreenOptions.diceThrower.AllowDiceRoll = true;
+                        boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
+                    });
+                });
+
+            }
+        }
+        else // Simply reinitialize the dice and get next playing team
+        {
+            // 2) Get and show next playing team
+            GetNextPlayingTeam(() =>
+            {
+                // Show next playing team
+                ShowNextPlayingTeamInformationText();
+
+                // 2) Reset Dice Thrower
+                // Initialize dice thrower
+                boardScreenOptions.diceThrower.AllowDiceRoll = true;
+                boardScreenOptions.diceThrower.ResetAndWaitDiceRoll(CreateRound);
+            });
         }
     }
 
