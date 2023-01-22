@@ -1,4 +1,5 @@
 ﻿using BoFUN.Entities;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -19,12 +20,14 @@ namespace BoFUN.Board.MiniGames {
 
         private Round m_AssociatedRound;
         private Pantomime m_Task;
+        private Action<Round> onMinigameFinished;
 
         private LTDescr timerAnimation = null;
 
 
-        public void InitializeWithRound(Round r)
+        public void InitializeWithRound(Round r, Action<Round> onMinigameFinished)
         {
+            this.onMinigameFinished = onMinigameFinished;
             RemoveRoundUpdateListeners();
             m_AssociatedRound = r;
 
@@ -97,6 +100,29 @@ namespace BoFUN.Board.MiniGames {
                 LeanTween.cancel(timerAnimation.id);
                 timerAnimation = null;
                 UpdateTimers(displayingRound.remainingTime);
+                RemoveRoundUpdateListeners();
+
+                // Show win lose notification
+                if (displayingRound.victory)
+                {
+                    string[] messages =
+                    {
+                        "Well done!",
+                        "Nice Job!",
+                        "Bravo!",
+                        "Keep it up!"
+                    };
+                    NotificationManager.Instance.ShowCorrectNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished(displayingRound));
+                }
+                else
+                {
+                    string[] messages =
+                    {
+                        "<b>You've lost!</b>\nTime's up."
+                    };
+                    NotificationManager.Instance.ShowErrorNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished(displayingRound));
+                }
+
             }
         }
 
