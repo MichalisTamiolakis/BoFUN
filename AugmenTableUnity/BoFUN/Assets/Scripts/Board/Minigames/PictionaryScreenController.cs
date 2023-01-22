@@ -1,5 +1,6 @@
 ﻿using BoFUN.Entities;
 using BoFUN.Utilities;
+using System.Web;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ namespace BoFUN.Board.MiniGames
         public Timer[] timers = new Timer[2];
 
         private Round m_AssociatedRound;
+
+        private LTDescr timerAnimation = null;
+
 
         public void InitializeWithRound(Round r)
         {
@@ -55,20 +59,48 @@ namespace BoFUN.Board.MiniGames
         private void OnRoundUpdated(Round displayingRound)
         {
             // Update the timer 
-            if (displayingRound.started)
+            if (displayingRound.started && !displayingRound.ended)
             {
-                foreach (Timer t in timers)
-                {
-                    t.RemainingTimeInSeconds = displayingRound.remainingTime;
-                }
-            }
 
-            if (displayingRound.ended)
+                // Start animation
+                if (timerAnimation == null)
+                {
+                    timerAnimation = LeanTween.value(GameManager.GameManager.Instance.currentGame.duration, 0, GameManager.GameManager.Instance.currentGame.duration).setOnUpdate((float value) =>
+                    {
+                        UpdateTimers(value);
+                    });
+                }
+                // Sync server time and local animation
+                else
+                {
+                    //float animatorRemainingTime = timerAnimation.time - timerAnimation.passed;
+                    float actualRemainingTime = (float)displayingRound.remainingTime;
+
+                    // Adjust for deviation
+                    timerAnimation.passed = GameManager.GameManager.Instance.currentGame.duration - actualRemainingTime - 1;
+                }
+                //lerp LeanTween.value(gameObject)
+            }
+            else if (displayingRound.ended)
             {
+                // Cancel time animation
+                LeanTween.cancel(timerAnimation.id);
+                timerAnimation = null;
+                UpdateTimers(displayingRound.remainingTime);
+
                 pointerDraw.enabled = false;
 
                 // Stop sending picture to socket
                 CancelInvoke();
+            }
+        }
+
+        private void UpdateTimers(float remainingTime)
+        {
+            foreach (Timer t in timers)
+            {
+
+                t.RemainingTimeInSeconds = remainingTime;
             }
         }
 
@@ -90,8 +122,9 @@ namespace BoFUN.Board.MiniGames
     
         private void UploadDrawingToServer()
         {
+
             //pointerDraw.Imag
-            string drawing = pointerDraw.GetDrawingBase64();
+            string drawing = HttpUtility.JavaScriptStringEncode(pointerDraw.GetDrawingSVG());
 
             NetworkUtilities.Instance.SocketPublish(GameManager.GameManager.Instance.networkSettings.sockets.pictionaryDrawingUpdatedEvent, drawing);
         }

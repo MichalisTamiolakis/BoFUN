@@ -32,6 +32,12 @@ namespace BoFUN.Menu
             get => gameObject;
         }
 
+        public void Repaint()
+        {
+            NumberOfTeams = NumberOfTeams;
+            NumberOfPlayers = NumberOfPlayers;
+        }
+
         private int NumberOfTeams
         {
             get => MenuScreenManager.Instance.NumberOfTeams;

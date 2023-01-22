@@ -93,6 +93,7 @@ export class SocketServer {
   private onClientEvent(socket: io.Socket): void {
     socket.on('client:event', (data: any) => {
       this.logger.debug('client event');
+      // this.logger.debug(data.data);
       this.io.emit('server:event', data.event, data.data);
     });
   }

@@ -15,7 +15,7 @@ namespace BoFUN.GameManager
         public bool trivia = true;
         public bool pantomime = true;
         public bool pictionary = true;
-        public int duration = 120; // In seconds
+        public int duration = 90; // In seconds
 
         public override string ToString()
         {

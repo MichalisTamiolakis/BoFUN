@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
+public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerDownHandler
 {
     public Color[] availableColors = { };
     public int[] availableSizes = { };
@@ -60,7 +60,7 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 }
             }
 
-            targetDrawer.drawColor = availableColors[m_SelectedColor];
+            targetDrawer.DrawColor = availableColors[m_SelectedColor];
 
             foreach(ToolBoxController tb in syncedToolBoxes)
             {
@@ -91,7 +91,7 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 }
             }
 
-            targetDrawer.drawThickness = availableSizes[m_SelectedSize];
+            targetDrawer.DrawThickness = availableSizes[m_SelectedSize];
 
             foreach (ToolBoxController tb in syncedToolBoxes)
             {
@@ -196,4 +196,8 @@ public class ToolBoxController : MonoBehaviour, IBeginDragHandler, IDragHandler
         rectTransform.anchoredPosition3D = newPos;
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // Just here to stop event propagation
+    }
 }
