@@ -6,14 +6,14 @@
     <div style="position: relative;border-radius:50%;overflow:hidden;width:75px;height:75px;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);">
         <span [ngStyle]="{backgroundColor: team.color}" class="iconify team-icon"
             data-icon="fluent:people-team-16-filled"></span>
-            <div style="width: 75px;height:75px;background-color:black;position: absolute;top: 60px;">
+            <!-- <div style="width: 75px;height:75px;background-color:black;position: absolute;top: 60px;">
                 <div style="display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-top: 2px;">
                     <span style="width:10px;height:10px;" class="iconify pen" data-icon="fa-solid:pen"></span>
                 </div>
-            </div>
+            </div> -->
     </div>
         
         <div *ngIf="!editName" style="display: flex;align-items:center;color: black;margin-top: 3px;">
@@ -25,7 +25,7 @@
             
         </div>
 
-        <input *ngIf="editName" (focusout)="toggleEditName()" autofocus [(ngModel)]="teamName" style="width: 130%;
+        <input *ngIf="editName" (keyup.enter)="keyEnter($event.target.value)" (focusout)="toggleEditName()" autofocus [(ngModel)]="teamName" style="width: 130%;
         box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px;
         border-radius: 30px;
         height: 40px;

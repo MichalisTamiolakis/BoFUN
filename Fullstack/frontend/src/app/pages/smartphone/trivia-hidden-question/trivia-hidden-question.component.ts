@@ -18,7 +18,7 @@ export class TriviaHiddenQuestionComponent implements OnInit {
   constructor(private route: ActivatedRoute,private gameService: GameService,private router: Router) {}
   public game: any;
   ngOnInit(): void {
-    this.playerId = this.route.snapshot.paramMap.get('positionId');
+    this.playerId = this.route.snapshot.paramMap.get('playerId');
     this.Math = Math;
     this.Object = Object;
 

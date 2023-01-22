@@ -39,6 +39,7 @@ private sockets:SocketsService,
 
   ngOnInit(): void {
     this.playerId = this.route.snapshot.paramMap.get('playerId');
+    console.log("ngOnInit this.playerId",this.playerId)
     this.Math = Math;
     this.Object = Object;
 
@@ -86,14 +87,16 @@ private sockets:SocketsService,
         if(i===this.gameInfo.correctAnswer){
           this.roundService.setResult(true).subscribe((result:any)=>{
             this.currentRound = result
-            var playerId = Number(this.route.snapshot.paramMap.get('playerId'));
-      this.router.navigateByUrl('idle/' + this.playerId);
+            var playerId = this.route.snapshot.paramMap.get('playerId');
+            console.log("playerId==",playerId)
+      this.router.navigateByUrl('idle/' + playerId);
           });
         }
         else this.roundService.setResult(false).subscribe((result:any)=>{
           this.currentRound = result
           var playerId = Number(this.route.snapshot.paramMap.get('playerId'));
-      this.router.navigateByUrl('idle/' + this.playerId);
+          console.log("playerId==",playerId)
+      this.router.navigateByUrl('idle/' + playerId);
         });
       }
     }
