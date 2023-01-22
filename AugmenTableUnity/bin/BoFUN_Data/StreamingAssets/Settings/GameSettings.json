@@ -3,5 +3,7 @@
     "maxNumberOfTeams": 4,
     "minNumberOfPlayersPerTeam": 2,
     "maxNumberOfPlayersPerTeam": 4,
-    "maxNumberOfPlayersTotal": 8
+    "maxNumberOfPlayersTotal": 8,
+    "minRoundDurationSeconds" : 30,
+    "maxRoundDurationSeconds": 300
 }
