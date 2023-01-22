@@ -13,6 +13,10 @@ public class GameSettings
     public int minRoundDurationSeconds = 30;
     public int maxRoundDurationSeconds = 300;
 
+    [Space(10)]
+    public bool confettiOnCorrectAnswer = true;
+    public bool confettinOnGameFinished = true; 
+
     public static GameSettings CreateFromJSON(string jsonString)
     {
         return JsonUtility.FromJson<GameSettings>(jsonString);

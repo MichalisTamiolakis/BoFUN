@@ -112,7 +112,7 @@ namespace BoFUN.Board.MiniGames {
                         "Bravo!",
                         "Keep it up!"
                     };
-                    NotificationManager.Instance.ShowCorrectNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished(displayingRound));
+                    NotificationManager.Instance.ShowCorrectNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished?.Invoke(displayingRound));
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace BoFUN.Board.MiniGames {
                     {
                         "<b>You've lost!</b>\nTime's up."
                     };
-                    NotificationManager.Instance.ShowErrorNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished(displayingRound));
+                    NotificationManager.Instance.ShowErrorNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished?.Invoke(displayingRound));
                 }
 
             }

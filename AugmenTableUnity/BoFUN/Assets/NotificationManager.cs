@@ -35,18 +35,24 @@ public class NotificationManager : MonoBehaviour
     public List<ParticleSystem> particles;
     public Color correctColor;
     public Color errorColor;
+    public Color endOfGameColor;
 
 
     private LTDescr animationDescriptor;
 
     public void ShowCorrectNotificationSphere(string text, float time, Action onComplete, float startDelay = 0, float animationsTime = .5f)
     {
-        ShowNotificationSphere(text, correctColor, true, time, onComplete, startDelay, animationsTime);
+        ShowNotificationSphere(text, correctColor, BoFUN.GameManager.GameManager.Instance.gameSettings.confettiOnCorrectAnswer, time, onComplete, startDelay, animationsTime);
     }
 
     public void ShowErrorNotificationSphere(string text, float time, Action onComplete, float startDelay = 0, float animationsTime = .5f)
     {
         ShowNotificationSphere(text, errorColor, false, time, onComplete, startDelay, animationsTime);
+    }
+
+    public void ShowEndOfGameNotification(string text, float time, Action onComplete, float startDelay = 0, float animationsTime = .5f)
+    {
+        ShowNotificationSphere(text, endOfGameColor, BoFUN.GameManager.GameManager.Instance.gameSettings.confettiOnCorrectAnswer, time, onComplete, startDelay, animationsTime);
     }
 
     public void ShowNotificationSphere(string text, Color bgColor, bool confetti, float time, Action onComplete, float startDelay=0, float animationsTime=.5f)

@@ -93,6 +93,7 @@ public class NetworkSettings
         public string playerUpdatedEvent;
         public string roundUpdatedEvent;
         public string pictionaryDrawingUpdatedEvent;
+        public string triviaSelectedAnswerChanged;
     }
     [Space(5)]
     public Sockets sockets = new Sockets {
@@ -101,7 +102,8 @@ public class NetworkSettings
         teamUpdatedEvent = "TeamUpdated",
         playerUpdatedEvent = "PlayerUpdated",
         roundUpdatedEvent = "RoundUpdated",
-        pictionaryDrawingUpdatedEvent = "PictionaryDrawingUpdated"
+        pictionaryDrawingUpdatedEvent = "PictionaryDrawingUpdated",
+        triviaSelectedAnswerChanged = "TriviaSelectedAnswerChanged"
     };
 
     [System.Serializable]

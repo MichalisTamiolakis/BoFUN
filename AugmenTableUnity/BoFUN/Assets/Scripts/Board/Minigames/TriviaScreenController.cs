@@ -1,4 +1,5 @@
 ﻿using BoFUN.Entities;
+using BoFUN.Utilities;
 using System;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace BoFUN.Board.MiniGames
         [System.Serializable]
         public struct Answer
         {
+            public Image background;
             public TMP_Text text;
             public Image numberingImage;
             public TMP_Text numberingText;
@@ -31,12 +33,17 @@ namespace BoFUN.Board.MiniGames
             }
         }
 
+        public Color selectedAnswerColor = Color.white;
+        public Color correctAnswerColor = Color.green;
+        public AnimationCurve flashingAnimationCurve;
+
         public TaskWindow[] taskWindows = new TaskWindow[2];
         public Timer[] timers = new Timer[2];
 
         private Round m_AssociatedRound;
         private Trivia m_Task;
         private Action<Round> onMinigameFinished;
+        private int selectedAnswer = -1;
 
         private LTDescr timerAnimation = null;
 
@@ -50,6 +57,9 @@ namespace BoFUN.Board.MiniGames
             DisplayRoundInfo();
             InitializeTimers();
             AddRoundUpdateListeners();
+
+            NetworkUtilities.Instance.SocketSubscribe("TriviaSelectedAnswerChanged", OnSelectedAnswerChanged);
+            selectedAnswer = -1;
         }
 
         // Private Helper Functions
@@ -77,6 +87,7 @@ namespace BoFUN.Board.MiniGames
                 // Paint only available answers
                 for(int i=0; i<m_Task.answers.Length; i++)
                 {
+                    tw.answers[i].background.color = Color.clear;
                     tw.answers[i].text.text = m_Task.answers[i];
                     tw.answers[i].Show(true);
                 }
@@ -127,8 +138,41 @@ namespace BoFUN.Board.MiniGames
                 RemoveRoundUpdateListeners();
 
                 // Show win/lose animation
-                onMinigameFinished?.Invoke(displayingRound);
-            
+
+                foreach(TaskWindow tw in taskWindows)
+                {
+                    Color originalColorOfAnswer = tw.answers[m_Task.correctAnswer].background.color;
+                    LeanTween.value(0, 1f, 2f).setEase(flashingAnimationCurve).setOnUpdate((float x)=>
+                    {
+                        tw.answers[m_Task.correctAnswer].background.color = Color.Lerp(originalColorOfAnswer, correctAnswerColor, x);
+                    });
+                }
+
+                LeanTween.delayedCall(3f, ()=> {
+                    onMinigameFinished?.Invoke(displayingRound);
+                });
+            }
+        }
+
+        private void OnSelectedAnswerChanged(SocketEvent e)
+        {
+            selectedAnswer = e.GetData<int>();
+
+            // Update answer states
+            foreach (TaskWindow tw in taskWindows)
+            {
+                // Make clear all non selected answer, and leave only selected white
+                for (int i = 0; i < m_Task.answers.Length; i++)
+                {
+                    if(selectedAnswer == i)
+                    {
+                        tw.answers[i].background.color = selectedAnswerColor;
+                    }
+                    else
+                    {
+                        tw.answers[i].background.color = Color.clear;
+                    }
+                }
             }
         }
 

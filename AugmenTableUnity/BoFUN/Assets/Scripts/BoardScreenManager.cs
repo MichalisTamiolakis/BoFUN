@@ -483,11 +483,13 @@ public class BoardScreenManager : MonoBehaviour
     {
         // Send end of game
         NetworkUtilities.Instance.Post($"{GameManager.Instance.networkSettings.serverURL}/{GameManager.Instance.networkSettings.gameAPI.endGamePath}", "", null);
-        
-        // TODO PLAY ANIMATION
 
-        // Start new game
-        GameManager.Instance.StartGame();
+        // TODO PLAY ANIMATION
+        NotificationManager.Instance.ShowEndOfGameNotification($"<b>Game ended</b>\n{winner.name} won!", 3f, ()=> { 
+
+            // Start new game
+            GameManager.Instance.StartGame();
+        });
     }
 
     private List<List<TeamPositionIndicator>> teamIndicatorsInSteps = new List<List<TeamPositionIndicator>>();

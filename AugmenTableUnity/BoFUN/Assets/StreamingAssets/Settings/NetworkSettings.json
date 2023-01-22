@@ -23,7 +23,8 @@
         "teamUpdatedEvent": "TeamUpdated",
         "playerUpdatedEvent": "PlayerUpdated",
         "roundUpdatedEvent": "RoundUpdated",
-        "pictionaryDrawingUpdatedEvent": "PictionaryDrawingUpdated"
+        "pictionaryDrawingUpdatedEvent": "PictionaryDrawingUpdated",
+        "triviaSelectedAnswerChanged" : "TriviaSelectedAnswerChanged"
     },
     "frontEnd": {
         "joinPagePath": "smartphone/join/$seatId"
