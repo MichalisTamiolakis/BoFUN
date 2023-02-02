@@ -17,7 +17,9 @@ export class TriviaComponent implements OnInit {
   teamName: string = '';
   minutes: number = 0;
   seconds: number = 0;
+  selectedAnswer: number = -1;
   Math:any
+  gameJson:any
   constructor(
     private sockets: SocketsService,
     private roundService: RoundService,
@@ -31,10 +33,10 @@ export class TriviaComponent implements OnInit {
       this.round = result;
       this.minutes = Math.trunc(this.round.remainingTime / 60);
       this.seconds = this.round.remainingTime - this.minutes * 60;
-      let gameJson = JSON.parse(result.minigameJSON);
-      this.question = gameJson.question;
-      this.answers = gameJson.answers;
-      this.correct = this.answers[gameJson.correctAnswer]
+      this.gameJson = JSON.parse(result.minigameJSON);
+      this.question = this.gameJson.question;
+      this.answers = this.gameJson.answers;
+      this.correct = this.answers[this.gameJson.correctAnswer]
       this.teamService.getTeam(result.team).subscribe((team: any) => {
         this.teamName = team.name;
       });
@@ -47,12 +49,18 @@ export class TriviaComponent implements OnInit {
       this.seconds = this.round.remainingTime - this.minutes * 60;
     });
 
+    this.sockets.subscribe('TriviaSelectedAnswerChanged', (msg: any) => {
+      
+      this.selectedAnswer = msg
+      console.log("selectedAnswer",this.selectedAnswer)
+    });
+
     this.sockets.subscribe('RoundEnded', (msg: any) => {
       let round = JSON.parse(msg);
       this.round = round;
       setTimeout(() => {
         this.router.navigateByUrl('surroundwall/main');
-      }, 6000);
+      }, 9000);
     });
 
     this.sockets.subscribe('GameOver', (msg: any) => {

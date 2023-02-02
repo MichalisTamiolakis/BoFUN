@@ -111,12 +111,12 @@
   margin-right: 17px;
 }
 
-.alphabet{
-    background: radial-gradient(50% 50% at 50% 50%, #1C2020 0%, #2B2F2F 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
+// .alphabet{
+//     // background: radial-gradient(50% 50% at 50% 50%, #1C2020 0%, #2B2F2F 100%);
+// -webkit-background-clip: text;
+// -webkit-text-fill-color: transparent;
+// background-clip: text;
+// }
 
 .text {
   font-style: normal;
@@ -129,7 +129,7 @@ background-clip: text;
 
   /* Beige */
 
-  color: #f9f8f2;
+  // color: #f9f8f2;
 
   width: 90%;
 }
@@ -214,7 +214,7 @@ background-clip: text;
     animation-iteration-count: 1;
     animation-direction: normal;
     animation-fill-mode: forwards;
-    animation-delay: 2s;
+    animation-delay: 5s;
     position: relative;
   }
   
@@ -224,7 +224,7 @@ background-clip: text;
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-fill-mode: forwards;
-  animation-delay: 2s;
+  animation-delay: 5s;
   position: relative;
   text-align: center;
   }
@@ -235,7 +235,7 @@ background-clip: text;
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-fill-mode: forwards;
-  animation-delay: 2s;
+  animation-delay: 5s;
   }
   
   .endGame {
@@ -250,6 +250,29 @@ background-clip: text;
   flex-direction: column;
   font-size: 0px;
   z-index: 1;
+  }
+
+  .correctAnswer{
+    animation-duration: 1s;
+  animation-name: switchToGreen;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  // animation-delay: 2s;
+  }
+
+  @keyframes switchToGreen {
+    from {
+      //   transform: scale(0);
+      background:inherit;
+      color:inherit
+    }
+  
+    to {
+      background: #1EC251;
+      color: white!important;
+      
+    }
   }
   
   

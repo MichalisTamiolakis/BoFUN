@@ -17,6 +17,11 @@ export class RoundService {
       .get(`${this.apiUrl}/BoFUN/game/round/current`);
   }
 
+  public shareTriviaChoice(index: number){
+    return this.http
+      .get(`${this.apiUrl}/BoFUN/game/round/current/shareChoice/${index}`);
+  }
+
   public setResult(victory:boolean){
     return this.http
       .put(`${this.apiUrl}/BoFUN/game/round/setResult`,{victory});

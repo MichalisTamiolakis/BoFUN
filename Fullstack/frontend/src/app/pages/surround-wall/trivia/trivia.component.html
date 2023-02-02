@@ -15,15 +15,16 @@
             <div class="question">{{question}}</div>
             <div class="options">
                 <div class="top">
-                    <div class="option left" [hidden]="this.answers.length < 1">
+                    <div class="option left" [ngClass]="{'correctAnswer' : round.ended === true && 0===gameJson.correctAnswer}" [ngStyle]="{background: selectedAnswer !== 0? 'none' : 'rgba(255, 255, 255, 0.1)'}" [hidden]="this.answers.length < 1">
                         <div class="order">
+                            <!-- background: ; -->
                             <div class="alphabet">
                                 A
                             </div>
                         </div>
                         <div class="text">{{answers[0]}}</div>
                     </div>
-                    <div class="option right" [hidden]="this.answers.length < 2">
+                    <div class="option right" [ngClass]="{'correctAnswer' : round.ended === true && 1===gameJson.correctAnswer}" [ngStyle]="{background: selectedAnswer !== 1? 'none' : 'rgba(255, 255, 255, 0.1)'}" [hidden]="this.answers.length < 2">
                         <div class="order">
                             <div class="alphabet">
                                 B
@@ -33,15 +34,15 @@
                     </div>
                 </div>
                 <div class="bottom">
-                    <div class="option left" [hidden]="this.answers.length < 3">
-                        <div class="order">
+                    <div class="option left" [ngClass]="{'correctAnswer' : round.ended === true && 2===gameJson.correctAnswer}" [ngStyle]="{background: selectedAnswer !== 2? 'none' : 'rgba(255, 255, 255, 0.1)'}" [hidden]="this.answers.length < 3">
+                        <div class="order" >
                             <div class="alphabet">
                                 C
                             </div>
                         </div>
                         <div class="text">{{answers[2]}}</div>
                     </div>
-                    <div class="option right" [hidden]="this.answers.length <4">
+                    <div class="option right" [ngClass]="{'correctAnswer' : round.ended === true && 3===gameJson.correctAnswer}" [ngStyle]="{background: selectedAnswer !== 3? 'none' : 'rgba(255, 255, 255, 0.1)'}" [hidden]="this.answers.length <4">
                         <div class="order">
                             <div class="alphabet">
                                 D
@@ -56,27 +57,27 @@
     </div>
 
     <div *ngIf="(round!==undefined && round!==null) && round.ended === true"
-        [ngStyle]="{background: (round!==undefined && round!==null) && !round.victory ? 'linear-gradient(180deg, #db625e 0%, #e5716d 100%)' : 'linear-gradient(180deg, #317165 0%, #387C68 100%)'}"
+        [ngStyle]="{background: (round!==undefined && round!==null) && !round.victory ? '#E73334' : '#1EC251'}"
         [ngClass]="{'endGame': true, 'appear circleEnd': round.started === true }">
         <div [ngClass]="{'endGameTitle': round.started === true}"
-            [ngStyle]="{color: round.victory ? 'white' : 'black'}">
+            [ngStyle]="{color: 'white'}">
             <div>
                 {{round.victory ? "You' ve won!" : "You' ve lost!"}}
             </div>
             <!-- <div >Correct answer was "{{correct}}"</div> -->
         </div>
-        <div *ngIf="!round.victory" [ngClass]="{'endGameSubTitle': round.started === true && round.ended === true}">
+        <div *ngIf="!round.victory" [ngStyle]="{color: 'white'}" [ngClass]="{'endGameSubTitle': round.started === true && round.ended === true}">
             <div *ngIf="round.remainingTime===0">
                 Time' s up
             </div>
-            <div>
+            <!-- <div>
                 <div>
                     Correct answer was...
                 </div>
                 <div style="font-weight: bold;">
                     {{correct}}
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
