@@ -35,6 +35,9 @@ namespace BoFUN.Board.MiniGames {
             DisplayRoundInfo();
             InitializeTimers();
             AddRoundUpdateListeners();
+
+            // Play Sound
+            AudioManager.Instance.PlayPantomimeSound();
         }
         
         // Private Helper Functions
@@ -102,6 +105,8 @@ namespace BoFUN.Board.MiniGames {
                 UpdateTimers(displayingRound.remainingTime);
                 RemoveRoundUpdateListeners();
 
+                AudioManager.Instance.StopAllSounds();
+                
                 // Show win lose notification
                 if (displayingRound.victory)
                 {
@@ -113,14 +118,20 @@ namespace BoFUN.Board.MiniGames {
                         "Keep it up!"
                     };
                     NotificationManager.Instance.ShowCorrectNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished?.Invoke(displayingRound));
+
+                    AudioManager.Instance.PlayCorrectAnswerSound();
+
                 }
                 else
                 {
                     string[] messages =
                     {
-                        "<b>You've lost!</b>\nTime's up."
+                        "<b>You've lost</b>\nTime's up."
                     };
                     NotificationManager.Instance.ShowErrorNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished?.Invoke(displayingRound));
+
+                    AudioManager.Instance.PlayTimeFinishedSound();
+
                 }
 
             }

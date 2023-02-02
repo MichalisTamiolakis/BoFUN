@@ -35,6 +35,9 @@ namespace BoFUN.Board.MiniGames
 
             // Start sending picture to server
             InvokeRepeating("UploadDrawingToServer", 0.2f, 0.2f);
+
+            // Start Sound
+            AudioManager.Instance.PlayPictionarySound();
         }
 
 
@@ -98,6 +101,8 @@ namespace BoFUN.Board.MiniGames
 
                 RemoveRoundUpdateListeners();
 
+                AudioManager.Instance.StopAllSounds();
+
                 // Show win lose notification
                 if (displayingRound.victory)
                 {
@@ -109,14 +114,17 @@ namespace BoFUN.Board.MiniGames
                         "Keep it up!"
                     };
                     NotificationManager.Instance.ShowCorrectNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished?.Invoke(displayingRound));
+                    AudioManager.Instance.PlayCorrectAnswerSound();
                 }
                 else
                 {
                     string[] messages =
                     {
-                        "<b>You've lost!</b>\nTime's up."
+                        "<b>You've lost</b>\nTime's up."
                     };
                     NotificationManager.Instance.ShowErrorNotificationSphere(messages[UnityEngine.Random.Range(0, messages.Length - 1)], 3f, () => onMinigameFinished?.Invoke(displayingRound));
+                    AudioManager.Instance.PlayTimeFinishedSound();
+
                 }
             }
         }

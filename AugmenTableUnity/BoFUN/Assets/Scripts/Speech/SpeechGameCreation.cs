@@ -36,7 +36,7 @@ namespace BoFUN.Menu {
 
         public void StopListening()
         {
-            Debug.Log("Disabling Bo");
+            //Debug.Log("Disabling Bo");
             m_Recognizer?.Stop();
             m_Recognizer?.Dispose();
             m_Recognizer = null;
@@ -201,8 +201,6 @@ namespace BoFUN.Menu {
 
         static void ExtractTime(string sentence, out int minutes, out int seconds)
         {
-            int[] time = new int[2];
-
             minutes = 0;
             seconds = 0;
 
@@ -229,8 +227,7 @@ namespace BoFUN.Menu {
 
         private void VoiceReply(string voiceText)
         {
-            Debug.Log("Voice Reply: " + voiceText);
-            Speaker.Instance.SpeakNative(voiceText);
+            Speaker.Instance.Speak(voiceText, audioSource);
         }
     
         public void DisableRecognition(string _)
