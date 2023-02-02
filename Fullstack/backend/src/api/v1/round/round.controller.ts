@@ -19,7 +19,8 @@ export class Round {
         .get("/current", this.getCurrentRound())
         .post("/new/:miniGame", this.newRound())
         .put("/setResult", this.setResult())
-        .post("/current/start", this.startCurrentRound());
+        .post("/current/start", this.startCurrentRound())
+        .get("/current/shareChoice/:index", this.shareChoiceInTrivia());
         
     return router;
     }
@@ -93,6 +94,30 @@ export class Round {
         return res.sendStatus(500);
     };
     }
+
+    public shareChoiceInTrivia() {
+        return async (
+            req: Request,
+            res: Response,
+            next?: NextFunction
+        ): Promise<Response> => {
+            let index = Number(req.params.index)
+            socketService.broadcast("UpdateChoice", JSON.stringify(index));
+            // let currentGame:Game = currentGameModule.game;
+            // let newRound: IRound | undefined = await currentGame.newRound(
+            //     Number(req.params.miniGame)
+            // );
+    
+            // if (newRound) {
+            //     socketService.broadcast("NewRound", JSON.stringify(newRound));
+    
+            //     return res.send(newRound);
+            // }
+    
+            
+            return res.sendStatus(200);
+        };
+        }
 
     public editRound() {
         return async (
