@@ -11,7 +11,10 @@ async function getRandomMinigame(minigame:MiniGame):Promise<ITrivia | IPantomime
         let count = await TriviaModel.count().exec();
         let random = Math.floor(Math.random() * count);
         let docs = await TriviaModel.findOne().skip(random).exec();
-        
+        while(docs!=undefined && docs.answers.length>4){
+            random = Math.floor(Math.random() * count);
+            docs = await TriviaModel.findOne().skip(random).exec();
+        }
         if(docs!=undefined){
             let result:ITrivia ={
                 id: docs._id,
