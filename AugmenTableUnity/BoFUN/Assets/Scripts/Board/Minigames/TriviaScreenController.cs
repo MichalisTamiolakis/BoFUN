@@ -60,6 +60,26 @@ namespace BoFUN.Board.MiniGames
 
             NetworkUtilities.Instance.SocketSubscribe("TriviaSelectedAnswerChanged", OnSelectedAnswerChanged);
             selectedAnswer = -1;
+
+            // Play ambient sound
+            AudioManager.Instance.PlayTriviaSound();
+
+            // Narrate if enabled
+            if (GameManager.GameManager.Instance.gameSettings.naratorEnabled)
+            {
+                Team playingTeam = GameManager.GameManager.Instance.currentGame.GetTeam(m_AssociatedRound.team);
+
+                string narration = $"{playingTeam.name}, {m_Task.question}";
+
+                char c = 'A';
+                foreach(string answer in m_Task.answers)
+                {
+                    narration += $"{c}. {answer}.";
+                    c++;
+                }
+
+                AudioManager.Instance.Speech(narration);
+            }
         }
 
         // Private Helper Functions
@@ -138,7 +158,6 @@ namespace BoFUN.Board.MiniGames
                 RemoveRoundUpdateListeners();
 
                 // Show win/lose animation
-
                 foreach(TaskWindow tw in taskWindows)
                 {
                     Color originalColorOfAnswer = tw.answers[m_Task.correctAnswer].background.color;
@@ -148,9 +167,28 @@ namespace BoFUN.Board.MiniGames
                     });
                 }
 
+                // Play sound
+                AudioManager.Instance.StopAllSounds();
+                if (displayingRound.victory)
+                {
+                    AudioManager.Instance.PlayCorrectAnswerSound();
+                }
+                else if (displayingRound.remainingTime>0)
+                {
+                    AudioManager.Instance.PlayIncorrectAnswerSound();
+                }
+                else if(displayingRound.remainingTime <= 0)
+                {
+                    AudioManager.Instance.PlayTimeFinishedSound();
+                }
+
+
+
+                // Back to board call
                 LeanTween.delayedCall(3f, ()=> {
                     onMinigameFinished?.Invoke(displayingRound);
                 });
+
             }
         }
 

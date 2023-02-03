@@ -124,6 +124,7 @@ public class BoardScreenManager : MonoBehaviour
                 }
             });
 
+            AudioManager.Instance.PlayBoardSound();
         }
         else
         {
@@ -131,6 +132,7 @@ public class BoardScreenManager : MonoBehaviour
         }
 
         boardScreenOptions.screen.SetActive(show);
+
     }
 
     // ========= Private Methods =========
@@ -387,8 +389,15 @@ public class BoardScreenManager : MonoBehaviour
         Debug.Log($"{currentPlayer.username} is playing {currentRound.minigame}");
 
         // Show Next Player and Game Information
-        boardScreenOptions.popUpInfo.ShowNotification($"{currentRound.minigame}", $"<b>{currentPlayer.username}</b>, open your phone to begin", boardScreenOptions.minigameInfoBackgrounds[(int)currentRound.minigame], .5f, null);
+        boardScreenOptions.popUpInfo.ShowNotification($"{currentRound.minigame}", $"<b>{currentPlayer.username}</b>, open your phone to begin.", boardScreenOptions.minigameInfoBackgrounds[(int)currentRound.minigame], .5f, null);
 
+        // Narate if enabled
+        if (GameManager.Instance.gameSettings.naratorEnabled)
+        {
+            Team playingTeam = GameManager.Instance.currentGame.GetTeam(currentRound.team);
+            // Narate notification
+            AudioManager.Instance.Speech($"{playingTeam.name} plays {currentRound.minigame}. {currentPlayer.username}, please open your phone to begin.");
+        }
     }
 
     private void CurrentRoundOnUpdate(Round currentRound)
@@ -409,11 +418,12 @@ public class BoardScreenManager : MonoBehaviour
 
     private void ReturnFromMinigame(Round currentRound)
     {
+        // 0) Resume ambient sound 
+        AudioManager.Instance.PlayBoardSound();
 
         // 1) Close open minigame screen
         boardState = State.Board;
 
-        // Show win/loose info        
         ShowStateScreen();
 
         Team t = GameManager.Instance.currentGame.GetTeam(currentRound.team);
@@ -428,7 +438,7 @@ public class BoardScreenManager : MonoBehaviour
                 // Move the team to the last step and send finish game to server
                 MoveTeamIndicator(t, boardScreenOptions.steps.Count - 1, () =>
                 {
-                    Debug.Log("Game Finished");
+                    //Debug.Log("Game Finished");
 
                     GameEnded(t);
 
@@ -480,7 +490,6 @@ public class BoardScreenManager : MonoBehaviour
         // Send end of game
         NetworkUtilities.Instance.Post($"{GameManager.Instance.networkSettings.serverURL}/{GameManager.Instance.networkSettings.gameAPI.endGamePath}", "", null);
 
-        // TODO PLAY ANIMATION
         NotificationManager.Instance.ShowEndOfGameNotification($"<b>Game ended</b>\n{winner.name} won!", 3f, ()=> { 
 
             // Start new game

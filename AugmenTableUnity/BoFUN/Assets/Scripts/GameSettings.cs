@@ -15,7 +15,10 @@ public class GameSettings
 
     [Space(10)]
     public bool confettiOnCorrectAnswer = true;
-    public bool confettinOnGameFinished = true; 
+    public bool confettinOnGameFinished = true;
+
+    [Space(10)]
+    public bool naratorEnabled = false;
 
     public static GameSettings CreateFromJSON(string jsonString)
     {

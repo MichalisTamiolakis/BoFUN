@@ -154,6 +154,7 @@ namespace BoFUN.GameManager
                     // Hide mouse
                     Cursor.visible = false;
 #endif
+            AudioManager.Instance.StopAllSounds();
             ShowScreen(Screen.GameCreationScreen);
         }
 
