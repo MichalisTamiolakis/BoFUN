@@ -90,7 +90,8 @@ namespace BoFUN.Board.MiniGames
             else if (displayingRound.ended)
             {
                 // Cancel time animation
-                LeanTween.cancel(timerAnimation.id);
+                if (timerAnimation != null)
+                    LeanTween.cancel(timerAnimation.id);
                 timerAnimation = null;
                 UpdateTimers(displayingRound.remainingTime);
 

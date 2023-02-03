@@ -30,6 +30,7 @@ namespace BoFUN.Board.MiniGames
                 text.enabled = show;
                 numberingImage.enabled = show;
                 numberingText.enabled = show;
+                background.color = Color.clear;
             }
         }
 
@@ -69,12 +70,12 @@ namespace BoFUN.Board.MiniGames
             {
                 Team playingTeam = GameManager.GameManager.Instance.currentGame.GetTeam(m_AssociatedRound.team);
 
-                string narration = $"{playingTeam.name}, {m_Task.question}";
+                string narration = $"{playingTeam.name}, {m_Task.question}\n";
 
                 char c = 'A';
                 foreach(string answer in m_Task.answers)
                 {
-                    narration += $"{c}. {answer}.";
+                    narration += $"{c}. {answer}.\n";
                     c++;
                 }
 
@@ -107,7 +108,6 @@ namespace BoFUN.Board.MiniGames
                 // Paint only available answers
                 for(int i=0; i<m_Task.answers.Length; i++)
                 {
-                    tw.answers[i].background.color = Color.clear;
                     tw.answers[i].text.text = m_Task.answers[i];
                     tw.answers[i].Show(true);
                 }
@@ -152,7 +152,9 @@ namespace BoFUN.Board.MiniGames
             else if (displayingRound.ended)
             {
                 // Cancel time animation
-                LeanTween.cancel(timerAnimation.id);
+                if(timerAnimation!=null)
+                    LeanTween.cancel(timerAnimation.id);
+
                 timerAnimation = null;
                 UpdateTimers(displayingRound.remainingTime);
                 RemoveRoundUpdateListeners();
