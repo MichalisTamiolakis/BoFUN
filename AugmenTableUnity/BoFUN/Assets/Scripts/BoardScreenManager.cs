@@ -389,8 +389,15 @@ public class BoardScreenManager : MonoBehaviour
         Debug.Log($"{currentPlayer.username} is playing {currentRound.minigame}");
 
         // Show Next Player and Game Information
-        boardScreenOptions.popUpInfo.ShowNotification($"{currentRound.minigame}", $"<b>{currentPlayer.username}</b>, open your phone to begin", boardScreenOptions.minigameInfoBackgrounds[(int)currentRound.minigame], .5f, null);
+        boardScreenOptions.popUpInfo.ShowNotification($"{currentRound.minigame}", $"<b>{currentPlayer.username}</b>, open your phone to begin.", boardScreenOptions.minigameInfoBackgrounds[(int)currentRound.minigame], .5f, null);
 
+        // Narate if enabled
+        if (GameManager.Instance.gameSettings.naratorEnabled)
+        {
+            Team playingTeam = GameManager.Instance.currentGame.GetTeam(currentRound.team);
+            // Narate notification
+            AudioManager.Instance.Speech($"{playingTeam.name} plays {currentRound.minigame}. {currentPlayer.username}, please open your phone to begin.");
+        }
     }
 
     private void CurrentRoundOnUpdate(Round currentRound)

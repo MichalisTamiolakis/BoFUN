@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     }
 
     public AudioSource audioSource;
+    public AudioSource naratorSource;
 
     [Space(10)]
     public AudioClip boardAmbientSound;
@@ -190,8 +191,8 @@ public class AudioManager : MonoBehaviour
 
     public void Start()
     {
-        Speaker.Instance.OnSpeakStarted.AddListener(OnSpeechCompleted);
-        Speaker.Instance.OnSpeakCompleted.AddListener(OnSpeechStarted);
+        Speaker.Instance.OnSpeakStarted.AddListener(OnSpeechStarted);
+        Speaker.Instance.OnSpeakCompleted.AddListener(OnSpeechCompleted);
 
         audioSource.loop = true;
         audioSource.clip = null;
@@ -258,7 +259,7 @@ public class AudioManager : MonoBehaviour
 
     public void Speech(string text)
     {
-        Speaker.Instance.SpeakNative(text);
+        Speaker.Instance.Speak(text, naratorSource);
     }
 
     public void OnSpeechStarted(string text)

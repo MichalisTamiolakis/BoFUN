@@ -38,6 +38,12 @@ namespace BoFUN.Board.MiniGames {
 
             // Play Sound
             AudioManager.Instance.PlayPantomimeSound();
+
+            // Narrate if enabled
+            if (GameManager.GameManager.Instance.gameSettings.naratorEnabled)
+            {
+                AudioManager.Instance.Speech($"The category is {m_Task.category}. The time has started.");
+            }
         }
         
         // Private Helper Functions
