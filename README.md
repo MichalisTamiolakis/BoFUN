@@ -1,5 +1,8 @@
-# BoFUN
-Board games made FUN. A collection of all the classic games in one, designed specifically for the smart living room of HCI Lab.
+![#BoFUN](https://github.com/MichalisTamiolakis/BoFUN/blob/dev/Fullstack/frontend/src/assets/logo.png?raw=true)
+
+Board games made FUN.
+
+A collection of all the classic games in one, designed specifically for the smart living room of HCI Lab.
 
 # Setup Process
 1) Run fullstack template with docker
