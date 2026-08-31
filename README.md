@@ -2,7 +2,7 @@
 
 Board games made FUN!
 
-A collection classic casual games in one. 
+A collection of classic casual games in one. 
 Designed specifically for the smart living room of HCI Lab for the needs of CS469 course.
 
 # Setup Process
