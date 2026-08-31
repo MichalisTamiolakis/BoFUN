@@ -26,8 +26,14 @@ Designed specifically for the smart living room of HCI Lab for the needs of CS46
 
 ## Smartphone
 
+<img width="187" height="406" alt="iPhone 13 mini - 12" src="https://github.com/user-attachments/assets/86e26635-2f80-4e91-8c54-013b6b6244e3" />
 <img width="187" height="406" alt="iPhone 13 mini - 6" src="https://github.com/user-attachments/assets/3032256d-a889-4d49-a036-57ca9e6b9ef2" />
 <img width="187" height="406" alt="iPhone 13 mini - 9" src="https://github.com/user-attachments/assets/6e464862-fc9a-46f8-b51b-cd8af92c9b84" />
 <img width="187" height="406" alt="iPhone 13 mini - 11" src="https://github.com/user-attachments/assets/c1773822-ed5c-43aa-9252-56c828e3da7b" />
-<img width="187" height="406" alt="iPhone 13 mini - 12" src="https://github.com/user-attachments/assets/86e26635-2f80-4e91-8c54-013b6b6244e3" />
 
+## SurroundWall
+
+<img width="480" height="164" alt="01_Homepage" src="https://github.com/user-attachments/assets/3e1125b7-f9df-4b43-9b42-178c4918dea6" />
+<img width="480" height="164" alt="06_PictionaryDisplay" src="https://github.com/user-attachments/assets/a8c747c3-321e-4bf2-bb90-0020aa4a8f10" />
+<img width="480" height="164" alt="07_TriviaDisplay" src="https://github.com/user-attachments/assets/86885701-ee6f-4b7a-8e5b-c9b6cabc3925" />
+<img width="480" height="164" alt="08_Statistics" src="https://github.com/user-attachments/assets/193733b6-a0ae-40a3-9831-c8132870ce25" />
